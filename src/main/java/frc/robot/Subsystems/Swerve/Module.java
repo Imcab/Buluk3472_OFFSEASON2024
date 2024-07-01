@@ -11,10 +11,9 @@ import org.littletonrobotics.junction.Logger;
 public class Module {
 
     
-    double WHEELRADIUS = DriveConstants.WHEELRADIUS;
-    ModuleIO io;
-    ModuleIOInputsAutoLogged inputs = new ModuleIOInputsAutoLogged();
-    int index;
+    private final ModuleIO io;
+    private final ModuleIOInputsAutoLogged inputs = new ModuleIOInputsAutoLogged();
+    private final int index;
 
     private final PIDController turnPID;
 
