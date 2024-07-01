@@ -109,6 +109,7 @@ public class ModuleIOSparkMax implements ModuleIO{
         inputs.driveVelocity = enc_drive.getVelocity();
         inputs.drivePositionMeters = enc_drive.getPosition();
         inputs.driveAppliedVolts = driveSparkMax.getAppliedOutput() * driveSparkMax.getBusVoltage();
+        inputs.turnAppliedVolts = turnSparkMax.getAppliedOutput() * turnSparkMax.getBusVoltage();
     }
     @Override
     public void setDrive(double speed){
