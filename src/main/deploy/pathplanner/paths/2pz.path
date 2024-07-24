@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.618501382509183,
+        "y": 5.656334051612468
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.4499707772596704,
+        "y": 5.6212015419751244
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.894982565999367,
+        "y": 5.656334051612468
+      },
+      "prevControl": {
+        "x": 2.91840423909093,
+        "y": 5.58606903233778
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.79,
+    "maxAcceleration": 5.79,
+    "maxAngularVelocity": 700.0,
+    "maxAngularAcceleration": 900.0
+  },
+  "goalEndState": {
+    "velocity": 0.0,
+    "rotation": 179.73088985150747,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "4pzSim",
+  "previewStartingState": {
+    "rotation": -179.165176060936,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

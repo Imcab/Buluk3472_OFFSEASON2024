@@ -4,9 +4,9 @@ import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
 
-    public static final double kP = 0.008;
+    public static final double kP = 7.0; //0.008
 
-    public static final double kPSIM = 0.008;
+    public static final double kPSIM = 10.0;
 
     public static final double WHEELRADIUS = Units.inchesToMeters(2.0);
 
@@ -14,10 +14,8 @@ public class DriveConstants {
 
     public static final double maxspeedMetersPerSecond = 5.7912;
 
-    public static final double driveGratio = 1 / 5.35;
-    public static final double turnGratio = 1 / 18.75;
-    public static final double encDrot2met = driveGratio * Math.PI * WHEELDIAMETER;
-    public static final double metToMs = encDrot2met/60;
+    public static final double DriveReduction = 5.36;
+    public static final double TurnReduction = 18.75;
 
     
     
@@ -30,7 +28,7 @@ public class DriveConstants {
  
         public static final boolean DrivemotorReversed = false;
         public static final boolean TurnmotorReversed = true;
-        public static final double PIDSTATUS = 1.0;
+
 
     }
 
@@ -43,7 +41,6 @@ public class DriveConstants {
  
         public static final boolean DrivemotorReversed = false;
         public static final boolean TurnmotorReversed = true; //false
-        public static final double PIDSTATUS = 1.0; //-1
 
     }
 
@@ -56,7 +53,6 @@ public class DriveConstants {
  
         public static final boolean DrivemotorReversed = false;
         public static final boolean TurnmotorReversed = true; //false
-        public static final double PIDSTATUS = 1.0; //-1
 
     }
 
@@ -69,7 +65,7 @@ public class DriveConstants {
  
         public static final boolean DrivemotorReversed = true;
         public static final boolean TurnmotorReversed = true; // fasle
-        public static final double PIDSTATUS = 1.0; //-1
+
 
     }
 }

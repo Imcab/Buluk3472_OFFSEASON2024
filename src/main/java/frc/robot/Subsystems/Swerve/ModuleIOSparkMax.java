@@ -1,10 +1,12 @@
 package frc.robot.Subsystems.Swerve;
 
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogInput;
 
 
@@ -14,7 +16,7 @@ public class ModuleIOSparkMax implements ModuleIO{
     private final CANSparkMax driveSparkMax;
     private final CANSparkMax turnSparkMax;
 
-    private final RelativeEncoder enc_drive;
+    private final RelativeEncoder enc_drive, enc_turn;
   
     private final AnalogInput AbsoluteEncoder;
 
@@ -22,7 +24,6 @@ public class ModuleIOSparkMax implements ModuleIO{
     private final boolean isTurnMotorInverted;
     private final boolean isDriveMotorInverted;
     private final double Offset;
-    private final double PIDSTATUS;
 
     public ModuleIOSparkMax(int index) {
         switch (index) {
@@ -33,7 +34,7 @@ public class ModuleIOSparkMax implements ModuleIO{
             isDriveMotorInverted = DriveConstants.frontLeft.DrivemotorReversed;
             isTurnMotorInverted = DriveConstants.frontLeft.TurnmotorReversed;
             Offset = DriveConstants.frontLeft.offset;
-            PIDSTATUS = DriveConstants.frontLeft.PIDSTATUS;
+            
 
             break;
           case 1:
@@ -43,7 +44,7 @@ public class ModuleIOSparkMax implements ModuleIO{
             isDriveMotorInverted = DriveConstants.frontRight.DrivemotorReversed;
             isTurnMotorInverted = DriveConstants.frontRight.TurnmotorReversed;
             Offset = DriveConstants.frontRight.offset; 
-            PIDSTATUS = DriveConstants.frontRight.PIDSTATUS;
+            
 
             break;
           case 2:
@@ -53,7 +54,7 @@ public class ModuleIOSparkMax implements ModuleIO{
             isDriveMotorInverted = DriveConstants.backLeft.DrivemotorReversed;
             isTurnMotorInverted = DriveConstants.backLeft.TurnmotorReversed;
             Offset = DriveConstants.backLeft.offset;
-            PIDSTATUS = DriveConstants.backLeft.PIDSTATUS;
+            
 
             break;
           case 3:
@@ -63,7 +64,7 @@ public class ModuleIOSparkMax implements ModuleIO{
             isDriveMotorInverted = DriveConstants.backRight.DrivemotorReversed;
             isTurnMotorInverted = DriveConstants.backRight.TurnmotorReversed;
             Offset = DriveConstants.backRight.offset;
-            PIDSTATUS = DriveConstants.backRight.PIDSTATUS;
+            
 
             break;
           default:
@@ -73,18 +74,27 @@ public class ModuleIOSparkMax implements ModuleIO{
         driveSparkMax.restoreFactoryDefaults();
         turnSparkMax.restoreFactoryDefaults();
 
-        driveSparkMax.setInverted(isDriveMotorInverted);
-        turnSparkMax.setInverted(isTurnMotorInverted);
-    
         driveSparkMax.setCANTimeout(250);
         turnSparkMax.setCANTimeout(250);
 
         enc_drive = driveSparkMax.getEncoder();
+        enc_turn = driveSparkMax.getEncoder();
 
-        enc_drive.setPositionConversionFactor(DriveConstants.encDrot2met);
-        enc_drive.setVelocityConversionFactor(DriveConstants.metToMs);
+        driveSparkMax.setInverted(isDriveMotorInverted);
+        turnSparkMax.setInverted(isTurnMotorInverted);
+
+        driveSparkMax.setSmartCurrentLimit(40);
+        turnSparkMax.setSmartCurrentLimit(30);
+        driveSparkMax.enableVoltageCompensation(12.0);
+        turnSparkMax.enableVoltageCompensation(12.0);
 
         enc_drive.setPosition(0.0);
+        enc_drive.setMeasurementPeriod(10);
+        enc_drive.setAverageDepth(2);
+
+        enc_turn.setPosition(0.0);
+        enc_turn.setMeasurementPeriod(10);
+        enc_turn.setAverageDepth(2);
         
         driveSparkMax.setCANTimeout(0);
         turnSparkMax.setCANTimeout(0);
@@ -96,27 +106,44 @@ public class ModuleIOSparkMax implements ModuleIO{
 
     public Rotation2d AngleEncoder(){
 
-        double encoderBits = AbsoluteEncoder.getValue();
-        double angleEncoder = (encoderBits * 360) / 4096;
+      double encoderBits = AbsoluteEncoder.getValue();
+      double angleEncoder = (encoderBits * 360) / 4096;
 
-        return Rotation2d.fromDegrees(angleEncoder-Offset);
-    }
+      return Rotation2d.fromDegrees(angleEncoder - Offset);
+
+  }
 
     @Override
     public void updateInputs(ModuleIOInputs inputs){
-        inputs.AngleEncoderPosition = AngleEncoder().getDegrees();
-        inputs.MODULEPIDSTATUS = PIDSTATUS;
-        inputs.driveVelocity = enc_drive.getVelocity();
-        inputs.drivePositionMeters = enc_drive.getPosition();
+
         inputs.driveAppliedVolts = driveSparkMax.getAppliedOutput() * driveSparkMax.getBusVoltage();
+        inputs.drivePositionRad = Units.rotationsToRadians(enc_drive.getPosition()) / DriveConstants.DriveReduction;
+        inputs.driveVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(enc_drive.getVelocity()) / DriveConstants.DriveReduction;
+        inputs.driveCurrentAmps = new double[]{driveSparkMax.getOutputCurrent()};
+
         inputs.turnAppliedVolts = turnSparkMax.getAppliedOutput() * turnSparkMax.getBusVoltage();
+        inputs.TurningPosition = Rotation2d.fromRotations(enc_turn.getPosition() / DriveConstants.TurnReduction);
+        inputs.AngleEncoderPosition = new Rotation2d(AngleEncoder().getRadians());
+        inputs.turnVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(enc_turn.getVelocity()) / DriveConstants.TurnReduction;
+        inputs.TurnCurrentAmps = new double[]{turnSparkMax.getOutputCurrent()};
+      
     }
     @Override
-    public void setDrive(double speed){
-        driveSparkMax.set(speed);
+    public void setDrive(double voltage){
+        driveSparkMax.setVoltage(voltage);
     }
     @Override
-    public void setTurn(double speed){
-        turnSparkMax.set(speed);
+    public void setTurn(double voltage){
+        turnSparkMax.setVoltage(voltage);
     }
+
+    @Override
+    public void setDriveBrakeMode(boolean enable) {
+      driveSparkMax.setIdleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
+    }
+    @Override
+    public void setTurnBrakeMode(boolean enable) {
+      turnSparkMax.setIdleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
+    }
+
 }

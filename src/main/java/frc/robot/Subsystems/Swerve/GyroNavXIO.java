@@ -10,19 +10,22 @@ public class GyroNavXIO implements GyroIO{
     private final AHRS navX =  new AHRS(SPI.Port.kMXP);
 
     public GyroNavXIO(){
-        navX.reset();
+        
+        new Thread(() -> {
+            try{
+                Thread.sleep(1000);
+                navX.reset();
+            } catch (Exception e){
+    
+            }
+          }).start();
     }
-    public double getAngle(){
-        return Math.IEEEremainder(navX.getAngle(), 360);
-    }
+
     @Override
     public void updateInputs(GyroIOInputs inputs){
-        inputs.navXangle = getAngle();
-        inputs.rotation2d = Rotation2d.fromDegrees(-getAngle());
-    }
-    @Override
-    public void resetGyro(){
-        navX.reset();
+        inputs.connected = navX.isConnected();
+        inputs.Gyroangle = Math.IEEEremainder(navX.getAngle(), 360);
+        inputs.Gyrorotation2d = Rotation2d.fromDegrees(-inputs.Gyroangle);
     }
     
 }

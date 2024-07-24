@@ -1,0 +1,15 @@
+{
+  "robotWidth": 0.79,
+  "robotLength": 0.79,
+  "holonomicMode": true,
+  "pathFolders": [
+    "4pzSim",
+    "speedsim"
+  ],
+  "autoFolders": [],
+  "defaultMaxVel": 5.79,
+  "defaultMaxAccel": 5.79,
+  "defaultMaxAngVel": 640.0,
+  "defaultMaxAngAccel": 820.0,
+  "maxModuleSpeed": 5.79
+}

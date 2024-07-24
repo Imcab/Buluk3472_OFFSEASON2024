@@ -1,0 +1,67 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.44283883432246,
+      "y": 7.0
+    },
+    "rotation": 179.3454425277882
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1pz"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1pzshoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2pz"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2pzshoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3pz"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3pzshoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4pz"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4pzshoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
