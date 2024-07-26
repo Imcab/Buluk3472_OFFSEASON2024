@@ -39,6 +39,7 @@ public class Turret extends SubsystemBase{
         break;
     }
     PIDController.enableContinuousInput(-Math.PI, Math.PI);
+    
     setBrakeMode(true);
 
    }
@@ -92,12 +93,4 @@ public class Turret extends SubsystemBase{
    public void setBrakeMode(boolean enabled) {
     io.setTurretBrakeMode(enabled);
   }
-  public void runCharacterization(double volts) {
-    setpoint = new Rotation2d();
-    io.setTurret(volts);
-  }
-  public double getCharacterizationVelocity() {
-    return inputs.TurretVelocityRadPerSec;
-  }
-
 }

@@ -12,10 +12,19 @@
     }
   },
   "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    },
     "Retained Values": {
       "open": false
     },
     "transitory": {
+      "LiveWindow": {
+        ".status": {
+          "open": true
+        },
+        "open": true
+      },
       "PathPlanner": {
         "double[]##v_/PathPlanner/activePath": {
           "open": true
@@ -41,13 +50,21 @@
   },
   "NetworkTables Info": {
     "AdvantageScope@1": {
-      "open": true
-    },
-    "Clients": {
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      },
       "open": true
     },
     "Server": {
-      "open": true
+      "Publishers": {
+        "open": true
+      },
+      "Subscribers": {
+        "open": true
+      }
     },
     "visible": true
   }

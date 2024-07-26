@@ -22,7 +22,7 @@ public class ShooterConstants {
 
     public static final class AngleShooterConstants{
 
-        public static final double AngleReduction = 1/0.4848; 
+        public static final double AngleGearing = 0.4848; 
 
         public static final double kP = 0;
         public static final double KD = 0;

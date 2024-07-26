@@ -4,7 +4,6 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
-import frc.robot.Subsystems.Shooter.Turret.Turret;
 import frc.robot.Subsystems.Vision.Vision;
 
 public class AlignShooter extends Command{
@@ -71,16 +70,9 @@ public class AlignShooter extends Command{
             if (Math.abs(joystickValue) < 0.1){
                 joystickValue = 0;
             }
-                
 
-                if(shooterangle.getShooterPosition().getDegrees() >= -2  && shooterangle.getShooterPosition().getDegrees() <15){
-                    shooterangle.runWithJoystick(joystickValue);
-                }
-                if(shooterangle.getShooterPosition().getDegrees() <= -2  && shooterangle.getShooterPosition().getDegrees() >15){
-                    shooterangle.stopjoystick();
-                }
-                    
-                
+            shooterangle.runWithJoystick(joystickValue);
+                            
             }
         }
     

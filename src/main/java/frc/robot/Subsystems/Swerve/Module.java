@@ -90,15 +90,6 @@ public class Module {
     return optimizedState;
   }
 
-  public void runCharacterization(double volts) {
-    // Closed loop turn control
-    angleSetpoint = new Rotation2d();
-
-    // Open loop drive control
-    io.setDrive(volts);
-    speedSetpoint = null;
-  }
-
   public void stop() {
     io.setTurn(0.0);
     io.setDrive(0.0);
@@ -136,9 +127,4 @@ public class Module {
   public SwerveModuleState getState(){
     return new SwerveModuleState(getDriveVelocityMetersxSec(), new Rotation2d(AngleEncoderODOMETRY().getRadians()));
   }
-  public double getCharacterizationVelocity() {
-    return inputs.driveVelocityRadPerSec;
-  }
-
-
 }

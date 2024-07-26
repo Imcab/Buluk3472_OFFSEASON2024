@@ -7,7 +7,6 @@ public interface VisionIO {
     public static class VisionIOInputs{
         public double getY = 0.0;
         public boolean targetFound = false;
-        public double getV = 0.0;
     }
 
     public default void updateInputs(VisionIOInputs inputs){}

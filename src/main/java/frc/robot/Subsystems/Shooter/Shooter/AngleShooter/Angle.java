@@ -69,9 +69,10 @@ public class Angle extends SubsystemBase{
    }
 
    public Pose3d getPose3d(){
-        Rotation3d rotation3d = new Rotation3d(0, inputs.ShooterPosition.getRadians(), turretRotation2d.getRadians());
+     
+        Rotation3d rotation3d = new Rotation3d(0, -inputs.ShooterPosition.getRadians(), turretRotation2d.getRadians());
 
-        return new Pose3d(0, 0, 0, rotation3d);
+        return new Pose3d(0.0, 0, 0.35, rotation3d);
    }
    public Rotation2d UpdateTurretZ(Rotation2d TurretPosition){
         turretRotation2d = TurretPosition;

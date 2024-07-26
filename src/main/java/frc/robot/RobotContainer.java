@@ -29,8 +29,13 @@ import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Subsystems.Vision.VisionIO;
 import frc.robot.Subsystems.Vision.VisionLimelightIO;
 import frc.robot.commands.DriveCommands.DriveCommands;
+import frc.robot.commands.ElevatorCommands.ElevatorCommand;
 import frc.robot.commands.ShooterCommands.AlignShooter;
 import frc.robot.commands.ShooterCommands.AlignTurret;
+import frc.robot.Subsystems.Elevator.Elevator;
+import frc.robot.Subsystems.Elevator.ElevatorIO;
+import frc.robot.Subsystems.Elevator.ElevatorIOSIM;
+import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.AngleIO;
 
@@ -52,6 +57,7 @@ public class RobotContainer {
   private final Turret turret;
   private final Vision vision;
   private final Angle shooterAngle;
+  private final Elevator elevator;
   
   public RobotContainer() {
 
@@ -72,6 +78,8 @@ public class RobotContainer {
 
         shooterAngle = new Angle(new AngleIOKraken());
 
+        elevator = new Elevator(new ElevatorIOSparkMax());
+
 
         break;
 
@@ -89,6 +97,8 @@ public class RobotContainer {
         vision = new Vision(new VisionIO(){});
 
         shooterAngle = new Angle(new AngleIOSim());
+
+        elevator = new Elevator(new ElevatorIOSIM());
 
         break;
 
@@ -108,17 +118,19 @@ public class RobotContainer {
 
         shooterAngle = new Angle(new AngleIO() {});
 
+        elevator = new Elevator(new ElevatorIO() {});
+
         break;
       
       }
 
     turret.setDefaultCommand(new AlignTurret(turret,
-      ()-> controller2.getRawAxis(/*XboxController.Axis.kLeftX.value*/ PS5Controller.Axis.kLeftX.value), shooterAngle
+      ()-> -controller2.getLeftX(), shooterAngle
       
     ));
 
     shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle, 
-    ()-> -controller2.getRawAxis(/*XboxController.Axis.kLeftY.value*/ PS5Controller.Axis.kLeftY.value)));
+    ()-> -controller2.getLeftY()));
 
     configureBindings();
   }
@@ -127,21 +139,27 @@ public class RobotContainer {
 
     drive.setDefaultCommand(DriveCommands.joystickDrive(drive, ()-> -controller.getLeftY(),  ()-> -controller.getLeftX(),  ()-> -controller.getRightX()));
 
-    //controller.a().whileTrue(new AlignTurret(turret, vision));
+    //controller2.a().whileTrue(new AlignTurret(turret, vision, shooterAngle));
     controller2.cross().whileTrue(new AlignTurret(turret, vision, shooterAngle));
 
-    //controller.b().whileTrue(new AlignTurret(turret, 90.0));
+    //controller2.b().whileTrue(new AlignTurret(turret, 90.0, shooterAngle));
     controller2.circle().whileTrue(new AlignTurret(turret, 90.0, shooterAngle));
 
-    controller2.triangle().whileTrue(new ParallelCommandGroup(new AlignTurret(turret, 180.0, shooterAngle), new AlignShooter(shooterAngle, 15.0)));
+    //controller2.y().whileTrue(new ParallelCommandGroup(new AlignTurret(turret, 0.0, shooterAngle), new AlignShooter(shooterAngle, 0.0)));
 
-    controller2.square().whileTrue(new AlignShooter(shooterAngle, 0.0));
+    controller2.triangle().whileTrue(new ParallelCommandGroup(new AlignTurret(turret, 0.0, shooterAngle), new AlignShooter(shooterAngle, 0.0)));
+
+    //controller2.x().whileTrue(new AlignShooter(shooterAngle, 5.0));
+    controller2.square().whileTrue(new AlignShooter(shooterAngle, 5.0));
+
+    controller2.R1().whileTrue(new ElevatorCommand(elevator, 0.370));
+    controller2.L1().whileTrue(new ElevatorCommand(elevator, 0.200));
     
   }
 
   public Command getAutonomousCommand() {
     //return Commands.print("No autonomous command configured");
 
-    return new PathPlannerAuto("speedsim");
+    return new PathPlannerAuto("5pz");
   }
 }

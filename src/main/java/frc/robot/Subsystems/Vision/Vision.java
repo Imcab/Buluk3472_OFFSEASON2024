@@ -15,12 +15,8 @@ public class Vision extends SubsystemBase{
         io.updateInputs(inputs);
         Logger.processInputs("Vision/LimelightVision", inputs);
    }
-
    public double getY(){
      return inputs.getY;
-   }
-   public double getV(){
-     return inputs.getV;
    }
    public boolean targetFound(){
      return inputs.targetFound;

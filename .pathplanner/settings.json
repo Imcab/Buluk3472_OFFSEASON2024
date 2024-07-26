@@ -1,9 +1,10 @@
 {
-  "robotWidth": 0.79,
-  "robotLength": 0.79,
+  "robotWidth": 0.71,
+  "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
     "4pzSim",
+    "test",
     "speedsim"
   ],
   "autoFolders": [],
