@@ -22,9 +22,6 @@ public interface TurretIO {
   /** Run the motor at the specified voltage. */
   public default void setTurret(double voltage) {}
 
-  /** Run the motor at the specified speed */
-  public default void setSpeed(double speed) {}
-
   public default void setTurretBrakeMode(boolean enable) {}
 
 }

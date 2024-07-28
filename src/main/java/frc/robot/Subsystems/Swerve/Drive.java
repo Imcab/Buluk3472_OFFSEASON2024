@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.LocalADStarAK;
+import frc.robot.util.NoteVisualizer;
+
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -83,6 +85,10 @@ public class Drive extends SubsystemBase{
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
 
+
+        //SetUpNoteVisualizer
+        NoteVisualizer.setRobotPoseSupplier(this::getPose);
+        /////////////////////
 
     }
 

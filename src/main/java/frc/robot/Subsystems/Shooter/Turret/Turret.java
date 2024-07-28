@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Subsystems.Shooter.ShooterConstants.TurretConstants;
-import frc.robot.util.HPPMathLib;
+import frc.robot.util.NoteVisualizer;
 
 public class Turret extends SubsystemBase{
    private final TurretIO io;
@@ -51,7 +51,7 @@ public class Turret extends SubsystemBase{
         Logger.recordOutput("Shooter/Turret/pose3d" , getPose3d());
         Logger.recordOutput("Shooter/Turret/LimelightBased", limelight);
 
-        SmartDashboard.putNumber("angle", inputs.TurretPosition.getDegrees());
+        SmartDashboard.putNumber("Turretposition", inputs.TurretPosition.getDegrees());
 
         if (setpoint != null) {
           joystickValue = null;
@@ -64,10 +64,17 @@ public class Turret extends SubsystemBase{
         if(setpoint == null && joystickValue != null){
             io.setTurret(joystickValue);
         }
+
+        //SetupNoteVisualizer
+        NoteVisualizer.setturretyawPoseSupplier(this::getYaw);
+        /////////////////////
    }
    public Pose3d getPose3d(){
       Pose2d aa = new Pose2d(new Translation2d(), inputs.TurretPosition);
       return new Pose3d(aa);
+   }
+   public Rotation2d getYaw(){
+      return new Rotation2d(inputs.TurretPosition.getRadians());
    }
    public Rotation2d runTurret(double angle){
         setpoint = Rotation2d.fromDegrees(angle);

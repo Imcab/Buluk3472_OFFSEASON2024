@@ -63,11 +63,6 @@ public class TurretIOSparkMax implements TurretIO{
     public void setTurret(double voltage){
         Turret.setVoltage(voltage);
     }
-    
-    @Override
-    public void setSpeed(double speed){
-        Turret.set(speed);
-    }
 
     @Override
     public void setTurretBrakeMode(boolean enable) {

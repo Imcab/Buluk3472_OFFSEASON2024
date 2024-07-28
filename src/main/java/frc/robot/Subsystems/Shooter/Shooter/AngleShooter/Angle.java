@@ -3,16 +3,14 @@ package frc.robot.Subsystems.Shooter.Shooter.AngleShooter;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Subsystems.Shooter.ShooterConstants.AngleShooterConstants;
-import frc.robot.util.HPPMathLib;
+import frc.robot.util.NoteVisualizer;
 
 public class Angle extends SubsystemBase{
 
@@ -66,6 +64,10 @@ public class Angle extends SubsystemBase{
         if(setpoint == null && joystickValue != null){
             io.setAngleShooter(joystickValue * 0.1);
         }
+
+        //Setup NoteVisualizer
+        NoteVisualizer.setshooterpitchPoseSupplier(this::getShooterPitch);
+        //////////////////////
    }
 
    public Pose3d getPose3d(){
@@ -73,6 +75,9 @@ public class Angle extends SubsystemBase{
         Rotation3d rotation3d = new Rotation3d(0, -inputs.ShooterPosition.getRadians(), turretRotation2d.getRadians());
 
         return new Pose3d(0.0, 0, 0.35, rotation3d);
+   }
+   public Rotation2d getShooterPitch(){
+     return new Rotation2d(inputs.ShooterPosition.getRadians());
    }
    public Rotation2d UpdateTurretZ(Rotation2d TurretPosition){
         turretRotation2d = TurretPosition;

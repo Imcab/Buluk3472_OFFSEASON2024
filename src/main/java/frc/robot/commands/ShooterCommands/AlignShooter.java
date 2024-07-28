@@ -2,6 +2,7 @@ package frc.robot.commands.ShooterCommands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Vision.Vision;
@@ -74,11 +75,21 @@ public class AlignShooter extends Command{
             shooterangle.runWithJoystick(joystickValue);
                             
             }
+
+            
         }
     
     @Override
     public void end(boolean interrupted) {
-        shooterangle.stop();
+    }
+    
+    @Override
+    public boolean isFinished(){
+        if(shooterangle.getShooterPosition().getRadians() == new Rotation2d(setpoint - 3.0).getRadians()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }

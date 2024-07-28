@@ -4,17 +4,20 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
-
-import edu.wpi.first.wpilibj.PS5Controller;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.AngleIOKraken;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.AngleIOSim;
+import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.Wheels;
+import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.WheelsIO;
+import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.WheelsIOSim;
 import frc.robot.Subsystems.Shooter.Turret.Turret;
 import frc.robot.Subsystems.Shooter.Turret.TurretIO;
 import frc.robot.Subsystems.Shooter.Turret.TurretIOSim;
@@ -32,6 +35,8 @@ import frc.robot.commands.DriveCommands.DriveCommands;
 import frc.robot.commands.ElevatorCommands.ElevatorCommand;
 import frc.robot.commands.ShooterCommands.AlignShooter;
 import frc.robot.commands.ShooterCommands.AlignTurret;
+import frc.robot.commands.ShooterCommands.Shoot;
+import frc.robot.util.NoteVisualizer;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
 import frc.robot.Subsystems.Elevator.ElevatorIOSIM;
@@ -42,7 +47,6 @@ import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.AngleIO;
 public class RobotContainer {
 
   //controles
-
   //ps5 para pruebas en mi casa jajaj
   private final CommandPS5Controller controller = new CommandPS5Controller(0);
   private final CommandPS5Controller controller2 = new CommandPS5Controller(1);
@@ -58,8 +62,11 @@ public class RobotContainer {
   private final Vision vision;
   private final Angle shooterAngle;
   private final Elevator elevator;
+  private final Wheels wheels;
+  public Command amp;
   
   public RobotContainer() {
+     
 
     switch (Constants.currentMode) {
       case REAL:
@@ -79,6 +86,10 @@ public class RobotContainer {
         shooterAngle = new Angle(new AngleIOKraken());
 
         elevator = new Elevator(new ElevatorIOSparkMax());
+
+        wheels = new Wheels(new WheelsIO() {});
+
+        
 
 
         break;
@@ -100,6 +111,8 @@ public class RobotContainer {
 
         elevator = new Elevator(new ElevatorIOSIM());
 
+        wheels = new Wheels(new WheelsIOSim());
+
         break;
 
       default:
@@ -120,6 +133,8 @@ public class RobotContainer {
 
         elevator = new Elevator(new ElevatorIO() {});
 
+        wheels = new Wheels(new WheelsIO() {});
+
         break;
       
       }
@@ -132,12 +147,41 @@ public class RobotContainer {
     shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle, 
     ()-> -controller2.getLeftY()));
 
+
+    ///For pathplanner//////
+
+    NamedCommands.registerCommand("ShootFromSpeaker",
+                                  new SequentialCommandGroup(
+                                                          new ParallelCommandGroup(
+                                                                                   new AlignTurret(turret, 0.0 , shooterAngle), 
+                                                                                   new AlignShooter(shooterAngle, 50.0)
+                                                          ), 
+                                                          Commands.waitSeconds(0.2)
+                                                          
+                                                          
+                                                          
+                                                          
+                                                          
+                                                          
+                                  ));
+
+
+    //////////////////////// 
+    
+    ////Secuencias////////////
+    amp = new SequentialCommandGroup(new ElevatorCommand(elevator, 0.370).alongWith(new ParallelCommandGroup(new AlignTurret(turret, 0.0, shooterAngle), new AlignShooter(shooterAngle, 40.0))));
+    /////////////////////////
     configureBindings();
   }
 
   private void configureBindings() {
 
+    
+
+    //Drive
     drive.setDefaultCommand(DriveCommands.joystickDrive(drive, ()-> -controller.getLeftY(),  ()-> -controller.getLeftX(),  ()-> -controller.getRightX()));
+    //////
+
 
     //controller2.a().whileTrue(new AlignTurret(turret, vision, shooterAngle));
     controller2.cross().whileTrue(new AlignTurret(turret, vision, shooterAngle));
@@ -147,14 +191,16 @@ public class RobotContainer {
 
     //controller2.y().whileTrue(new ParallelCommandGroup(new AlignTurret(turret, 0.0, shooterAngle), new AlignShooter(shooterAngle, 0.0)));
 
-    controller2.triangle().whileTrue(new ParallelCommandGroup(new AlignTurret(turret, 0.0, shooterAngle), new AlignShooter(shooterAngle, 0.0)));
+    controller2.triangle().whileTrue(new ParallelCommandGroup(new AlignTurret(turret, 0.0, shooterAngle)));
 
-    //controller2.x().whileTrue(new AlignShooter(shooterAngle, 5.0));
-    controller2.square().whileTrue(new AlignShooter(shooterAngle, 5.0));
+    //controller2.x().whileTrue(new AlignShooter(shooterAngle, 50.0));
+    controller2.square().whileTrue(new AlignShooter(shooterAngle, 50.0));
 
-    controller2.R1().whileTrue(new ElevatorCommand(elevator, 0.370));
-    controller2.L1().whileTrue(new ElevatorCommand(elevator, 0.200));
-    
+
+    controller2.R1().whileTrue(new ParallelCommandGroup(new Shoot(wheels, 3000.0), NoteVisualizer.shoot()));
+    controller2.L1().whileTrue(amp);
+    ///
+    //controller2.cross().whileTrue(NoteVisualizer.shoot());
   }
 
   public Command getAutonomousCommand() {
