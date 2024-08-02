@@ -13,6 +13,7 @@ public class AlignShooter extends Command{
     private final Angle shooterangle;
     Double setpoint;
     DoubleSupplier joystickSupplier;
+    boolean atun;
 
     //con limelight
     public AlignShooter(Angle shooterangle, Vision limelightVision){
@@ -46,7 +47,7 @@ public class AlignShooter extends Command{
     @Override
     public void execute(){
 
-
+        
         if (limelightVision != null){
             boolean targetFound = limelightVision.targetFound();
             shooterangle.VisionStatus(true);
@@ -85,10 +86,28 @@ public class AlignShooter extends Command{
     
     @Override
     public boolean isFinished(){
-        if(shooterangle.getShooterPosition().getRadians() == new Rotation2d(setpoint - 3.0).getRadians()){
-            return true;
+
+        //System.out.println(atun);
+
+        
+
+        //System.out.println(atun);
+        //System.out.print(new Rotation2d(setpoint).getRadians());
+        System.out.print(", ");
+
+        System.out.println(shooterangle.getShooterPosition().getRadians());
+
+        if(setpoint != null){
+            if(shooterangle.getShooterPosition().getDegrees() >= new Rotation2d(setpoint).getRadians() - 5 && shooterangle.getShooterPosition().getDegrees() <= new Rotation2d(setpoint).getRadians() + 5){
+                atun = true;
+                return atun;
+            }else{
+                atun = false;
+                return atun;
+            }
         }else{
-            return false;
+            atun = false;
+            return atun;
         }
     }
 

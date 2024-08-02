@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -31,6 +32,8 @@ import frc.robot.Subsystems.Swerve.ModuleIOSparkMax;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Subsystems.Vision.VisionIO;
 import frc.robot.Subsystems.Vision.VisionLimelightIO;
+import frc.robot.commands.ComplexCommands.ComplexIntaking;
+import frc.robot.commands.ComplexCommands.ComplexTurret;
 import frc.robot.commands.DriveCommands.DriveCommands;
 import frc.robot.commands.ElevatorCommands.ElevatorCommand;
 import frc.robot.commands.ShooterCommands.AlignShooter;
@@ -144,26 +147,22 @@ public class RobotContainer {
       
     ));
 
-    shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle, 
-    ()-> -controller2.getLeftY()));
+    shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle,()-> -controller2.getLeftY()));
 
 
     ///For pathplanner//////
 
-    NamedCommands.registerCommand("ShootFromSpeaker",
-                                  new SequentialCommandGroup(
-                                                          new ParallelCommandGroup(
-                                                                                   new AlignTurret(turret, 0.0 , shooterAngle), 
-                                                                                   new AlignShooter(shooterAngle, 50.0)
-                                                          ), 
-                                                          Commands.waitSeconds(0.2)
-                                                          
-                                                          
-                                                          
-                                                          
-                                                          
-                                                          
-                                  ));
+    //50 grados = 0.8727 rad
+
+    NamedCommands.registerCommand("ShootFromSpeaker", new ComplexTurret(turret, Units.degreesToRadians(0.0), shooterAngle, 50.0, wheels, 5000.0));
+
+    NamedCommands.registerCommand("Intaking", new ComplexIntaking(turret, 0.0, shooterAngle, 35.0));
+
+    NamedCommands.registerCommand("Shoot", new ComplexTurret(turret, Units.degreesToRadians(90.0), shooterAngle, 32.0, wheels, 5000.0));
+    
+    NamedCommands.registerCommand("ShootFromLine", new ComplexTurret(turret, Units.degreesToRadians(90.0), shooterAngle, 32.0, wheels, 5000.0));
+
+    NamedCommands.registerCommand("ShootFromFar", new ComplexTurret(turret, Units.degreesToRadians(115.0), shooterAngle, 18.0, wheels, 5000.0));
 
 
     //////////////////////// 
@@ -206,6 +205,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     //return Commands.print("No autonomous command configured");
 
-    return new PathPlannerAuto("5pz");
+    return new PathPlannerAuto("Wak");
   }
 }

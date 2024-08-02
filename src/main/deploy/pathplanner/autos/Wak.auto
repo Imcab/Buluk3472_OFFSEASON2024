@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSpeaker"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "path1"
@@ -21,6 +27,12 @@
           "type": "path",
           "data": {
             "pathName": "path2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromLine"
           }
         },
         {
@@ -36,6 +48,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ShootFromLine"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "path5"
@@ -45,6 +63,30 @@
           "type": "path",
           "data": {
             "pathName": "path6"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromFar"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "path7"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "path8"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromFar"
           }
         }
       ]

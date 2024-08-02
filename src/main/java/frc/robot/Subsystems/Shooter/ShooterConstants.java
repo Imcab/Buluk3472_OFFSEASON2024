@@ -59,8 +59,11 @@ public class ShooterConstants {
         ////////////indexador////////////////
         public static final int IndexerPort = 0;
         public static final boolean IndexerMotorReversed = false;
+        public static final double IndexerReduction = 1; // 1:1
 
-
+        public static final double IkP = 0;
+        public static final double IKD = 0;
+        public static final double IkV = 0.0;
 
     }
 }

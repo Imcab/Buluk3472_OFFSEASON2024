@@ -77,7 +77,7 @@ public class Turret extends SubsystemBase{
       return new Rotation2d(inputs.TurretPosition.getRadians());
    }
    public Rotation2d runTurret(double angle){
-        setpoint = Rotation2d.fromDegrees(angle);
+        setpoint = new Rotation2d(angle);
         return setpoint;
    }
    public double runWithJoystick(double speed){

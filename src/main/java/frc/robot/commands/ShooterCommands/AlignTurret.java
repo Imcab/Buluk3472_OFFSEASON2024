@@ -2,6 +2,7 @@ package frc.robot.commands.ShooterCommands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Shooter.Turret.Turret;
@@ -14,6 +15,7 @@ public class AlignTurret extends Command{
     private final Angle shooterangle;
     Double setpoint;
     DoubleSupplier joystickSupplier;
+    boolean arroz;
 
     //con limelight
     public AlignTurret(Turret turret, Vision limelightVision, Angle shooterangle){
@@ -84,5 +86,31 @@ public class AlignTurret extends Command{
     public void end(boolean interrupted) {
         turret.stop();
     }
+
+     @Override
+    public boolean isFinished(){
+
+        //System.out.println(arroz);
+        //System.out.print(setpoint);
+        //System.out.print(", ");
+ 
+        //System.out.println(turret.getTurretPosition());
+        if(setpoint != null){
+          
+            if(turret.getTurretPosition().getRadians() >= new Rotation2d(setpoint).getRadians() -0.08  && turret.getTurretPosition().getRadians() <= new Rotation2d(setpoint).getRadians() + 0.08 ){
+                arroz = true;
+                return arroz;
+            }else{
+                arroz = false;
+                return arroz;
+            }
+        }else{
+            arroz = false;
+            return arroz;
+        }
+
+    }
+
+    
 
 }

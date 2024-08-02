@@ -11,11 +11,6 @@ public interface WheelsIO {
       public double WheelsVelocityRPM = 0;
       public double [] WheelsCurrentAmps = new double[] {};
 
-      public double IndexerAppliedVolts = 0.0;
-      public double IndexerRPM = 0.0;
-      public double [] IndexerCurrentAmps = new double[]{};
-
-
   }
 
   /** Updates the set of loggable inputs. */
@@ -24,9 +19,6 @@ public interface WheelsIO {
   /** Run the motor at the specified voltage. */
   public default void setWheels(double voltage) {}
 
-  public default void setIndexer(double voltage) {}
-
   public default void setWheelsBrakeMode(boolean enable) {}
 
-  public default void setIndexerBrakeMode(boolean enable) {}
 }
