@@ -52,6 +52,9 @@ public class Elevator extends SubsystemBase{
             io.setElevator(ff.calculate(setpoint / 60)  +  FeedBackController.calculate(inputs.ElevatorMeters, setpoint));            
         }
     }
+    public Double getMeters(){
+      return inputs.ElevatorMeters;
+    }
     public Double ReachGoal(double goal){
         setpoint = goal;
         return setpoint;

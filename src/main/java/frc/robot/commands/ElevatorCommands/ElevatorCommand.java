@@ -1,5 +1,6 @@
 package frc.robot.commands.ElevatorCommands;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Elevator.Elevator;
 
@@ -28,6 +29,18 @@ public class ElevatorCommand extends Command{
 
     @Override
     public boolean isFinished(){
+
+        /*if(setpoint != null){
+            if(elevator.getMeters() >=  setpoint - 0.05 &&  elevator.getMeters() <= setpoint + 0.05){
+
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+        */
         return false;
     }
 

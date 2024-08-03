@@ -3,6 +3,7 @@ package frc.robot.commands.ShooterCommands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Vision.Vision;
@@ -82,6 +83,10 @@ public class AlignShooter extends Command{
     
     @Override
     public void end(boolean interrupted) {
+        if(DriverStation.isAutonomousEnabled() == false){
+            shooterangle.stop();
+        }
+        
     }
     
     @Override
@@ -93,12 +98,9 @@ public class AlignShooter extends Command{
 
         //System.out.println(atun);
         //System.out.print(new Rotation2d(setpoint).getRadians());
-        System.out.print(", ");
-
-        System.out.println(shooterangle.getShooterPosition().getRadians());
 
         if(setpoint != null){
-            if(shooterangle.getShooterPosition().getDegrees() >= new Rotation2d(setpoint).getRadians() - 5 && shooterangle.getShooterPosition().getDegrees() <= new Rotation2d(setpoint).getRadians() + 5){
+            if(shooterangle.getShooterPosition().getRadians() >= new Rotation2d(setpoint).getRadians() - 0.087 && shooterangle.getShooterPosition().getRadians() <= new Rotation2d(setpoint).getRadians() + 0.087){
                 atun = true;
                 return atun;
             }else{

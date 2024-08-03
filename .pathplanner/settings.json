@@ -3,9 +3,7 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
-    "4pzSim",
-    "test",
-    "speedsim"
+    "WakPaths"
   ],
   "autoFolders": [],
   "defaultMaxVel": 5.79,

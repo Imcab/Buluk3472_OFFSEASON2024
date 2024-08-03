@@ -1,6 +1,7 @@
 package frc.robot.commands.ComplexCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -45,10 +46,7 @@ public class ComplexTurret extends SequentialCommandGroup{
 
             addRequirements(turret, shooterAngle, wheels);
 
-            addCommands(new ParallelCommandGroup(new AlignTurret(turret, turretSetpoint, shooterAngle), new AlignShooter(shooterAngle, shooterAnglesetpoint)).andThen( new Shoot(wheels, wheelssetpointRPM).andThen(NoteVisualizer.shoot())));
-
-            //addCommands(new AlignTurret(turret, turretSetpoint, shooterAngle).andThen( new Shoot(wheels, wheelssetpointRPM).andThen(NoteVisualizer.shoot())));
-    
+            addCommands(new ParallelCommandGroup(new AlignTurret(turret, Units.degreesToRadians(turretSetpoint), shooterAngle), new AlignShooter(shooterAngle, Units.degreesToRadians(shooterAnglesetpoint))).andThen( new Shoot(wheels, wheelssetpointRPM).andThen(NoteVisualizer.shoot())));
     
     }
     

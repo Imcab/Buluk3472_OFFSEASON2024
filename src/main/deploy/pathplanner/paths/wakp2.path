@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.7076091812668635,
-        "y": 5.351852301422149
+        "x": 2.8,
+        "y": 6.9
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.747847789561484,
-        "y": 3.9582627524741496
+        "x": 3.339994354739065,
+        "y": 6.944526071648434
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.036039809597451,
-        "y": 4.11050362756931
+        "x": 2.918404239090931,
+        "y": 5.656334051612468
       },
       "prevControl": {
-        "x": 6.560474404828979,
-        "y": 4.74288880104151
+        "x": 2.8962784396335546,
+        "y": 6.042791657623258
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,12 +32,18 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Intaking",
-      "waypointRelativePos": 0.5,
+      "name": "Shoot",
+      "waypointRelativePos": 0.25,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Shoot"
+              }
+            },
             {
               "type": "named",
               "data": {
@@ -57,13 +63,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 177.5633517531899,
+    "rotation": 90.0,
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "test",
+  "folder": "WakPaths",
   "previewStartingState": {
-    "rotation": 88.02506598911805,
+    "rotation": 90.85509739626676,
     "velocity": 0
   },
   "useDefaultConstraints": true

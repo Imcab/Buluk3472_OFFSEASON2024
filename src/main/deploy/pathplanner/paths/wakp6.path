@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.1103565174320065,
-        "y": 5.6212015419740045
+        "x": 8.036039809597451,
+        "y": 4.145636137206654
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1103565174320065,
-        "y": 5.6094907054282235
+        "x": 8.071172319234796,
+        "y": 5.070792224323394
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.649054998537956,
-        "y": 7.014791090923124
+        "x": 5.178595692426762,
+        "y": 6.394116753996703
       },
       "prevControl": {
-        "x": 1.2554654495899562,
-        "y": 6.792285196553275
+        "x": 5.799270029353182,
+        "y": 6.90939356201109
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,21 +32,21 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.2,
-    "maxAcceleration": 5.2,
-    "maxAngularVelocity": 640.0,
-    "maxAngularAcceleration": 820.0
+    "maxVelocity": 5.79,
+    "maxAcceleration": 5.79,
+    "maxAngularVelocity": 617.72,
+    "maxAngularAcceleration": 790.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 72.07208023799278,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "speedsim",
+  "folder": "WakPaths",
   "previewStartingState": {
-    "rotation": -173.88449643381122,
+    "rotation": 176.98721249581672,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

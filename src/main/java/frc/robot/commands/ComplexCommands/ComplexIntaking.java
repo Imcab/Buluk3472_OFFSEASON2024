@@ -1,5 +1,6 @@
 package frc.robot.commands.ComplexCommands;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
@@ -27,7 +28,7 @@ public class ComplexIntaking extends SequentialCommandGroup{
         addRequirements(turret, shooterAngle);
 
         //añadir acción del intake
-        addCommands(new ParallelCommandGroup(new AlignTurret(turret, turretsetpoint, shooterAngle)), new AlignShooter(shooterAngle, shooterAnglesetpoint));
+        addCommands(new ParallelCommandGroup(new AlignTurret(turret, Units.degreesToRadians(turretsetpoint), shooterAngle)), new AlignShooter(shooterAngle, Units.degreesToRadians(shooterAnglesetpoint)));
     }
     
 }

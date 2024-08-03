@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import org.opencv.ml.ANN_MLP;
+
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -39,7 +42,6 @@ import frc.robot.commands.ElevatorCommands.ElevatorCommand;
 import frc.robot.commands.ShooterCommands.AlignShooter;
 import frc.robot.commands.ShooterCommands.AlignTurret;
 import frc.robot.commands.ShooterCommands.Shoot;
-import frc.robot.util.NoteVisualizer;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
 import frc.robot.Subsystems.Elevator.ElevatorIOSIM;
@@ -66,9 +68,16 @@ public class RobotContainer {
   private final Angle shooterAngle;
   private final Elevator elevator;
   private final Wheels wheels;
-  public Command amp;
+
+  //public static final TurretModes SETTURRETMODE;
+
+  
+
+  
   
   public RobotContainer() {
+
+   
      
 
     switch (Constants.currentMode) {
@@ -147,64 +156,41 @@ public class RobotContainer {
       
     ));
 
-    shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle,()-> -controller2.getLeftY()));
+    shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle ,()-> -controller2.getLeftY()));
+ 
+    ///REGISTRAR COMANDOS POR NOMBRE (PARA AUTONOMO Y NORMAL)//////
+    NamedCommands.registerCommand("ShootFromSpeaker", 
+    new ComplexTurret(turret, 0.0, shooterAngle, 50.0, wheels, 5000.0));
 
+    NamedCommands.registerCommand("Intaking", 
+    new ComplexIntaking(turret, 0.0, shooterAngle, 35.0));
 
-    ///For pathplanner//////
-
-    //50 grados = 0.8727 rad
-
-    NamedCommands.registerCommand("ShootFromSpeaker", new ComplexTurret(turret, Units.degreesToRadians(0.0), shooterAngle, 50.0, wheels, 5000.0));
-
-    NamedCommands.registerCommand("Intaking", new ComplexIntaking(turret, 0.0, shooterAngle, 35.0));
-
-    NamedCommands.registerCommand("Shoot", new ComplexTurret(turret, Units.degreesToRadians(90.0), shooterAngle, 32.0, wheels, 5000.0));
+    NamedCommands.registerCommand("Shoot",
+    new ComplexTurret(turret, 90.0, shooterAngle, 32.0, wheels, 5000.0));
     
-    NamedCommands.registerCommand("ShootFromLine", new ComplexTurret(turret, Units.degreesToRadians(90.0), shooterAngle, 32.0, wheels, 5000.0));
+    NamedCommands.registerCommand("ShootFromLine", 
+    new ComplexTurret(turret, 90.0, shooterAngle, 32.0, wheels, 5000.0));
 
-    NamedCommands.registerCommand("ShootFromFar", new ComplexTurret(turret, Units.degreesToRadians(115.0), shooterAngle, 18.0, wheels, 5000.0));
+    NamedCommands.registerCommand("ShootFromFar",
+    new ComplexTurret(turret, 115.0, shooterAngle, 18.0, wheels, 5000.0));
 
-
+    NamedCommands.registerCommand("Amp", null);
     //////////////////////// 
-    
-    ////Secuencias////////////
-    amp = new SequentialCommandGroup(new ElevatorCommand(elevator, 0.370).alongWith(new ParallelCommandGroup(new AlignTurret(turret, 0.0, shooterAngle), new AlignShooter(shooterAngle, 40.0))));
-    /////////////////////////
+
     configureBindings();
   }
 
   private void configureBindings() {
 
-    
-
     //Drive
     drive.setDefaultCommand(DriveCommands.joystickDrive(drive, ()-> -controller.getLeftY(),  ()-> -controller.getLeftX(),  ()-> -controller.getRightX()));
     //////
 
+    //controller2.L1().whileTrue(NamedCommands.getCommand("Amp"));
 
-    //controller2.a().whileTrue(new AlignTurret(turret, vision, shooterAngle));
-    controller2.cross().whileTrue(new AlignTurret(turret, vision, shooterAngle));
-
-    //controller2.b().whileTrue(new AlignTurret(turret, 90.0, shooterAngle));
-    controller2.circle().whileTrue(new AlignTurret(turret, 90.0, shooterAngle));
-
-    //controller2.y().whileTrue(new ParallelCommandGroup(new AlignTurret(turret, 0.0, shooterAngle), new AlignShooter(shooterAngle, 0.0)));
-
-    controller2.triangle().whileTrue(new ParallelCommandGroup(new AlignTurret(turret, 0.0, shooterAngle)));
-
-    //controller2.x().whileTrue(new AlignShooter(shooterAngle, 50.0));
-    controller2.square().whileTrue(new AlignShooter(shooterAngle, 50.0));
-
-
-    controller2.R1().whileTrue(new ParallelCommandGroup(new Shoot(wheels, 3000.0), NoteVisualizer.shoot()));
-    controller2.L1().whileTrue(amp);
-    ///
-    //controller2.cross().whileTrue(NoteVisualizer.shoot());
   }
 
   public Command getAutonomousCommand() {
-    //return Commands.print("No autonomous command configured");
-
     return new PathPlannerAuto("Wak");
   }
 }
