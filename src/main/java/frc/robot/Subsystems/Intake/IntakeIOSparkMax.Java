@@ -12,4 +12,11 @@ public class IntakeIOSparkMax implements IntakeIO{
 
     private final CANSparkMax Intake; 
     private final 
+
+    public IntakeIOSparkMax(){
+
+        
+
+    
+    }
 }
