@@ -11,4 +11,5 @@ import frc.robot.Subsystems.Intake.ConstantsIntake;
 public class IntakeIOSparkMax implements IntakeIO{
 
     private final CANSparkMax Intake; 
+    private final 
 }
