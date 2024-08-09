@@ -7,7 +7,7 @@ public interface RollerIO {
     
       public double RollerAppliedVolts = 0.0;
       public double RollerVelocityRPM = 0;
-      public double [] ElevatorCurrentAmps = new double[] {};
+      public double [] RollerCurrentAmps = new double[] {};
         
     }
     
@@ -16,6 +16,9 @@ public interface RollerIO {
 
   /** Run the motor at the specified voltage. */
   public default void setRoller(double voltage) {}
+  
+  //Modo de frenado (instantaneo)
+  public default void setRollerBrakeMode (boolean enable) {}
     
 } 
     
