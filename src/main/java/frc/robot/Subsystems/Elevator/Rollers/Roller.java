@@ -5,6 +5,8 @@ import org.littletonrobotics.junction.Logger;
 public class Roller extends SubsystemBase {
     private final RollerIO io ;
     private final RollerIOInputsAutoLogged inputs = new RollerIOInputsAutoLogged();
+    Double speed ;
+    double votls ;
 
     public Roller(RollerIO io){
         this.io = io;
@@ -18,11 +20,17 @@ public class Roller extends SubsystemBase {
     public void periodic(){
         io.updateInputs(inputs);
         Logger.processInputs("Roller", inputs);
+
+        if (speed != null){
+            io.setRoller(votls);
+        }
     }
 
     public void stop(){
         io.setRoller(0);
     }
+
+
 
 
 
