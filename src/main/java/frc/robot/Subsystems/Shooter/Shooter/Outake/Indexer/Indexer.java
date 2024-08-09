@@ -20,7 +20,6 @@ public class Indexer extends SubsystemBase{
         this.io = io;
         setpoint = null;
 
-
         switch (Constants.currentMode) {
         case REAL:
         case REPLAY:

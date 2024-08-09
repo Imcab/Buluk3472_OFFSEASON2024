@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.LocalADStarAK;
 import frc.robot.util.NoteVisualizer;
+import frc.robot.util.SmartTurret3472;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -88,7 +89,11 @@ public class Drive extends SubsystemBase{
 
         //SetUpNoteVisualizer
         NoteVisualizer.setRobotPoseSupplier(this::getPose);
+        SmartTurret3472.setRobotPoseSupplier(this::getPose);
         /////////////////////
+
+        Logger.recordOutput("SMARTURRERT", SmartTurret3472.ToSpeaker());
+        
 
     }
 

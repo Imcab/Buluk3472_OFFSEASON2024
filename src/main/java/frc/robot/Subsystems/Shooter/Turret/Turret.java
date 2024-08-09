@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Subsystems.Shooter.ShooterConstants.TurretConstants;
 import frc.robot.util.NoteVisualizer;
+import frc.robot.util.SmartTurret3472;
 
 public class Turret extends SubsystemBase{
    private final TurretIO io;
@@ -67,7 +68,10 @@ public class Turret extends SubsystemBase{
 
         //SetupNoteVisualizer
         NoteVisualizer.setturretyawPoseSupplier(this::getYaw);
+        SmartTurret3472.setTurretPoseSupplier(this::getYaw);
         /////////////////////
+
+        Logger.recordOutput("SMARTURRERT2", SmartTurret3472.ToTurret());
    }
    public Pose3d getPose3d(){
       Pose2d aa = new Pose2d(new Translation2d(), inputs.TurretPosition);
