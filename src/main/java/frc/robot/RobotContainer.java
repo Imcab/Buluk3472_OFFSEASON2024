@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -160,13 +161,13 @@ public class RobotContainer {
     new ComplexIntaking(turret, 0.0, shooterAngle, 35.0));
 
     NamedCommands.registerCommand("Shoot",
-    new ComplexTurret(turret, 90.0, shooterAngle, 32.0, wheels, 5000.0));
+    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()), shooterAngle, 32.0, wheels, 5000.0));
     
     NamedCommands.registerCommand("ShootFromLine", 
-    new ComplexTurret(turret, 90.0, shooterAngle, 32.0, wheels, 5000.0));
+    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()), shooterAngle, 32.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("ShootFromFar",
-    new ComplexTurret(turret, 115.0, shooterAngle, 18.0, wheels, 5000.0));
+    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()), shooterAngle, 18.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("Amp", null);
     //////////////////////// 
