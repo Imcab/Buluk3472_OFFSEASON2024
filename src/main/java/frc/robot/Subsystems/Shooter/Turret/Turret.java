@@ -51,6 +51,7 @@ public class Turret extends SubsystemBase{
         Logger.processInputs("Shooter/Turret" , inputs);
         Logger.recordOutput("Shooter/Turret/pose3d" , getPose3d());
         Logger.recordOutput("Shooter/Turret/LimelightBased", limelight);
+        Logger.recordOutput("SmartTurret/TurretOmega", SmartTurret3472.getSmartSetpoint());
 
         SmartDashboard.putNumber("Turretposition", inputs.TurretPosition.getDegrees());
 

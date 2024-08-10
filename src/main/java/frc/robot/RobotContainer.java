@@ -42,6 +42,7 @@ import frc.robot.commands.ElevatorCommands.ElevatorCommand;
 import frc.robot.commands.ShooterCommands.AlignShooter;
 import frc.robot.commands.ShooterCommands.AlignTurret;
 import frc.robot.commands.ShooterCommands.Shoot;
+import frc.robot.util.SmartTurret3472;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
 import frc.robot.Subsystems.Elevator.ElevatorIOSIM;
@@ -166,13 +167,13 @@ public class RobotContainer {
     new ComplexIntaking(turret, 0.0, shooterAngle, 35.0));
 
     NamedCommands.registerCommand("Shoot",
-    new ComplexTurret(turret, 90.0, shooterAngle, 32.0, wheels, 5000.0));
+    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()), shooterAngle, 32.0, wheels, 5000.0));
     
     NamedCommands.registerCommand("ShootFromLine", 
-    new ComplexTurret(turret, 90.0, shooterAngle, 32.0, wheels, 5000.0));
+    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()), shooterAngle, 32.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("ShootFromFar",
-    new ComplexTurret(turret, 115.0, shooterAngle, 18.0, wheels, 5000.0));
+    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()), shooterAngle, 18.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("Amp", null);
     //////////////////////// 
