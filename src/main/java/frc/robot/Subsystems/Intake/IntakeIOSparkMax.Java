@@ -15,8 +15,24 @@ public class IntakeIOSparkMax implements IntakeIO{
 
     public IntakeIOSparkMax(){
 
-        
+        Intake = new CANSparkMax(ConstantsIntake., MotorType.kBrushless);
+
+        Intake.setInverted()
+
+
+
 
     
+    @Override
+     public void setIntake(double voltage){
+        Intake.setVoltage(voltage);
+
+     }
+
+     @Override 
+     public void setIntakeBrakeMode(boolean enable){
+        Intake.setIdleMode(enable ? IdleMode.Brake : IdleMode.KCoast);
+     }
+
     }
 }
