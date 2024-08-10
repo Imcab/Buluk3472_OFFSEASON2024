@@ -17,7 +17,7 @@ public class Roller extends SubsystemBase {
 
     public void periodic(){
         io.updateInputs(inputs);
-        Logger.processInputs("Roller", inputs);
+        Logger.processInputs("Elevator/Roller", inputs);
     }
 
     public void stop(){

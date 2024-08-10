@@ -72,6 +72,8 @@ public class Turret extends SubsystemBase{
         /////////////////////
 
         Logger.recordOutput("SMARTURRERT2", SmartTurret3472.ToTurret());
+
+        Logger.recordOutput("SMARTURRET/DESIREDANGLE", SmartTurret3472.getDesiredSetpoint());
    }
    public Pose3d getPose3d(){
       Pose2d aa = new Pose2d(new Translation2d(), inputs.TurretPosition);

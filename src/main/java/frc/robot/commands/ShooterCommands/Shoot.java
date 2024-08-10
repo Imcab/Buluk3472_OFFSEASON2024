@@ -2,11 +2,9 @@ package frc.robot.commands.ShooterCommands;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.Wheels;
-import frc.robot.util.NoteVisualizer;
 
 public class Shoot extends Command{
     private final Wheels wheels;

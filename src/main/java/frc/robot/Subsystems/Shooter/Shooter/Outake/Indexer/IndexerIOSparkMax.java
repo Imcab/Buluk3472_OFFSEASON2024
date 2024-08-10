@@ -7,7 +7,6 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.util.Units;
 import frc.robot.Subsystems.Shooter.ShooterConstants.OutakeConstants;
-import frc.robot.Subsystems.Shooter.Turret.Turret;
 
 public class IndexerIOSparkMax implements IndexerIO{
     

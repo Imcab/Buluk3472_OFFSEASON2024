@@ -9,20 +9,18 @@ package frc.robot.util;
 
 import java.util.function.Supplier;
 
-import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.AutoLog;
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.opencv.core.Mat;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 //Prototipo torreta inteligente
 public class SmartTurret3472 {
@@ -52,29 +50,51 @@ public class SmartTurret3472 {
 
 
     public static Pose2d ToSpeaker(){
-      Transform2d Transform = new Transform2d(blueSpeaker.getX(), blueSpeaker.getY(), new Rotation2d(0, 0));
+      Transform2d SpeakerTransform = new Transform2d(blueSpeaker.getX(), blueSpeaker.getY(), new Rotation2d(0, 0));
 
-      Pose2d aa = robotPoseSupplier.get();
-      return aa.transformBy(Transform);
+      Pose2d robotpose = robotPoseSupplier.get();
+      return robotpose.transformBy(SpeakerTransform);
        
   }
   
   public static Pose2d ToTurret(){
 
-        Transform2d transform2d = new Transform2d(  robotPoseSupplier.get().getY(), -turretyaw.get().getRadians(), turretyaw.get());
+        Transform2d transform2d = new Transform2d(robotPoseSupplier.get().getX(), turretyaw.get().getRadians(), robotPoseSupplier.get().getRotation().rotateBy(turretyaw.get()));
 
-       Pose2d aa = new Pose2d(robotPoseSupplier.get().getX(),robotPoseSupplier.get().getY(), robotPoseSupplier.get().getRotation().minus(turretyaw.get()));
-       return aa.transformBy(transform2d);
+        Pose2d pose = new Pose2d(robotPoseSupplier.get().getX(), robotPoseSupplier.get().getY(), turretyaw.get().rotateBy(robotPoseSupplier.get().getRotation()));
+
+        Pose2d aa = new Pose2d(robotPoseSupplier.get().getX(), robotPoseSupplier.get().getY(), turretyaw.get());
+       return aa;
   }
 
-  public void periodic(){
-    
+   @AutoLogOutput(key = "SMARTTURRET/DESIREDANGLE")
+  public static Double getDesiredSetpoint(){
+        double a1 = ToTurret().getX();
+        double a2 = ToTurret().getY();
+
+        double b1 = ToSpeaker().getX();
+        double b2 = ToSpeaker().getY();
+
+        double AB = (a1 * b2) + (b1 * b2); 
+
+        double A = Math.sqrt(Math.pow(a1, 2.0) + Math.pow(a2, 2.0));
+        double B = Math.sqrt(Math.pow(b1, 2.0) + Math.pow(b2, 2.0));
+
+        double DesiredAngle = (AB/(A*B));
+
+        double VALUE = Math.cos(DesiredAngle);
+
+        double REALVALUE = Math.acos(DesiredAngle);
+
+        SmartDashboard.putNumberArray("VALUES", new Double[]{a1,a2,b1,b2,AB,A,B, DesiredAngle, REALVALUE});
+        
+        if(REALVALUE == Double.NaN){
+        }
+
+        return DesiredAngle;
+
+        
   }
-
-  
-
-  
-
 }
 
 
