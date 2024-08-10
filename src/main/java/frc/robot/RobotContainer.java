@@ -169,6 +169,9 @@ public class RobotContainer {
     NamedCommands.registerCommand("ShootFromFar",
     new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()), shooterAngle, 18.0, wheels, 5000.0));
 
+    NamedCommands.registerCommand("AdjustFar", 
+    new ComplexTurret(turret, 100.0, shooterAngle, 18.0, wheels, 5000.0));
+
     NamedCommands.registerCommand("Amp", null);
     //////////////////////// 
 

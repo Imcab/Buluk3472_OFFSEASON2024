@@ -9,17 +9,19 @@ package frc.robot.util;
 
 import java.util.function.Supplier;
 
-import org.littletonrobotics.junction.AutoLog;
-import org.littletonrobotics.junction.AutoLogOutput;
-import org.opencv.core.Mat;
+import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -51,29 +53,34 @@ public class SmartTurret3472 {
 
 
     public static Pose2d ToSpeaker(){
-      Transform2d Transform = new Transform2d(blueSpeaker.getX(), blueSpeaker.getY(), new Rotation2d(0, 0));
 
-      Pose2d aa = robotPoseSupplier.get();
-      return aa.transformBy(Transform);
-       
-  }
-  
-  public static Pose2d ToTurret(){
-
-        Transform2d transform2d = new Transform2d(  robotPoseSupplier.get().getY(), -turretyaw.get().getRadians(), turretyaw.get());
-
-       Pose2d aa = new Pose2d(robotPoseSupplier.get().getX(),robotPoseSupplier.get().getY(), robotPoseSupplier.get().getRotation().minus(turretyaw.get()));
-       return aa.transformBy(transform2d);
-  }
-
-  public void periodic(){
+        return new Pose2d((blueSpeaker.getX() - robotPoseSupplier.get().getX()), 
+            (blueSpeaker.getY() - robotPoseSupplier.get().getY()), new Rotation2d());
     
-  }
+    }
 
-  
+    public static Pose2d ToTurret(){
+        Double psi = (robotPoseSupplier.get().getRotation().getRadians() + turretyaw.get().getRadians());
 
-  
+        Pose2d superPopcorn = new Pose2d(Math.cos(psi), Math.sin(psi), new Rotation2d());
+        
+        return superPopcorn.transformBy(new Transform2d(robotPoseSupplier.get().getX(), robotPoseSupplier.get().getY(), 
+            turretyaw.get().minus(robotPoseSupplier.get().getRotation())));
+
+            
+    }
+
+    public static Double getSmartSetpoint(){
+        Double psi = (robotPoseSupplier.get().getRotation().getRadians() + turretyaw.get().getRadians());
+
+        //omega esta en radianes
+        Double Omega = Math.acos( (((blueSpeaker.getX()-robotPoseSupplier.get().getX()) * Math.cos(psi)) + 
+            ((blueSpeaker.getY()-robotPoseSupplier.get().getY()) * Math.sin(psi))) / 
+                Math.sqrt(Math.pow((blueSpeaker.getX()-robotPoseSupplier.get().getX()), 2) +
+                Math.pow((blueSpeaker.getY()-robotPoseSupplier.get().getY()), 2) ));
+
+
+        return Omega;
+    }
 
 }
-
-

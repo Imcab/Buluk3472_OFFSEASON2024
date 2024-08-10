@@ -52,8 +52,9 @@ public class Turret extends SubsystemBase{
         Logger.recordOutput("Shooter/Turret/pose3d" , getPose3d());
         Logger.recordOutput("Shooter/Turret/LimelightBased", limelight);
         Logger.recordOutput("SmartTurret/TurretOmega", SmartTurret3472.getSmartSetpoint());
+        Logger.recordOutput("SmartTurret/Vectors/TurretVector", SmartTurret3472.ToTurret());
 
-        SmartDashboard.putNumber("Turretposition", inputs.TurretPosition.getDegrees());
+
 
         if (setpoint != null) {
           joystickValue = null;
@@ -69,12 +70,11 @@ public class Turret extends SubsystemBase{
 
         //SetupNoteVisualizer
         NoteVisualizer.setturretyawPoseSupplier(this::getYaw);
+        //SetupSmartTurret
         SmartTurret3472.setTurretPoseSupplier(this::getYaw);
         /////////////////////
 
-        Logger.recordOutput("SMARTURRERT2", SmartTurret3472.ToTurret());
 
-        Logger.recordOutput("SMARTURRET/DESIREDANGLE", SmartTurret3472.getDesiredSetpoint());
    }
    public Pose3d getPose3d(){
       Pose2d aa = new Pose2d(new Translation2d(), inputs.TurretPosition);

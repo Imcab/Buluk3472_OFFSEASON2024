@@ -89,10 +89,11 @@ public class Drive extends SubsystemBase{
 
         //SetUpNoteVisualizer
         NoteVisualizer.setRobotPoseSupplier(this::getPose);
+        //SetUpSmartTurret
         SmartTurret3472.setRobotPoseSupplier(this::getPose);
         /////////////////////
 
-        Logger.recordOutput("SMARTURRERT", SmartTurret3472.ToSpeaker());
+        Logger.recordOutput("SmartTurret/Vectors/SpeakerVector", SmartTurret3472.ToSpeaker());
         
 
     }
