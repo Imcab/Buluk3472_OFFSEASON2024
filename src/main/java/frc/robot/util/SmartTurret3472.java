@@ -73,7 +73,7 @@ public class SmartTurret3472 {
     public static Double getSmartSetpoint(){
         Double psi = (robotPoseSupplier.get().getRotation().getRadians() + turretyaw.get().getRadians());
 
-        //omega esta en radianes
+        //omega esta en radianes, cambiar por constantes
         Double Omega = Math.acos( (((blueSpeaker.getX()-robotPoseSupplier.get().getX()) * Math.cos(psi)) + 
             ((blueSpeaker.getY()-robotPoseSupplier.get().getY()) * Math.sin(psi))) / 
                 Math.sqrt(Math.pow((blueSpeaker.getX()-robotPoseSupplier.get().getX()), 2) +
