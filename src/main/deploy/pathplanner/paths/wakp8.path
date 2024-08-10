@@ -33,7 +33,7 @@
   "eventMarkers": [
     {
       "name": "Adjust",
-      "waypointRelativePos": 0.55,
+      "waypointRelativePos": 0.35,
       "command": {
         "type": "sequential",
         "data": {
