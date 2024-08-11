@@ -13,9 +13,11 @@ public class AlignTurret extends Command{
     private final Turret turret;
     private final Vision limelightVision;
     private final Angle shooterangle;
-    Double setpoint;
-    DoubleSupplier joystickSupplier;
+    private final Double setpoint;
+    private final DoubleSupplier joystickSupplier;
+    private final Double SMARTsetpoint;
     boolean arroz;
+
 
     //con limelight
     public AlignTurret(Turret turret, Vision limelightVision, Angle shooterangle){
@@ -25,6 +27,7 @@ public class AlignTurret extends Command{
         this.setpoint = null;
         this.limelightVision = limelightVision;
         this.joystickSupplier = null;
+        this.SMARTsetpoint = null;
         addRequirements(turret,limelightVision);
     }
     //con enncoder
@@ -35,6 +38,7 @@ public class AlignTurret extends Command{
         this.setpoint = setpoint;
         this.limelightVision = null;
         this.joystickSupplier = null;
+        this.SMARTsetpoint = null;
         addRequirements(turret);
     }
     //con joystick
@@ -45,6 +49,7 @@ public class AlignTurret extends Command{
         this.setpoint = null;
         this.limelightVision = null;
         this.joystickSupplier = joystickSupplier;
+        this.SMARTsetpoint = null;
         addRequirements(turret);
     }
     @Override
@@ -68,8 +73,10 @@ public class AlignTurret extends Command{
         }
 
         if(setpoint != null){
+
             turret.VisionStatus(false);
             turret.runTurret(setpoint);
+            
         }
 
         if(joystickSupplier != null){
@@ -97,7 +104,7 @@ public class AlignTurret extends Command{
         //System.out.println(turret.getTurretPosition());
         if(setpoint != null){
           
-            if(turret.getTurretPosition().getRadians() >= new Rotation2d(setpoint).getRadians() -0.08  && turret.getTurretPosition().getRadians() <= new Rotation2d(setpoint).getRadians() + 0.08 ){
+            if(turret.getTurretPosition().getRadians() >= new Rotation2d(setpoint).getRadians() -0.008  && turret.getTurretPosition().getRadians() <= new Rotation2d(setpoint).getRadians() + 0.008 ){
                 arroz = true;
                 return arroz;
             }else{

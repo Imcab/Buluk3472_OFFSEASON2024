@@ -161,18 +161,19 @@ public class RobotContainer {
     new ComplexIntaking(turret, 0.0, shooterAngle, 35.0));
 
     NamedCommands.registerCommand("Shoot",
-    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()), shooterAngle, 32.0, wheels, 5000.0));
+    new ComplexTurret(turret, 110.0, shooterAngle, 32.0, wheels, 5000.0));
     
     NamedCommands.registerCommand("ShootFromLine", 
-    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()), shooterAngle, 32.0, wheels, 5000.0));
+    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()),  shooterAngle,  32.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("ShootFromFar",
-    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()), shooterAngle, 18.0, wheels, 5000.0));
+    new ComplexTurret(turret, 117.0, shooterAngle, 18.0, wheels, 5000.0));
 
-    NamedCommands.registerCommand("AdjustFar", 
-    new AlignTurret(turret, -100.0, shooterAngle));
+   
 
     NamedCommands.registerCommand("Amp", null);
+
+    NamedCommands.registerCommand("AutoAlignTurret", new AlignTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint() ), shooterAngle));
     //////////////////////// 
 
     configureBindings();
@@ -185,6 +186,8 @@ public class RobotContainer {
     //////
 
     //controller2.L1().whileTrue(NamedCommands.getCommand("Amp"));
+
+    controller2.cross().whileTrue(NamedCommands.getCommand("AutoAlignTurret"));
 
   }
 

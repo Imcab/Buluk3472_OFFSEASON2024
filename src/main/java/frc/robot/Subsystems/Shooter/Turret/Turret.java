@@ -1,5 +1,8 @@
 package frc.robot.Subsystems.Shooter.Turret;
 
+import javax.print.DocFlavor.STRING;
+import javax.xml.transform.stax.StAXResult;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -10,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Subsystems.Shooter.ShooterConstants.TurretConstants;
+import frc.robot.util.HPPMathLib;
 import frc.robot.util.NoteVisualizer;
 import frc.robot.util.SmartTurret3472;
 
@@ -102,6 +106,7 @@ public class Turret extends SubsystemBase{
     io.setTurret(0.0);
     setpoint = null;
     joystickValue = null;
+    
   }
    public void setBrakeMode(boolean enabled) {
     io.setTurretBrakeMode(enabled);

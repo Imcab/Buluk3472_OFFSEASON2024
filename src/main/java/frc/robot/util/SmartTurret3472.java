@@ -46,8 +46,11 @@ public class SmartTurret3472 {
 
     public static Pose2d ToSpeaker(){
 
-        return new Pose2d((blueSpeaker.getX() - robotPoseSupplier.get().getX()), 
-            (blueSpeaker.getY() - robotPoseSupplier.get().getY()), new Rotation2d());
+        Transform2d aa = new Transform2d(blueSpeaker.getX(), blueSpeaker.getY() , new Rotation2d());
+        return robotPoseSupplier.get().transformBy(aa);
+
+       // return new Pose2d((blueSpeaker.getX() - robotPoseSupplier.get().getX()), 
+           // (blueSpeaker.getY() - robotPoseSupplier.get().getY()), new Rotation2d());
     
     }
 
@@ -66,13 +69,13 @@ public class SmartTurret3472 {
         Double psi = (robotPoseSupplier.get().getRotation().getRadians() + turretyaw.get().getRadians());
 
         //omega esta en radianes, cambiar por constantes
-        Double Omega = Math.acos( (((blueSpeaker.getX()-robotPoseSupplier.get().getX()) * Math.cos(psi)) + 
-            ((blueSpeaker.getY()-robotPoseSupplier.get().getY()) * Math.sin(psi))) / 
-                Math.sqrt(Math.pow((blueSpeaker.getX()-robotPoseSupplier.get().getX()), 2) +
-                Math.pow((blueSpeaker.getY()-robotPoseSupplier.get().getY()), 2) ));
+        Double Omega = Math.acos( (((ToSpeaker().getX()) * Math.cos(ToTurret().getX())) + 
+            ((ToSpeaker().getY()) * Math.sin(ToTurret().getY()))) / 
+                Math.sqrt(Math.pow((ToSpeaker().getX()), 2) +
+                Math.pow((ToSpeaker().getY()), 2) ));
 
 
-        return Omega;
+        return Omega ;
     }
 
 }
