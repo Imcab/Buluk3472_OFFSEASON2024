@@ -21,6 +21,25 @@ public class Intake extends SubsystemBase{
 
         this.io = io;
         setpoint = null;
+
+        switch (Constants.currentMode) {
+
+         case REAL:
+         case REPLAY:
+             FeedBackController = new PIDController(ElevatorConstants.kP, 0, ElevatorConstants.KD);
+             II = new SimpleMotorFeedforward(0, ElevatorConstants.kV);
+             break;
+         case SIM:
+             FeedBackController = new PIDController(ElevatorConstants.kPSIM, 0, ElevatorConstants.KDSIM);
+             II = new SimpleMotorFeedforward(0, ElevatorConstants.kVSim);
+             break;
+      default:
+          FeedBackController = new PIDController(0, 0, 0);
+           II = new SimpleMotorFeedforward(0, 0);
+           break;
+
+        }
+         setBrakeMode(true);
     }
 
     public void periodic(){
