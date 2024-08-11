@@ -15,12 +15,14 @@ public class Intake extends SubsystemBase{
 
     private final IntakeIO io; 
     private final IntakeIOInputAutologged inputs = new IntakeIOInputAutologged(); 
-    private final Double setpoint = null; 
+    private final SimpleMotorFeedforward II;
+    private final PIDController FeedBackControllerI;
+
 
     public Intake(IntakeIO io){
 
-        this.io = io;
-        setpoint = null;
+         this.io = io;
+         setpoint = null;
 
         switch (Constants.currentMode) {
 
