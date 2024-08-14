@@ -20,6 +20,7 @@ public class TurretIOSim implements TurretIO{
 
         inputs.TurretAppliedVolts = TurretAppliedVolts;
         inputs.TurretPosition = new Rotation2d(Turretsim.getAngularPositionRad());
+        inputs.TurretPositionnorot = Turretsim.getAngularPositionRad();
         inputs.TurretVelocityRadPerSec = Turretsim.getAngularVelocityRadPerSec();
         inputs.TurretCurrentAmps = new double[]{Math.abs(Turretsim.getCurrentDrawAmps())};
         

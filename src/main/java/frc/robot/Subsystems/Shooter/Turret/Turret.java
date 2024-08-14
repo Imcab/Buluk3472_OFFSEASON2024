@@ -1,8 +1,5 @@
 package frc.robot.Subsystems.Shooter.Turret;
 
-import javax.print.DocFlavor.STRING;
-import javax.xml.transform.stax.StAXResult;
-
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -54,8 +51,10 @@ public class Turret extends SubsystemBase{
         Logger.processInputs("Shooter/Turret" , inputs);
         Logger.recordOutput("Shooter/Turret/pose3d" , getPose3d());
         Logger.recordOutput("Shooter/Turret/LimelightBased", limelight);
-        Logger.recordOutput("SmartTurret/TurretOmega", SmartTurret3472.getSmartSetpoint());
+        Logger.recordOutput("SmartTurret/TurretOmega", SmartTurret3472.getOmega());
         Logger.recordOutput("SmartTurret/Vectors/TurretVector", SmartTurret3472.ToTurret());
+        Logger.recordOutput("SmartTurret/Vectors/TurretSetpoint", SmartTurret3472.getSmartSetpoint());
+        Logger.recordOutput("SmartTurret/Vectors/TurretValue", SmartTurret3472.getPos());
 
 
 
@@ -75,6 +74,7 @@ public class Turret extends SubsystemBase{
         NoteVisualizer.setturretyawPoseSupplier(this::getYaw);
         //SetupSmartTurret
         SmartTurret3472.setTurretPoseSupplier(this::getYaw);
+        SmartTurret3472.setValue(this::getPosition);
         /////////////////////
 
 
@@ -85,6 +85,9 @@ public class Turret extends SubsystemBase{
    }
    public Rotation2d getYaw(){
       return new Rotation2d(inputs.TurretPosition.getRadians());
+   }
+   public Double getPosition(){
+      return HPPMathLib.coterminal(inputs.TurretPositionnorot);
    }
    public Rotation2d runTurret(double angle){
         setpoint = new Rotation2d(angle);

@@ -1,38 +1,43 @@
 package frc.robot.Subsystems.Intake; 
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.Subsystems.Intake.ConstantsIntake; 
+
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class IntakeIOSparkMax implements IntakeIO{
 
     private final CANSparkMax Intake; 
 
+    private final RelativeEncoder enc_intake;
+
     public IntakeIOSparkMax(){
 
-        Intake = new CANSparkMax(ConstantsIntake.Intakeport, MotorType.kBrushless);
-
-        Intake.setInverted(ConstantsIntake.);
+        Intake = new CANSparkMax(ConstantsIntake.IntakeConstants.Intakeport, MotorType.kBrushless);
 
         Intake.restoreFactoryDefaults();
 
-        Intake.setCANTimeout(0);
+        Intake.setCANTimeout(250);
 
-        Intake.setInverted(ConstantsIntake.IntakeMotorReversed);
-
+        Intake.setInverted(ConstantsIntake.IntakeConstants.IntakeMotorReversed);
+        
         Intake.enableVoltageCompensation(12.0);
+
+        enc_intake = Intake.getEncoder();
+
+        Intake.setCANTimeout(0);
 
         Intake.burnFlash();
 
     }
 
      @Override
-    public void updateInputs(IntkaeIOInputs inputs){
+    public void updateInputs(IntakeIOInputs inputs){
         inputs.IntakeAppliedVolts = Intake.getAppliedOutput() * Intake.getBusVoltage();
-        inputs.IntakeVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(inputs.IntakeVelocityRPM);
+        inputs.IntakeVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(enc_intake.getVelocity());
         inputs.IntakeCurrentAmps = new double[]{Intake.getOutputCurrent()};
     }
 
@@ -44,6 +49,6 @@ public class IntakeIOSparkMax implements IntakeIO{
 
  @Override 
      public void setIntakeBrakeMode(boolean enable){
-        Intake.setIdleMode(enable ? IdleMode.Brake : IdleMode.KCoast);
+        Intake.setIdleMode(enable ? IdleMode.kBrake : IdleMode.kCoast);
      }
 }

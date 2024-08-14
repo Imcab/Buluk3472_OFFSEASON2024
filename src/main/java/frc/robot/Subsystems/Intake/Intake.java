@@ -2,42 +2,40 @@ package frc.robot.Subsystems.Intake;
 
 import org.littletonrobotics.junction.Logger;
 
-//import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Subsystems.Intake.ConstantsIntake.IntakeCosntants;
 
 public class Intake extends SubsystemBase{
 
     private final IntakeIO io; 
-    private final IntakeIOInputAutologged inputs = new IntakeIOInputAutologged(); 
-    private final SimpleMotorFeedforward II;
-    private final PIDController FeedBackControllerI;
+    private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
+    private final SimpleMotorFeedforward FF;
+    private final PIDController FeedBackController;
+    private Double setpoint;
 
 
     public Intake(IntakeIO io){
 
          this.io = io;
-         setpoint = null;
+         this.setpoint = null;
 
         switch (Constants.currentMode) {
 
          case REAL:
          case REPLAY:
-             FeedBackController = new PIDController(ElevatorConstants.kP, 0, ElevatorConstants.KD);
-             II = new SimpleMotorFeedforward(0, ElevatorConstants.kV);
+             FeedBackController = new PIDController(ConstantsIntake.IntakeConstants.kp, 0, 0.0);
+             FF = new SimpleMotorFeedforward(0, ConstantsIntake.IntakeConstants.kv);
              break;
          case SIM:
-             FeedBackController = new PIDController(ElevatorConstants.kPSIM, 0, ElevatorConstants.KDSIM);
-             II = new SimpleMotorFeedforward(0, ElevatorConstants.kVSim);
+             FeedBackController = new PIDController(0, 0, 0);
+             FF = new SimpleMotorFeedforward(0, 0);
              break;
       default:
           FeedBackController = new PIDController(0, 0, 0);
-           II = new SimpleMotorFeedforward(0, 0);
+           FF = new SimpleMotorFeedforward(0, 0);
            break;
 
         }
@@ -47,14 +45,13 @@ public class Intake extends SubsystemBase{
     public void periodic(){
         io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
-        Logger.recordOutput("Intake/pose3d", getPose3d());
+
+        if(setpoint != null){
+            io.setIntake(FF.calculate(Units.rotationsPerMinuteToRadiansPerSecond(setpoint)) + FeedBackController.calculate(inputs.IntakeVelocityRadPerSec, Units.rotationsPerMinuteToRadiansPerSecond(setpoint)));
+        }
+        
     }
     
-
-    public Pose3d getPose3d(){
-        return new Pose3d(0, 0, inputs.ElevatorMeters, new Rotation3d());
-    }
-
     public void stop() {
         io.setIntake(0.0);
         setpoint = null;
@@ -64,4 +61,4 @@ public class Intake extends SubsystemBase{
         io.setIntakeBrakeMode(enabled);
       }
 
-}
+} 

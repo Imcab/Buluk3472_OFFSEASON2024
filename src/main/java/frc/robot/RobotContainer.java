@@ -161,19 +161,19 @@ public class RobotContainer {
     new ComplexIntaking(turret, 0.0, shooterAngle, 35.0));
 
     NamedCommands.registerCommand("Shoot",
-    new ComplexTurret(turret, 110.0, shooterAngle, 32.0, wheels, 5000.0));
+    new ComplexTurret(turret, SmartTurret3472.flip(110.0), shooterAngle, 32.0, wheels, 5000.0));
     
     NamedCommands.registerCommand("ShootFromLine", 
     new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()),  shooterAngle,  32.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("ShootFromFar",
-    new ComplexTurret(turret, 117.0, shooterAngle, 18.0, wheels, 5000.0));
+    new ComplexTurret(turret, SmartTurret3472.flip(117.0), shooterAngle, 18.0, wheels, 5000.0));
 
    
 
     NamedCommands.registerCommand("Amp", null);
 
-    NamedCommands.registerCommand("AutoAlignTurret", new AlignTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint() ), shooterAngle));
+    NamedCommands.registerCommand("AutoAlignTurret", new AlignTurret(turret, -SmartTurret3472.getSmartSetpoint(), shooterAngle));
     //////////////////////// 
 
     configureBindings();

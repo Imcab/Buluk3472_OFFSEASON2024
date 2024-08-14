@@ -6,73 +6,39 @@
       }
     }
   },
-  "NTProvider": {
-    "types": {
-      "/FMSInfo": "FMSInfo"
-    },
-    "windows": {
-      "/FMSInfo": {
-        "window": {
-          "visible": true
-        }
-      }
-    }
-  },
   "NetworkTables": {
-    "Persistent Values": {
-      "open": false
-    },
-    "Retained Values": {
-      "open": false
-    },
     "transitory": {
-      "LiveWindow": {
-        ".status": {
-          "open": true
-        },
-        "open": true
-      },
       "PathPlanner": {
         "double[]##v_/PathPlanner/activePath": {
-          "open": true
+          "open": false
         },
         "double[]##v_/PathPlanner/targetPose": {
-          "open": true
+          "open": false
         },
         "double[]##v_/PathPlanner/vel": {
-          "open": true
+          "open": false
         },
-        "open": true
-      },
-      "Shuffleboard": {
-        ".metadata": {
-          "open": true
-        },
-        ".recording": {
-          "open": true
-        },
-        "open": true
+        "open": false
       }
     }
   },
   "NetworkTables Info": {
     "AdvantageScope@1": {
       "Publishers": {
-        "open": true
+        "open": false
       },
       "Subscribers": {
-        "open": true
+        "open": false
       },
-      "open": true
+      "open": false
     },
     "Server": {
       "Publishers": {
-        "open": true
+        "open": false
       },
       "Subscribers": {
-        "open": true
+        "open": false
       }
-    },
-    "visible": true
+    }
   }
 }

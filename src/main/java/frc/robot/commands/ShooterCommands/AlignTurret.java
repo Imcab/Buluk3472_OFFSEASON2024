@@ -3,6 +3,7 @@ package frc.robot.commands.ShooterCommands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Shooter.Turret.Turret;
@@ -15,7 +16,6 @@ public class AlignTurret extends Command{
     private final Angle shooterangle;
     private final Double setpoint;
     private final DoubleSupplier joystickSupplier;
-    private final Double SMARTsetpoint;
     boolean arroz;
 
 
@@ -27,7 +27,6 @@ public class AlignTurret extends Command{
         this.setpoint = null;
         this.limelightVision = limelightVision;
         this.joystickSupplier = null;
-        this.SMARTsetpoint = null;
         addRequirements(turret,limelightVision);
     }
     //con enncoder
@@ -38,7 +37,6 @@ public class AlignTurret extends Command{
         this.setpoint = setpoint;
         this.limelightVision = null;
         this.joystickSupplier = null;
-        this.SMARTsetpoint = null;
         addRequirements(turret);
     }
     //con joystick
@@ -49,7 +47,6 @@ public class AlignTurret extends Command{
         this.setpoint = null;
         this.limelightVision = null;
         this.joystickSupplier = joystickSupplier;
-        this.SMARTsetpoint = null;
         addRequirements(turret);
     }
     @Override
@@ -97,9 +94,12 @@ public class AlignTurret extends Command{
      @Override
     public boolean isFinished(){
 
-        //System.out.println(arroz);
-        //System.out.print(setpoint);
-        //System.out.print(", ");
+        System.out.println(arroz);
+        if(setpoint != null){
+            System.out.print(Units.radiansToDegrees(setpoint));
+        }
+        
+        System.out.print(", ");
  
         //System.out.println(turret.getTurretPosition());
         if(setpoint != null){
