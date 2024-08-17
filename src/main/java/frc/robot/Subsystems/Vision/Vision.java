@@ -12,6 +12,7 @@ public class Vision extends SubsystemBase{
         this.io = io;
    }
    public void periodic(){
+    
         io.updateInputs(inputs);
         Logger.processInputs("Vision/LimelightVision", inputs);
    }

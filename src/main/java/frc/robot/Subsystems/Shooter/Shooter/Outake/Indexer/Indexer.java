@@ -44,9 +44,13 @@ public class Indexer extends SubsystemBase{
     public void periodic(){
         io.updateInputs(inputs);
         Logger.processInputs("Shooter/Outake/Indexer", inputs);
+        Logger.recordOutput("Shooter/Indexer/SetpointRPM", 0.0);
+        Logger.recordOutput("Shooter/Indexer/SetpointRadPerSec", 0.0);
 
         if (setpoint != null){
             double velocitysetpoint = Units.rotationsPerMinuteToRadiansPerSecond(setpoint);
+            Logger.recordOutput("Shooter/Indexer/SetpointRPM", setpoint);
+            Logger.recordOutput("Shooter/Indexer/SetpointRadPerSec", velocitysetpoint);
             io.setIndexer(FeedForwardController.calculate(velocitysetpoint) + PIDController.calculate(inputs.IndexerVelocityRadPerSec, velocitysetpoint));
         }
     }

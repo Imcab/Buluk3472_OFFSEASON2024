@@ -5,7 +5,6 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Subsystems.Shooter.ShooterConstants.OutakeConstants;
@@ -47,10 +46,13 @@ public class Wheels extends SubsystemBase{
   public void periodic(){
         io.updateInputs(inputs);
         Logger.processInputs("Shooter/Outake/Wheels", inputs);
-        SmartDashboard.putNumber("ShooterRPM", getShooterRPM());
+        Logger.recordOutput("Shooter/Outake/Setpoint", 0.0);
+        Logger.recordOutput("Shooter/Outake/SetpointRadPerSec", 0.0);
 
         if(setpoint != null){
           double velocitysetpoint = Units.rotationsPerMinuteToRadiansPerSecond(setpoint);
+          Logger.recordOutput("Shooter/Outake/SetpointRPM", setpoint);
+          Logger.recordOutput("Shooter/Outake/SetpointRadPerSec", velocitysetpoint);
           io.setWheels(FeedForwardController.calculate(velocitysetpoint) + PIDController.calculate(inputs.WheelsVelocityRadPerSec, velocitysetpoint));
         }
   }

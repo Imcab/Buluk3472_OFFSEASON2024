@@ -54,7 +54,7 @@ public class AlignTurret extends Command{
     @Override
     public void execute(){
 
-        shooterangle.UpdateTurretZ(turret.getTurretPosition());
+        shooterangle.UpdateTurretZ(turret.getYaw());
 
         if (limelightVision != null){
             boolean targetFound = limelightVision.targetFound();
@@ -94,17 +94,17 @@ public class AlignTurret extends Command{
      @Override
     public boolean isFinished(){
 
-        System.out.println(arroz);
+        /*System.out.println(arroz);
         if(setpoint != null){
             System.out.print(Units.radiansToDegrees(setpoint));
         }
         
-        System.out.print(", ");
+        System.out.print(", "); */
  
         //System.out.println(turret.getTurretPosition());
         if(setpoint != null){
           
-            if(turret.getTurretPosition().getRadians() >= new Rotation2d(setpoint).getRadians() -0.008  && turret.getTurretPosition().getRadians() <= new Rotation2d(setpoint).getRadians() + 0.008 ){
+            if(turret.getYaw().getRadians() >= new Rotation2d(setpoint).getRadians() -0.010  && turret.getYaw().getRadians() <= new Rotation2d(setpoint).getRadians() + 0.010 ){
                 arroz = true;
                 return arroz;
             }else{
@@ -113,7 +113,7 @@ public class AlignTurret extends Command{
             }
         }else{
             arroz = false;
-            return arroz;
+            return false;
         }
 
     }

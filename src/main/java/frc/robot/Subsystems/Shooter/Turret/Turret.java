@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Subsystems.Shooter.ShooterConstants.TurretConstants;
@@ -48,20 +49,27 @@ public class Turret extends SubsystemBase{
    
    public void periodic(){
         io.updateInputs(inputs);
+
         Logger.processInputs("Shooter/Turret" , inputs);
         Logger.recordOutput("Shooter/Turret/pose3d" , getPose3d());
         Logger.recordOutput("Shooter/Turret/LimelightBased", limelight);
         Logger.recordOutput("SmartTurret/TurretOmega", SmartTurret3472.getOmega());
         Logger.recordOutput("SmartTurret/Vectors/TurretVector", SmartTurret3472.ToTurret());
-        Logger.recordOutput("SmartTurret/Vectors/TurretSetpoint", SmartTurret3472.getSmartSetpoint());
-        Logger.recordOutput("SmartTurret/Vectors/TurretValue", SmartTurret3472.getPos());
+        Logger.recordOutput("SmartTurret/Vectors/CalculatedSetpoint", SmartTurret3472.getSmartSetpoint());
+        Logger.recordOutput("SmartTurret/Vectors/TurretValue", getYaw());
+        Logger.recordOutput("Shooter/Turret/PIDVALUE", new Rotation2d().getRadians());
+        Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "");
 
-
+        if (setpoint == null) {
+          Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "NO_SETPOINT");
+        }
 
         if (setpoint != null) {
+          Logger.recordOutput("Shooter/Turret/PIDVALUE", setpoint.getRadians());
+          Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "FIND_SETPOINT");
           joystickValue = null;
           if (limelight == false){
-              io.setTurret(PIDController.calculate(inputs.TurretPosition.getRadians(), setpoint.getRadians()));
+              io.setTurret(PIDController.calculate(getYaw().getRadians(), setpoint.getRadians()));
           }/*if(limelight == true){
               io.setTurret(-(PIDController.calculate(setpoint.getRadians(), 0)));
           }*/
@@ -74,20 +82,16 @@ public class Turret extends SubsystemBase{
         NoteVisualizer.setturretyawPoseSupplier(this::getYaw);
         //SetupSmartTurret
         SmartTurret3472.setTurretPoseSupplier(this::getYaw);
-        SmartTurret3472.setValue(this::getPosition);
         /////////////////////
 
 
    }
    public Pose3d getPose3d(){
-      Pose2d aa = new Pose2d(new Translation2d(), inputs.TurretPosition);
-      return new Pose3d(aa);
+      Pose2d turretpose = new Pose2d(new Translation2d(), new Rotation2d(HPPMathLib.coterminalradianes(inputs.TurretPosition.getRadians())));
+      return new Pose3d(turretpose);
    }
    public Rotation2d getYaw(){
-      return new Rotation2d(inputs.TurretPosition.getRadians());
-   }
-   public Double getPosition(){
-      return HPPMathLib.coterminal(inputs.TurretPositionnorot);
+      return new Rotation2d(HPPMathLib.coterminalradianes(inputs.TurretPosition.getRadians()));
    }
    public Rotation2d runTurret(double angle){
         setpoint = new Rotation2d(angle);

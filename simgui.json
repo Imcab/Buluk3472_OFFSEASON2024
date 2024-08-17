@@ -6,6 +6,11 @@
       }
     }
   },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo"
+    }
+  },
   "NetworkTables": {
     "transitory": {
       "PathPlanner": {
@@ -17,8 +22,7 @@
         },
         "double[]##v_/PathPlanner/vel": {
           "open": false
-        },
-        "open": false
+        }
       }
     }
   },
@@ -39,6 +43,7 @@
       "Subscribers": {
         "open": false
       }
-    }
+    },
+    "visible": true
   }
 }

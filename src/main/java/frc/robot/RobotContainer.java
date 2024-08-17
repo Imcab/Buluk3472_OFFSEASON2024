@@ -96,9 +96,6 @@ public class RobotContainer {
 
         wheels = new Wheels(new WheelsIO() {});
 
-        
-
-
         break;
 
       case SIM:
@@ -164,7 +161,7 @@ public class RobotContainer {
     new ComplexTurret(turret, SmartTurret3472.flip(110.0), shooterAngle, 32.0, wheels, 5000.0));
     
     NamedCommands.registerCommand("ShootFromLine", 
-    new ComplexTurret(turret, Units.radiansToDegrees(SmartTurret3472.getSmartSetpoint()),  shooterAngle,  32.0, wheels, 5000.0));
+    new ComplexTurret(turret, SmartTurret3472.getSmartSetpoint(),  shooterAngle,  32.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("ShootFromFar",
     new ComplexTurret(turret, SmartTurret3472.flip(117.0), shooterAngle, 18.0, wheels, 5000.0));
@@ -173,7 +170,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("Amp", null);
 
-    NamedCommands.registerCommand("AutoAlignTurret", new AlignTurret(turret, -SmartTurret3472.getSmartSetpoint(), shooterAngle));
+    NamedCommands.registerCommand("AutoAlignTurret", new AlignTurret(turret, SmartTurret3472.getSmartSetpoint(), shooterAngle));
     //////////////////////// 
 
     configureBindings();
@@ -187,7 +184,7 @@ public class RobotContainer {
 
     //controller2.L1().whileTrue(NamedCommands.getCommand("Amp"));
 
-    controller2.cross().whileTrue(NamedCommands.getCommand("AutoAlignTurret"));
+    controller2.cross().whileTrue(new AlignTurret(turret, SmartTurret3472.getSmartSetpoint(), shooterAngle));
 
   }
 

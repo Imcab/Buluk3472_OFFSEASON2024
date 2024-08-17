@@ -6,7 +6,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Subsystems.Shooter.ShooterConstants.AngleShooterConstants;
@@ -49,12 +48,11 @@ public class Angle extends SubsystemBase{
         Logger.processInputs("Shooter/AngleShooter" , inputs);
         Logger.recordOutput("Shooter/AngleShooter/pose3d" , getPose3d());
         Logger.recordOutput("Shooter/AngleShooter/LimelightBased", limelight);
-
-        SmartDashboard.putNumber("AngleShooter", inputs.ShooterPosition.getDegrees());
-
+        Logger.recordOutput("Shooter/AngleShooter/Setpoint", new Rotation2d().getRadians());
 
         if (setpoint != null) {
           joystickValue = null;
+          Logger.recordOutput("Shooter/AngleShooter/Setpoint", setpoint.getRadians());
           if (limelight == false){
               io.setAngleShooter(PIDController.calculate(inputs.ShooterPosition.getRadians(), setpoint.getRadians()));
           }/*if(limelight == true){
