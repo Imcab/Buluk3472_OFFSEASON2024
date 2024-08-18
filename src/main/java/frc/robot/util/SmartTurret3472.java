@@ -116,7 +116,7 @@ public class SmartTurret3472 {
     }
 
     /**
-    *  Función que regresa la DIFERENCIA entre el ángulo calculado(omega) y la posición actual de la torrera
+    *  Función que regresa la DIFERENCIA entre el ángulo calculado(omega) y la posición actual de la torrera (En radianes)
     */
     public static Double getSmartSetpoint(){
 

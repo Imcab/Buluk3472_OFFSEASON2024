@@ -12,6 +12,7 @@ import frc.robot.commands.ShooterCommands.AlignShooter;
 import frc.robot.commands.ShooterCommands.AlignTurret;
 import frc.robot.commands.ShooterCommands.Shoot;
 import frc.robot.util.NoteVisualizer;
+import frc.robot.util.SmartTurret3472;
 
 public class ComplexTurret extends SequentialCommandGroup{
 

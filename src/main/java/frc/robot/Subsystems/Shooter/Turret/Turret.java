@@ -65,8 +65,7 @@ public class Turret extends SubsystemBase{
         }
 
         if (setpoint != null) {
-          Logger.recordOutput("Shooter/Turret/PIDVALUE", setpoint.getRadians());
-          Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "FIND_SETPOINT");
+         
           joystickValue = null;
           if (limelight == false){
               io.setTurret(PIDController.calculate(getYaw().getRadians(), setpoint.getRadians()));
@@ -87,16 +86,19 @@ public class Turret extends SubsystemBase{
 
    }
    public Pose3d getPose3d(){
-      Pose2d turretpose = new Pose2d(new Translation2d(), new Rotation2d(HPPMathLib.coterminalradianes(inputs.TurretPosition.getRadians())));
+      Pose2d turretpose = new Pose2d(new Translation2d(), new Rotation2d(inputs.TurretPosition.getRadians()));
       return new Pose3d(turretpose);
    }
    public Rotation2d getYaw(){
       return new Rotation2d(HPPMathLib.coterminalradianes(inputs.TurretPosition.getRadians()));
    }
-   public Rotation2d runTurret(double angle){
+   public void runTurret(double angle){
         setpoint = new Rotation2d(angle);
-        return setpoint;
+         io.setTurret(PIDController.calculate(getYaw().getRadians(), setpoint.getRadians()));
+          Logger.recordOutput("Shooter/Turret/PIDVALUE", setpoint.getRadians());
+          Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "FIND_SETPOINT");
    }
+
    public double runWithJoystick(double speed){
       joystickValue = speed;
       return joystickValue;

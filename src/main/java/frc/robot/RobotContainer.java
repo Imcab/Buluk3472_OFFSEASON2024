@@ -8,7 +8,10 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.AngleIOKraken;
@@ -36,7 +39,8 @@ import frc.robot.commands.ElevatorCommands.ElevatorCommand;
 import frc.robot.commands.ShooterCommands.AlignShooter;
 import frc.robot.commands.ShooterCommands.AlignTurret;
 import frc.robot.commands.ShooterCommands.Shoot;
-import frc.robot.util.SmartTurret3472;
+import frc.robot.commands.ShooterCommands.SmartAlignTurret;
+import frc.robot.util.NoteVisualizer;
 import frc.robot.Subsystems.Elevator.Elevator;
 import frc.robot.Subsystems.Elevator.ElevatorIO;
 import frc.robot.Subsystems.Elevator.ElevatorIOSIM;
@@ -64,16 +68,9 @@ public class RobotContainer {
   private final Elevator elevator;
   private final Wheels wheels;
 
-  //public static final TurretModes SETTURRETMODE;
+  SendableChooser<Command> m_chooser = new SendableChooser<>(); //for autonomous
 
-  
-
-  
-  
   public RobotContainer() {
-
-   
-     
 
     switch (Constants.currentMode) {
       case REAL:
@@ -158,20 +155,28 @@ public class RobotContainer {
     new ComplexIntaking(turret, 0.0, shooterAngle, 35.0));
 
     NamedCommands.registerCommand("Shoot",
-    new ComplexTurret(turret, SmartTurret3472.flip(110.0), shooterAngle, 32.0, wheels, 5000.0));
+    new ComplexTurret(turret, 110.0, shooterAngle, 32.0, wheels, 5000.0));
     
     NamedCommands.registerCommand("ShootFromLine", 
-    new ComplexTurret(turret, SmartTurret3472.getSmartSetpoint(),  shooterAngle,  32.0, wheels, 5000.0));
+    new ComplexTurret(turret, 91.0,  shooterAngle,  32.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("ShootFromFar",
-    new ComplexTurret(turret, SmartTurret3472.flip(117.0), shooterAngle, 18.0, wheels, 5000.0));
+    new ComplexTurret(turret, 117.0, shooterAngle, 18.0, wheels, 5000.0));
 
-   
+    NamedCommands.registerCommand("Oox2pzShoot",
+    new ComplexTurret(turret, 120.0, shooterAngle, 32.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("Amp", null);
 
-    NamedCommands.registerCommand("AutoAlignTurret", new AlignTurret(turret, SmartTurret3472.getSmartSetpoint(), shooterAngle));
+    NamedCommands.registerCommand("AutoAlignTurret", new SmartAlignTurret(turret, shooterAngle));
+
+    NamedCommands.registerCommand("SmartShoot", new SequentialCommandGroup(new SmartAlignTurret(turret, shooterAngle), new AlignShooter(shooterAngle, Units.degreesToRadians(32.0))).andThen( new Shoot(wheels, 5000.0).andThen(NoteVisualizer.shoot())));
     //////////////////////// 
+
+    m_chooser.addOption("6 Notes Auto (Wak)", new PathPlannerAuto("Wak"));
+    m_chooser.addOption("3 Center Notes Auto (Oox)", new PathPlannerAuto("Oox"));
+
+    SmartDashboard.putData(m_chooser);
 
     configureBindings();
   }
@@ -184,11 +189,11 @@ public class RobotContainer {
 
     //controller2.L1().whileTrue(NamedCommands.getCommand("Amp"));
 
-    controller2.cross().whileTrue(new AlignTurret(turret, SmartTurret3472.getSmartSetpoint(), shooterAngle));
+    controller2.cross().whileTrue(NamedCommands.getCommand("AutoAlignTurret"));
 
   }
 
   public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Wak");
+    return m_chooser.getSelected();
   }
 }

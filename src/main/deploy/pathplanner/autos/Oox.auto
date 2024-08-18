@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7401886415755699,
+      "y": 6.686887667641241
+    },
+    "rotation": -118.44292862436333
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Ooxp1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Ooxp2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SmartShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Ooxp3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Ooxp4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SmartShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

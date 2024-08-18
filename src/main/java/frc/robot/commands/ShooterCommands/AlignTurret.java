@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Shooter.Turret.Turret;
 import frc.robot.Subsystems.Vision.Vision;
+import frc.robot.util.SmartTurret3472;
 
 public class AlignTurret extends Command{
 
@@ -54,7 +55,7 @@ public class AlignTurret extends Command{
     @Override
     public void execute(){
 
-        shooterangle.UpdateTurretZ(turret.getYaw());
+        shooterangle.UpdateTurretZ(turret.getTurretPosition());
 
         if (limelightVision != null){
             boolean targetFound = limelightVision.targetFound();
@@ -72,7 +73,7 @@ public class AlignTurret extends Command{
         if(setpoint != null){
 
             turret.VisionStatus(false);
-            turret.runTurret(setpoint);
+            turret.runTurret(SmartTurret3472.flip(setpoint));
             
         }
 

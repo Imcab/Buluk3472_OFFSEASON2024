@@ -3,6 +3,7 @@
   "robotLength": 0.81,
   "holonomicMode": true,
   "pathFolders": [
+    "OoxPaths",
     "WakPaths"
   ],
   "autoFolders": [],

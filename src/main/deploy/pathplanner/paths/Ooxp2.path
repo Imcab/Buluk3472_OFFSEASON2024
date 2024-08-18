@@ -1,0 +1,83 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.8715608929078047,
+        "y": 6.9679477447399965
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.9246112938462594,
+        "y": 6.667083970374308
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.8715608929078047,
+        "y": 5.550936522700434
+      },
+      "prevControl": {
+        "x": 2.8481392198162414,
+        "y": 5.831996599799192
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "Shoot&Intake",
+      "waypointRelativePos": 0.15,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "sequential",
+              "data": {
+                "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "Oox2pzShoot"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "Intaking"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.79,
+    "maxAcceleration": 1.2,
+    "maxAngularVelocity": 617.72,
+    "maxAngularAcceleration": 700.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 82.87498365109838,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "OoxPaths",
+  "previewStartingState": {
+    "rotation": 90.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}
