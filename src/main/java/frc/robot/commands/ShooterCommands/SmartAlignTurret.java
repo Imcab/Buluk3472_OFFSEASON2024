@@ -26,7 +26,7 @@ public class SmartAlignTurret extends Command{
 
         shooterangle.UpdateTurretZ(turret.getTurretPosition());
 
-        turret.runTurret(SmartTurret3472.getSmartSetpoint());
+        turret.runSmart();
     }
     
     @Override
@@ -37,14 +37,24 @@ public class SmartAlignTurret extends Command{
      @Override
     public boolean isFinished(){
 
-            if(turret.getYaw().getRadians() >= new Rotation2d(SmartTurret3472.getSmartSetpoint()).getRadians() -0.010  && turret.getYaw().getRadians() <= new Rotation2d(SmartTurret3472.getSmartSetpoint()).getRadians() + 0.010 ){
+            /*if(turret.getYaw().getRadians() >= new Rotation2d(SmartTurret3472.getSmartSetpoint()).getRadians() -0.010  && turret.getYaw().getRadians() <= new Rotation2d(SmartTurret3472.getSmartSetpoint()).getRadians() + 0.010 ){
                 arroz = true;
                 return arroz;
             }else{
                 arroz = false;
                 return arroz;
-            } 
+            } */
            
+            if(SmartTurret3472.getOmega() >= -0.010  && SmartTurret3472.getOmega() <=  0.010 ){
+                arroz = true;
+                System.out.println("Smart");
+                return arroz;
+            }else{
+                arroz = false;
+                System.out.println("No smart");
+                return arroz;
+            }
+
         } 
         
 

@@ -9,6 +9,7 @@ import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Shooter.Turret.Turret;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.util.SmartTurret3472;
+import frc.robot.util.HPPMathLib;
 
 public class AlignTurret extends Command{
 
@@ -54,6 +55,11 @@ public class AlignTurret extends Command{
     public void initialize(){}
     @Override
     public void execute(){
+        /*System.out.println(setpoint * 180 / 3.14159265);
+        System.out.print("  ,  ");
+        System.out.print(turret.getYaw().getDegrees());
+        System.out.print("  ,  ");*/
+
 
         shooterangle.UpdateTurretZ(turret.getTurretPosition());
 
@@ -95,18 +101,14 @@ public class AlignTurret extends Command{
      @Override
     public boolean isFinished(){
 
-        /*System.out.println(arroz);
-        if(setpoint != null){
-            System.out.print(Units.radiansToDegrees(setpoint));
-        }
         
-        System.out.print(", "); */
- 
+
         //System.out.println(turret.getTurretPosition());
         if(setpoint != null){
           
-            if(turret.getYaw().getRadians() >= new Rotation2d(setpoint).getRadians() -0.010  && turret.getYaw().getRadians() <= new Rotation2d(setpoint).getRadians() + 0.010 ){
+            if((turret.getYaw().getRadians() -  HPPMathLib.coterminalradianes(new Rotation2d(setpoint).getRadians()) >= - 0.010)  &&  (turret.getYaw().getRadians() -  HPPMathLib.coterminalradianes(new Rotation2d(setpoint).getRadians())<=  0.010)){
                 arroz = true;
+                System.out.println("Tonoto");
                 return arroz;
             }else{
                 arroz = false;
@@ -114,6 +116,7 @@ public class AlignTurret extends Command{
             }
         }else{
             arroz = false;
+            System.out.println("Adios tonotos");
             return false;
         }
 

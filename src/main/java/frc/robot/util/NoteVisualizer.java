@@ -18,15 +18,24 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import frc.robot.Constants.FieldConstants;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
+
 import org.littletonrobotics.junction.Logger;
 
 public class NoteVisualizer {
@@ -36,6 +45,7 @@ public class NoteVisualizer {
   private static Supplier<Pose2d> robotPoseSupplier = () -> new Pose2d();
   private static Supplier<Rotation2d> turretyaw = ()-> new Rotation2d();
   private static Supplier<Rotation2d> shooterpitch = ()-> new Rotation2d();
+  private static final List<Translation2d> autoNotes = new ArrayList<>();
 
   public static void setRobotPoseSupplier(Supplier<Pose2d> supplier) {
     robotPoseSupplier = supplier;
@@ -53,6 +63,40 @@ public class NoteVisualizer {
       new Rotation3d(0.0, -shooterpitch.get().getRadians(), turretyaw.get().getRadians()));
 
       return new Pose3d(robotPoseSupplier.get()).transformBy(ShooterTransform);
+  }
+
+  public static void showAutoNotes() {
+    if (autoNotes.isEmpty()) {
+      Logger.recordOutput("NoteVisualizer/StagedNotes", new Pose3d[] {});
+    }
+    // Show auto notes
+    Stream<Translation2d> presentNotes = autoNotes.stream().filter(Objects::nonNull);
+    Logger.recordOutput(
+        "NoteVisualizer/StagedNotes",
+        presentNotes
+            .map(
+                translation ->
+                    new Pose3d(
+                        translation.getX(),
+                        translation.getY(),
+                        Units.inchesToMeters(1.0),
+                        new Rotation3d()))
+            .toArray(Pose3d[]::new));
+  }
+
+  public static void clearAutoNotes() {
+    autoNotes.clear();
+  }
+
+  public static void resetAutoNotes() {
+    clearAutoNotes();
+    for (int i = FieldConstants.StagingLocations.spikeTranslations.length - 1; i >= 0; i--) {
+      autoNotes.add(AllianceFlipUtil.apply(FieldConstants.StagingLocations.spikeTranslations[i]));
+    }
+    for (int i = FieldConstants.StagingLocations.centerlineTranslations.length - 1; i >= 0; i--) {
+      autoNotes.add(
+          AllianceFlipUtil.apply(FieldConstants.StagingLocations.centerlineTranslations[i]));
+    }
   }
 
 

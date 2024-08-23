@@ -161,7 +161,10 @@ public class RobotContainer {
     new ComplexTurret(turret, 91.0,  shooterAngle,  32.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("ShootFromFar",
-    new ComplexTurret(turret, 117.0, shooterAngle, 18.0, wheels, 5000.0));
+    new ComplexTurret(turret, 110.0, shooterAngle, 18.0, wheels, 5000.0));
+
+     NamedCommands.registerCommand("ShootFromFar90",
+    new ComplexTurret(turret, 114.0, shooterAngle, 18.0, wheels, 5000.0));
 
     NamedCommands.registerCommand("Oox2pzShoot",
     new ComplexTurret(turret, 120.0, shooterAngle, 32.0, wheels, 5000.0));
@@ -175,6 +178,7 @@ public class RobotContainer {
 
     m_chooser.addOption("6 Notes Auto (Wak)", new PathPlannerAuto("Wak"));
     m_chooser.addOption("3 Center Notes Auto (Oox)", new PathPlannerAuto("Oox"));
+    m_chooser.addOption("SECRETT", new PathPlannerAuto("SECRETTT"));
 
     SmartDashboard.putData(m_chooser);
 
@@ -190,6 +194,8 @@ public class RobotContainer {
     //controller2.L1().whileTrue(NamedCommands.getCommand("Amp"));
 
     controller2.cross().whileTrue(NamedCommands.getCommand("AutoAlignTurret"));
+    controller2.triangle().whileTrue(NamedCommands.getCommand("ShootFromSpeaker"));
+    controller2.circle().whileTrue(new AlignTurret(turret, -15.0, shooterAngle));
 
   }
 

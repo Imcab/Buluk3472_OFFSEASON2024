@@ -93,10 +93,13 @@ public class Turret extends SubsystemBase{
       return new Rotation2d(HPPMathLib.coterminalradianes(inputs.TurretPosition.getRadians()));
    }
    public void runTurret(double angle){
-        setpoint = new Rotation2d(angle);
-         io.setTurret(PIDController.calculate(getYaw().getRadians(), setpoint.getRadians()));
-          Logger.recordOutput("Shooter/Turret/PIDVALUE", setpoint.getRadians());
-          Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "FIND_SETPOINT");
+      setpoint = new Rotation2d(angle);
+      io.setTurret(PIDController.calculate(getYaw().getRadians(), setpoint.getRadians()));
+      Logger.recordOutput("Shooter/Turret/PIDVALUE", setpoint.getRadians());
+      Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "FIND_SETPOINT");
+   }
+   public void runSmart(){
+      io.setTurret(PIDController.calculate(SmartTurret3472.getOmega(), 0));
    }
 
    public double runWithJoystick(double speed){

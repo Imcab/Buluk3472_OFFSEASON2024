@@ -14,6 +14,9 @@
   },
   "NetworkTables": {
     "transitory": {
+      "LiveWindow": {
+        "open": true
+      },
       "PathPlanner": {
         "double[]##v_/PathPlanner/activePath": {
           "open": false

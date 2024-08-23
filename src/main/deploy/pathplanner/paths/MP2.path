@@ -1,0 +1,100 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.7722488886148478,
+        "y": 6.979658581285779
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.7580443623291195,
+        "y": 4.477068528235351
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.7722488886148478,
+        "y": 4.467699858998725
+      },
+      "prevControl": {
+        "x": 2.772097366184057,
+        "y": 5.21250906331043
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "New Constraints Zone",
+      "minWaypointRelativePos": 0.05,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 5.79,
+        "maxAcceleration": 1.55,
+        "maxAngularVelocity": 617.72,
+        "maxAngularAcceleration": 790.0
+      }
+    }
+  ],
+  "eventMarkers": [
+    {
+      "name": "Intaking",
+      "waypointRelativePos": 0.05,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Intaking"
+              }
+            },
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 0.17
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "SmartShoot"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intaking"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.79,
+    "maxAcceleration": 5.79,
+    "maxAngularVelocity": 617.72,
+    "maxAngularAcceleration": 790.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.75384833307079,
+    "rotateFast": true
+  },
+  "reversed": false,
+  "folder": "MubiPaths",
+  "previewStartingState": {
+    "rotation": 134.52152968416115,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

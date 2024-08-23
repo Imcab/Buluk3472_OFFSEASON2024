@@ -73,6 +73,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    
   }
 
   @Override
@@ -91,10 +92,15 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
+    NoteVisualizer.resetAutoNotes();
+
+    
   }
 
   @Override
   public void autonomousPeriodic() {
+    NoteVisualizer.showAutoNotes();
   }
 
   @Override
@@ -105,10 +111,15 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    NoteVisualizer.clearAutoNotes();
+    NoteVisualizer.showAutoNotes();
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    
+  }
 
   @Override
   public void teleopExit() {}

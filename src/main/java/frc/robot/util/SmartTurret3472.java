@@ -13,6 +13,7 @@ DOS VECTORES Y MEDIANTE EL PRODUCTO PUNTO SACAR EL ÁNGULO ENTRE ESTOS.
 package frc.robot.util;
 
 import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,6 +21,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.util.HPPMathLib;
 
 public class SmartTurret3472 {
 
@@ -39,7 +41,7 @@ public class SmartTurret3472 {
         boolean Redcolor  = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(Alliance.Red);
 
         if (Redcolor == true){
-            return -setpoint;
+            return HPPMathLib.coterminalradianes(-setpoint);
         }else {
             return setpoint;
         }
@@ -67,7 +69,7 @@ public class SmartTurret3472 {
 
         boolean Redcolor  = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(Alliance.Red);
         
-        Transform2d ToSpeakerPose = new Transform2d(Redcolor ? redSpeaker.getX() : blueSpeaker.getX(), Redcolor ? redSpeaker.getY() : blueSpeaker.getY() , new Rotation2d());
+        Transform2d ToSpeakerPose = new Transform2d((Redcolor ? redSpeaker.getX() : blueSpeaker.getX()), (Redcolor ? redSpeaker.getY() : blueSpeaker.getY()) , new Rotation2d());
 
         return robotPoseSupplier.get().transformBy(ToSpeakerPose);
 
@@ -93,10 +95,10 @@ public class SmartTurret3472 {
 
         boolean Redcolor  = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(Alliance.Red);
 
-        Double  SpeakerX = Redcolor ? redSpeaker.getX() : blueSpeaker.getX() - robotPoseSupplier.get().getX();
-        Double  SpeakerY = Redcolor ? redSpeaker.getY() : blueSpeaker.getY() - robotPoseSupplier.get().getY();
+        Double  SpeakerX = (Redcolor ? redSpeaker.getX() : blueSpeaker.getX()) - robotPoseSupplier.get().getX();
+        Double  SpeakerY = (Redcolor ? redSpeaker.getY() : blueSpeaker.getY()) - robotPoseSupplier.get().getY();
         
-        Double psi = robotPoseSupplier.get().getRotation().getRadians() + turretyaw.get().getRadians();
+        Double psi = HPPMathLib.coterminalradianes(robotPoseSupplier.get().getRotation().getRadians() + turretyaw.get().getRadians());
 
         //System.out.println(psi);
 
@@ -106,13 +108,16 @@ public class SmartTurret3472 {
 
         //System.out.println(turretyaw2);
         //omega esta en radianes, cambiar por constantes
-        Double Omega = Math.acos( ((SpeakerX * Math.cos(psi)) + 
+        /*Double Omega = Math.acos( ((SpeakerX * Math.cos(psi)) + 
             (SpeakerY * Math.sin(psi))) / 
                 Math.sqrt(((SpeakerX * SpeakerX) +
-                (SpeakerY * SpeakerY))));
+                (SpeakerY * SpeakerY))));*/
+        Double S_angle = HPPMathLib.coterminalradianes(Math.atan2(SpeakerY, SpeakerX));
+        
+        Double Omega = S_angle - psi;
+        //System.out.println(Omega);
 
-
-        return Omega;
+        return -Omega;
     }
 
     /**
@@ -120,8 +125,10 @@ public class SmartTurret3472 {
     */
     public static Double getSmartSetpoint(){
 
+        
         Rotation2d CalculatedSetpoint = new Rotation2d((turretyaw.get().getRadians())).minus(new Rotation2d(getOmega()));
-        System.out.println(CalculatedSetpoint.getDegrees());
+
+        //System.out.println(CalculatedSetpoint.getDegrees());
         return CalculatedSetpoint.getRadians();
         
     }

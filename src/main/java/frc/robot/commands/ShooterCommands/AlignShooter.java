@@ -83,9 +83,9 @@ public class AlignShooter extends Command{
     
     @Override
     public void end(boolean interrupted) {
-        if(DriverStation.isAutonomousEnabled() == false){
+
             shooterangle.stop();
-        }
+        
         
     }
     
@@ -102,14 +102,18 @@ public class AlignShooter extends Command{
         if(setpoint != null){
             if(shooterangle.getShooterPosition().getRadians() >= new Rotation2d(setpoint).getRadians() - 0.087 && shooterangle.getShooterPosition().getRadians() <= new Rotation2d(setpoint).getRadians() + 0.087){
                 atun = true;
+                //System.out.println("Osito bimbo");
                 return atun;
+                
             }else{
                 atun = false;
                 return atun;
             }
         }else{
             atun = false;
+            //System.out.println("NO OSITOS BIMBO");
             return atun;
+            
         }
     }
 
