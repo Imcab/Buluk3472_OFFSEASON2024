@@ -5,9 +5,11 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Subsystems.Shooter.ShooterConstants.OutakeConstants;
+import frc.robot.util.Field3472;
 
 public class Wheels extends SubsystemBase{
     private final WheelsIO io;
@@ -49,12 +51,20 @@ public class Wheels extends SubsystemBase{
         Logger.recordOutput("Shooter/Outake/Setpoint", 0.0);
         Logger.recordOutput("Shooter/Outake/SetpointRadPerSec", 0.0);
 
+        Logger.recordOutput("Field3472/Zone/Current", Field3472.getZone());
+        Logger.recordOutput("Field3472/Zone/Priority", Field3472.getPriority());
+        Logger.recordOutput("Field3472/RobotX", Field3472.getRobotPoseX());
+
+        SmartDashboard.putString("PriorityFieldZone", Field3472.getPriority());
+
         if(setpoint != null){
           double velocitysetpoint = Units.rotationsPerMinuteToRadiansPerSecond(setpoint);
           Logger.recordOutput("Shooter/Outake/SetpointRPM", setpoint);
           Logger.recordOutput("Shooter/Outake/SetpointRadPerSec", velocitysetpoint);
           io.setWheels(FeedForwardController.calculate(velocitysetpoint) + PIDController.calculate(inputs.WheelsVelocityRadPerSec, velocitysetpoint));
         }
+
+        
   }
 
   public double setGoalRPM(double RPM){

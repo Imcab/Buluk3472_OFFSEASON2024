@@ -22,6 +22,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.Field3472;
 import frc.robot.util.LocalADStarAK;
 import frc.robot.util.NoteVisualizer;
 import frc.robot.util.SmartTurret3472;
@@ -92,8 +93,10 @@ public class Drive extends SubsystemBase{
         //SetUpSmartTurret
         SmartTurret3472.setRobotPoseSupplier(this::getPose);
         /////////////////////
+        //SetUpField3472
+        Field3472.setRobotX(this::getX);
 
-        Logger.recordOutput("SmartTurret/Vectors/SpeakerVector", SmartTurret3472.ToSpeaker());
+        
         
 
     }
@@ -204,6 +207,10 @@ public class Drive extends SubsystemBase{
   @AutoLogOutput(key = "Odometry/Robot")
   public Pose2d getPose() {
     return poseEstimator.getEstimatedPosition();
+  }
+
+  public Double getX() {
+    return getPose().getX();
   }
 
   public Rotation2d getRotation() {

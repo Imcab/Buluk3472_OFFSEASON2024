@@ -3,17 +3,27 @@
 //
 /*
  ===============================================
-PROYECTO DEL ÁREA DE SOFTWARE DE BULUK#3472. SE DESARROLLA UNA TORRETA INTELIGENTE
-A BASE DE DATOS CONOCIDOS TALES COMO LA ODOMETRÍA, LA POSE DEL SPEAKER, ASÍ TRAZANDO
-DOS VECTORES Y MEDIANTE EL PRODUCTO PUNTO SACAR EL ÁNGULO ENTRE ESTOS.
-(ESTE CÓDIGO ES SÓLO PARA DARSE UNA IDEA Y DESARROLLAR MEJORES COMPETENCIAS)
+PROYECTO DEL ÁREA DE SOFTWARE DE BULUK#3472.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@///////////////@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@///////////////@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@////@@@@@@/////@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@////@@///@/////@@@@@@@@@@@@@@@@
+@@@@@@@@/////@@@@/////////@/////@@@@@@@@@@@@@@@@
+@@@@@@@@/////@@@@/////////@/////@@@@@@@@@@@@@@@@
+@@@@@@@@////////@@@@@@@@@@@/////@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@///////////////////@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@///////////////////@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
  ===============================================
 */
 
 package frc.robot.util;
 
 import java.util.function.Supplier;
-import java.util.logging.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,7 +31,6 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import frc.robot.util.HPPMathLib;
 
 public class SmartTurret3472 {
 
@@ -32,9 +41,9 @@ public class SmartTurret3472 {
 
 
     /**
-    * Cambia el signo del ángulo dependiendo de la alianza
+    * <p>Cambia el signo del setpoint de la torreta dependiendo de la alianza
     *
-    * @param setpoint El setpoint a cambiar el signo
+    * @return El setpoint corregido
     */
     public static double flip (double setpoint){
         
@@ -49,7 +58,7 @@ public class SmartTurret3472 {
 
     /**
     * Actualiza la pose del robot a la libreria
-    * @param supplier La pose del robot en supplier
+    * @param supplier La pose2d del robot
     */
     public static void setRobotPoseSupplier(Supplier<Pose2d> supplier) {
     robotPoseSupplier = supplier;
@@ -57,80 +66,65 @@ public class SmartTurret3472 {
 
     /**
     * Actualiza la pose de la torreta a la libreria
-    * @param supplier La pose de la torreta en supplier
+    * @param supplier La rotacion2d de la torreta
     */
     public static void setTurretPoseSupplier(Supplier<Rotation2d> supplier) {
         turretyaw = supplier;
     }
+
     /**
-    *  Función que traza el vector de la relación entre el centro del robot-speaker
+    * Obtiene la pose del robot y la corrige dependiendo la alianza
+    * @return Pose corregida de la torreta
+    */
+    public static Pose2d getRobotPose(){
+        return AllianceFlipUtil.apply(robotPoseSupplier.get());
+    }
+    /**
+    *  Función que traza el vector de la relación entre el centro del robot al speaker
+    * @return el vector en forma de Pose2d (componentes X y Y)
     */
     public static Pose2d ToSpeaker(){
 
         boolean Redcolor  = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(Alliance.Red);
         
-        Transform2d ToSpeakerPose = new Transform2d((Redcolor ? redSpeaker.getX() : blueSpeaker.getX()), (Redcolor ? redSpeaker.getY() : blueSpeaker.getY()) , new Rotation2d());
+        Pose2d ToSpeakerPose = new Pose2d((Redcolor ? redSpeaker.getX() : blueSpeaker.getX()), (Redcolor ? redSpeaker.getY() : blueSpeaker.getY()) , new Rotation2d());
 
-        return robotPoseSupplier.get().transformBy(ToSpeakerPose);
+        return ToSpeakerPose;
 
     }
 
     /**
     *  Función que traza el vector desde el centro de la torreta
+    * @return El vector en forma de Pose2d (componentes X y Y)
     */
     public static Pose2d ToTurret(){
+
         Double psi = HPPMathLib.coterminalradianes(robotPoseSupplier.get().getRotation().getRadians() + turretyaw.get().getRadians());
 
-        Pose2d superPopcorn = new Pose2d(Math.cos(psi), Math.sin(psi), new Rotation2d());
+        Pose2d ToTurret = new Pose2d(Math.cos(psi), Math.sin(psi), new Rotation2d());
 
-        return superPopcorn.transformBy(new Transform2d(robotPoseSupplier.get().getX(), robotPoseSupplier.get().getY(), turretyaw.get().minus(robotPoseSupplier.get().getRotation())));
+        return ToTurret.transformBy(new Transform2d(robotPoseSupplier.get().getX(), robotPoseSupplier.get().getY(), turretyaw.get().minus(robotPoseSupplier.get().getRotation())));
 
-            
     }
 
     /**
-    *  Función que obtiene el ÁNGULO ENTRE LOS VECTORES mediante el producto punto
+    *  Función que obtiene los radianes que la torreta tiene que girar para alinearse respecto al centro del speaker
+    * @return Omega: angulo deseado a girar.
     */
     public static Double getOmega(){
 
         boolean Redcolor  = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(Alliance.Red);
 
-        Double  SpeakerX = (Redcolor ? redSpeaker.getX() : blueSpeaker.getX()) - robotPoseSupplier.get().getX();
-        Double  SpeakerY = (Redcolor ? redSpeaker.getY() : blueSpeaker.getY()) - robotPoseSupplier.get().getY();
+        Double  SpeakerX = (Redcolor ? redSpeaker.getX() : blueSpeaker.getX()) - getRobotPose().getX();
+        Double  SpeakerY = (Redcolor ? redSpeaker.getY() : blueSpeaker.getY()) - getRobotPose().getY();
         
-        Double psi = HPPMathLib.coterminalradianes(robotPoseSupplier.get().getRotation().getRadians() + turretyaw.get().getRadians());
+        Double psi = HPPMathLib.coterminalradianes(getRobotPose().getRotation().getRadians() + turretyaw.get().getRadians());
 
-        //System.out.println(psi);
-
-        //Double turretyaw2 = HPPMathLib.coterminalradianes(turretyaw.get().getRadians());
-
-
-
-        //System.out.println(turretyaw2);
-        //omega esta en radianes, cambiar por constantes
-        /*Double Omega = Math.acos( ((SpeakerX * Math.cos(psi)) + 
-            (SpeakerY * Math.sin(psi))) / 
-                Math.sqrt(((SpeakerX * SpeakerX) +
-                (SpeakerY * SpeakerY))));*/
         Double S_angle = HPPMathLib.coterminalradianes(Math.atan2(SpeakerY, SpeakerX));
         
         Double Omega = S_angle - psi;
-        //System.out.println(Omega);
 
         return -Omega;
-    }
-
-    /**
-    *  Función que regresa la DIFERENCIA entre el ángulo calculado(omega) y la posición actual de la torrera (En radianes)
-    */
-    public static Double getSmartSetpoint(){
-
-        
-        Rotation2d CalculatedSetpoint = new Rotation2d((turretyaw.get().getRadians())).minus(new Rotation2d(getOmega()));
-
-        //System.out.println(CalculatedSetpoint.getDegrees());
-        return CalculatedSetpoint.getRadians();
-        
     }
   
 }

@@ -55,10 +55,10 @@ public class Turret extends SubsystemBase{
         Logger.recordOutput("Shooter/Turret/LimelightBased", limelight);
         Logger.recordOutput("SmartTurret/TurretOmega", SmartTurret3472.getOmega());
         Logger.recordOutput("SmartTurret/Vectors/TurretVector", SmartTurret3472.ToTurret());
-        Logger.recordOutput("SmartTurret/Vectors/CalculatedSetpoint", SmartTurret3472.getSmartSetpoint());
         Logger.recordOutput("SmartTurret/Vectors/TurretValue", getYaw());
         Logger.recordOutput("Shooter/Turret/PIDVALUE", new Rotation2d().getRadians());
         Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "");
+        Logger.recordOutput("SmartTurret/Vectors/SpeakerVector", SmartTurret3472.ToSpeaker());
 
         if (setpoint == null) {
           Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "NO_SETPOINT");
