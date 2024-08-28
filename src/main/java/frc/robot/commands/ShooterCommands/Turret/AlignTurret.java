@@ -1,43 +1,29 @@
-package frc.robot.commands.ShooterCommands;
+package frc.robot.commands.ShooterCommands.Turret;
 
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Shooter.Turret.Turret;
-import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.util.SmartTurret3472;
 import frc.robot.util.HPPMathLib;
 
 public class AlignTurret extends Command{
 
     private final Turret turret;
-    private final Vision limelightVision;
     private final Angle shooterangle;
     private final Double setpoint;
     private final DoubleSupplier joystickSupplier;
-    boolean arroz;
+    boolean isFinished;
 
 
-    //con limelight
-    public AlignTurret(Turret turret, Vision limelightVision, Angle shooterangle){
-
-        this.turret = turret;
-        this.shooterangle = shooterangle;
-        this.setpoint = null;
-        this.limelightVision = limelightVision;
-        this.joystickSupplier = null;
-        addRequirements(turret,limelightVision);
-    }
     //con enncoder
     public AlignTurret(Turret turret, Double setpoint, Angle shooterangle){
 
         this.turret = turret;
         this.shooterangle = shooterangle;
         this.setpoint = setpoint;
-        this.limelightVision = null;
         this.joystickSupplier = null;
         addRequirements(turret);
     }
@@ -47,7 +33,6 @@ public class AlignTurret extends Command{
         this.turret = turret;
         this.shooterangle = shooterangle;
         this.setpoint = null;
-        this.limelightVision = null;
         this.joystickSupplier = joystickSupplier;
         addRequirements(turret);
     }
@@ -55,32 +40,12 @@ public class AlignTurret extends Command{
     public void initialize(){}
     @Override
     public void execute(){
-        /*System.out.println(setpoint * 180 / 3.14159265);
-        System.out.print("  ,  ");
-        System.out.print(turret.getYaw().getDegrees());
-        System.out.print("  ,  ");*/
-
 
         shooterangle.UpdateTurretZ(turret.getTurretPosition());
 
-        if (limelightVision != null){
-            boolean targetFound = limelightVision.targetFound();
-            turret.VisionStatus(true);
-            System.out.println(targetFound);
-            
-            if(targetFound == true){
-                turret.runTurret(limelightVision.getY());
-
-            }else{
-                turret.stop();
-            }
-        }
-
         if(setpoint != null){
 
-            turret.VisionStatus(false);
-            turret.runTurret(SmartTurret3472.flip(setpoint));
-            
+            turret.runTurret(SmartTurret3472.flip(setpoint));            
         }
 
         if(joystickSupplier != null){
@@ -101,27 +66,22 @@ public class AlignTurret extends Command{
      @Override
     public boolean isFinished(){
 
-        
-
-        //System.out.println(turret.getTurretPosition());
         if(setpoint != null){
           
             if((turret.getYaw().getRadians() -  HPPMathLib.coterminalradianes(new Rotation2d(setpoint).getRadians()) >= - 0.010)  &&  (turret.getYaw().getRadians() -  HPPMathLib.coterminalradianes(new Rotation2d(setpoint).getRadians())<=  0.010)){
-                arroz = true;
+                isFinished = true;
                 System.out.println("Tonoto");
-                return arroz;
+                return isFinished;
             }else{
-                arroz = false;
-                return arroz;
+                isFinished = false;
+                return isFinished;
             }
         }else{
-            arroz = false;
+            isFinished = false;
             System.out.println("Adios tonotos");
             return false;
         }
 
     }
-
     
-
 }

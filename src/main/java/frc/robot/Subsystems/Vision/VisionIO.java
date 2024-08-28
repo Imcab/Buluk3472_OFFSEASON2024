@@ -6,6 +6,7 @@ public interface VisionIO {
     @AutoLog
     public static class VisionIOInputs{
         public double getY = 0.0;
+        public double getX = 0.0;
         public boolean targetFound = false;
     }
 

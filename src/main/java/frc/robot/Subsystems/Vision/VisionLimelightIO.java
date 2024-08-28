@@ -8,8 +8,9 @@ public class VisionLimelightIO implements VisionIO{
 
     @Override
     public void updateInputs(VisionIOInputs inputs){
-        inputs.getY = LimelightHelpers.getTY("");
         
+        inputs.getY = LimelightHelpers.getTY("");
+        inputs.getX = LimelightHelpers.getTX("");
         inputs.targetFound = LimelightHelpers.getTV("");
         
     }

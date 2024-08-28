@@ -20,7 +20,6 @@ public class Turret extends SubsystemBase{
    private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
    private final PIDController PIDController;
    private Rotation2d setpoint = null;
-   private boolean limelight;
    private Double joystickValue = null;
 
 
@@ -52,7 +51,6 @@ public class Turret extends SubsystemBase{
 
         Logger.processInputs("Shooter/Turret" , inputs);
         Logger.recordOutput("Shooter/Turret/pose3d" , getPose3d());
-        Logger.recordOutput("Shooter/Turret/LimelightBased", limelight);
         Logger.recordOutput("SmartTurret/TurretOmega", SmartTurret3472.getOmega());
         Logger.recordOutput("SmartTurret/Vectors/TurretVector", SmartTurret3472.ToTurret());
         Logger.recordOutput("SmartTurret/Vectors/TurretValue", getYaw());
@@ -62,19 +60,6 @@ public class Turret extends SubsystemBase{
 
         if (setpoint == null) {
           Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "NO_SETPOINT");
-        }
-
-        if (setpoint != null) {
-         
-          joystickValue = null;
-          if (limelight == false){
-              io.setTurret(PIDController.calculate(getYaw().getRadians(), setpoint.getRadians()));
-          }/*if(limelight == true){
-              io.setTurret(-(PIDController.calculate(setpoint.getRadians(), 0)));
-          }*/
-        }
-        if(setpoint == null && joystickValue != null){
-            io.setTurret(joystickValue);
         }
 
         //SetupNoteVisualizer
@@ -101,19 +86,16 @@ public class Turret extends SubsystemBase{
    public void runSmart(){
       io.setTurret(PIDController.calculate(SmartTurret3472.getOmega(), 0));
    }
-
-   public double runWithJoystick(double speed){
+   public void runWithJoystick(double speed){
       joystickValue = speed;
-      return joystickValue;
+      io.setTurret(joystickValue);
+   }
+   public void runVision(double TX){
+      io.setTurret(-(PIDController.calculate(TX, 0)));   
    }
    public Rotation2d getTurretPosition(){
       return inputs.TurretPosition;
    }
-   public boolean VisionStatus(boolean status){
-      limelight = status;
-      return limelight;
-   }
-
    public void stop() {
     io.setTurret(0.0);
     setpoint = null;

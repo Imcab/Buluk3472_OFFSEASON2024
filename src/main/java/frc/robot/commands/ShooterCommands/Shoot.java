@@ -11,7 +11,6 @@ public class Shoot extends Command{
     Double setpointRPM;
     DoubleSupplier axisSupplier;
 
-
     ///Con PID + FEEDFORWARD
     public Shoot(Wheels wheels, Double setpointRPM){
         this.wheels = wheels;
@@ -51,7 +50,7 @@ public class Shoot extends Command{
     public boolean isFinished(){
 
         if(setpointRPM != null){
-            if(wheels.getShooterRPM() >= setpointRPM -50){
+            if(wheels.getShooterRPM() >= setpointRPM -150){
                 return true;
             }else{
                 return false;

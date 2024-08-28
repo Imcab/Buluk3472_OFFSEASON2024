@@ -1,4 +1,4 @@
-package frc.robot.commands.ShooterCommands;
+package frc.robot.commands.ShooterCommands.Turret;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -10,7 +10,7 @@ public class SmartAlignTurret extends Command{
 
     private final Turret turret;
     private final Angle shooterangle;
-    boolean arroz;
+    boolean isFinished;
 
     //con enncoder
     public SmartAlignTurret(Turret turret,  Angle shooterangle){
@@ -36,28 +36,17 @@ public class SmartAlignTurret extends Command{
 
      @Override
     public boolean isFinished(){
-
-            /*if(turret.getYaw().getRadians() >= new Rotation2d(SmartTurret3472.getSmartSetpoint()).getRadians() -0.010  && turret.getYaw().getRadians() <= new Rotation2d(SmartTurret3472.getSmartSetpoint()).getRadians() + 0.010 ){
-                arroz = true;
-                return arroz;
-            }else{
-                arroz = false;
-                return arroz;
-            } */
-           
+ 
             if(SmartTurret3472.getOmega() >= -0.010  && SmartTurret3472.getOmega() <=  0.010 ){
-                arroz = true;
+                isFinished = true;
                 System.out.println("Smart");
-                return arroz;
+                return isFinished;
             }else{
-                arroz = false;
+                isFinished = false;
                 System.out.println("No smart");
-                return arroz;
+                return isFinished;
             }
-
-        } 
-        
-
+    } 
 }
 
     

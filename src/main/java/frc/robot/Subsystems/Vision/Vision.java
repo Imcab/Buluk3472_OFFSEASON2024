@@ -19,6 +19,9 @@ public class Vision extends SubsystemBase{
    public double getY(){
      return inputs.getY;
    }
+   public double getX(){
+    return inputs.getX;
+   }
    public boolean targetFound(){
      return inputs.targetFound;
    }

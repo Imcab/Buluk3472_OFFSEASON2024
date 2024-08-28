@@ -92,13 +92,6 @@ public class AlignShooter extends Command{
     @Override
     public boolean isFinished(){
 
-        //System.out.println(atun);
-
-        
-
-        //System.out.println(atun);
-        //System.out.print(new Rotation2d(setpoint).getRadians());
-
         if(setpoint != null){
             if(shooterangle.getShooterPosition().getRadians() >= new Rotation2d(setpoint).getRadians() - 0.087 && shooterangle.getShooterPosition().getRadians() <= new Rotation2d(setpoint).getRadians() + 0.087){
                 atun = true;
