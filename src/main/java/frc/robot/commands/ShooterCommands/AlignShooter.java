@@ -50,12 +50,12 @@ public class AlignShooter extends Command{
 
         
         if (limelightVision != null){
-            boolean targetFound = limelightVision.targetFound();
+            boolean targetFound = limelightVision.LimelighttargetFound();
             shooterangle.VisionStatus(true);
             System.out.println(targetFound);
             
             if(targetFound == true){
-                shooterangle.runShooterAngle(limelightVision.getY());
+                shooterangle.runShooterAngle(limelightVision.getLimelightY());
 
             }else{
                 shooterangle.stop();

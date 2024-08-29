@@ -14,15 +14,15 @@ public class Vision extends SubsystemBase{
    public void periodic(){
     
         io.updateInputs(inputs);
-        Logger.processInputs("Vision/LimelightVision", inputs);
+        Logger.processInputs("Vision/VisionInputs", inputs);
    }
-   public double getY(){
-     return inputs.getY;
+   public double getLimelightY(){
+     return inputs.getLimelightY;
    }
-   public double getX(){
-    return inputs.getX;
+   public double getLimelightX(){
+    return inputs.getLimelightX;
    }
-   public boolean targetFound(){
-     return inputs.targetFound;
+   public boolean LimelighttargetFound(){
+     return inputs.LimetargetFound;
    }
 } 

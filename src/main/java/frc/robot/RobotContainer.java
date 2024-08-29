@@ -31,7 +31,7 @@ import frc.robot.Subsystems.Swerve.ModuleIOSIM;
 import frc.robot.Subsystems.Swerve.ModuleIOSparkMax;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Subsystems.Vision.VisionIO;
-import frc.robot.Subsystems.Vision.VisionLimelightIO;
+import frc.robot.Subsystems.Vision.VisionSystemIO;
 import frc.robot.commands.ComplexCommands.ComplexIntaking;
 import frc.robot.commands.ComplexCommands.ComplexTurret;
 import frc.robot.commands.DriveCommands.DriveCommands;
@@ -85,7 +85,7 @@ public class RobotContainer {
 
         turret = new Turret(new TurretIOSparkMax());
 
-        vision = new Vision(new VisionLimelightIO());
+        vision = new Vision(new VisionSystemIO());
 
         shooterAngle = new Angle(new AngleIOKraken());
 

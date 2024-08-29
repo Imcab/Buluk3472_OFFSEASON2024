@@ -26,8 +26,8 @@ public class VisionTurret extends Command{
 
         shooterangle.UpdateTurretZ(turret.getTurretPosition());
 
-        if (limelightVision.targetFound() == true) {
-            turret.runVision(limelightVision.getX());
+        if (limelightVision.LimelighttargetFound() == true) {
+            turret.runVision(limelightVision.getLimelightX());
         }
         
     }

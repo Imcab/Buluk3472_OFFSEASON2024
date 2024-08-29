@@ -33,13 +33,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class SmartTurret3472 {
-
     private static Supplier<Pose2d> robotPoseSupplier = () -> new Pose2d();
     private static Supplier<Rotation2d> turretyaw = ()-> new Rotation2d();
     private static final Translation2d blueSpeaker = new Translation2d(0.225, 5.55);
     private static final Translation2d redSpeaker = new Translation2d(16.317, 5.55);
-
-
     /**
     * <p>Cambia el signo del setpoint de la torreta dependiendo de la alianza
     *
@@ -63,7 +60,6 @@ public class SmartTurret3472 {
     public static void setRobotPoseSupplier(Supplier<Pose2d> supplier) {
     robotPoseSupplier = supplier;
     }
-
     /**
     * Actualiza la pose de la torreta a la libreria
     * @param supplier La rotacion2d de la torreta
@@ -115,16 +111,16 @@ public class SmartTurret3472 {
 
         boolean Redcolor  = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(Alliance.Red);
 
-        Double  SpeakerX = (Redcolor ? redSpeaker.getX() : blueSpeaker.getX()) - getRobotPose().getX();
-        Double  SpeakerY = (Redcolor ? redSpeaker.getY() : blueSpeaker.getY()) - getRobotPose().getY();
+        Double  SpeakerX = (Redcolor ? redSpeaker.getX() : blueSpeaker.getX()) - robotPoseSupplier.get().getX();
+        Double  SpeakerY = (Redcolor ? redSpeaker.getY() : blueSpeaker.getY()) - robotPoseSupplier.get().getY();
         
-        Double psi = HPPMathLib.coterminalradianes(getRobotPose().getRotation().getRadians() + turretyaw.get().getRadians());
+        Double psi = HPPMathLib.coterminalradianes(robotPoseSupplier.get().getRotation().getRadians() + turretyaw.get().getRadians());
 
         Double S_angle = HPPMathLib.coterminalradianes(Math.atan2(SpeakerY, SpeakerX));
         
         Double Omega = S_angle - psi;
 
-        return -Omega;
+        return -Omega;      
     }
   
 }

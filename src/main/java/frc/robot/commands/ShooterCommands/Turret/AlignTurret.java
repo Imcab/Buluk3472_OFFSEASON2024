@@ -70,7 +70,7 @@ public class AlignTurret extends Command{
           
             if((turret.getYaw().getRadians() -  HPPMathLib.coterminalradianes(new Rotation2d(setpoint).getRadians()) >= - 0.010)  &&  (turret.getYaw().getRadians() -  HPPMathLib.coterminalradianes(new Rotation2d(setpoint).getRadians())<=  0.010)){
                 isFinished = true;
-                System.out.println("Tonoto");
+                //System.out.println("Tonoto");
                 return isFinished;
             }else{
                 isFinished = false;
@@ -78,7 +78,7 @@ public class AlignTurret extends Command{
             }
         }else{
             isFinished = false;
-            System.out.println("Adios tonotos");
+            //System.out.println("Adios tonotos");
             return false;
         }
 
