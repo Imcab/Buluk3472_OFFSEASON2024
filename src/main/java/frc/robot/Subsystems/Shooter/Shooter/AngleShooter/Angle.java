@@ -16,15 +16,11 @@ public class Angle extends SubsystemBase{
    private final AngleIO io;
    private final AngleIOInputsAutoLogged inputs = new AngleIOInputsAutoLogged();
    private final PIDController PIDController;
-   private Rotation2d setpoint = null;
-   private boolean limelight;
-   private Double joystickValue = null;
    private Rotation2d turretRotation2d = new Rotation2d();
    
    public Angle(AngleIO io){
         
         this.io = io;
-        joystickValue = null;
 
         switch (Constants.currentMode) {
       case REAL:
@@ -47,21 +43,8 @@ public class Angle extends SubsystemBase{
         io.updateInputs(inputs);
         Logger.processInputs("Shooter/AngleShooter" , inputs);
         Logger.recordOutput("Shooter/AngleShooter/pose3d" , getPose3d());
-        Logger.recordOutput("Shooter/AngleShooter/LimelightBased", limelight);
         Logger.recordOutput("Shooter/AngleShooter/Setpoint", new Rotation2d().getRadians());
 
-        if (setpoint != null) {
-          joystickValue = null;
-          Logger.recordOutput("Shooter/AngleShooter/Setpoint", setpoint.getRadians());
-          if (limelight == false){
-              io.setAngleShooter(PIDController.calculate(inputs.ShooterPosition.getRadians(), setpoint.getRadians()));
-          }/*if(limelight == true){
-              io.setTurret(-(PIDController.calculate(setpoint.getRadians(), 0)));
-          }*/
-        }
-        if(setpoint == null && joystickValue != null){
-            io.setAngleShooter(joystickValue * 0.1);
-        }
 
         //Setup NoteVisualizer
         NoteVisualizer.setshooterpitchPoseSupplier(this::getShooterPitch);
@@ -81,18 +64,17 @@ public class Angle extends SubsystemBase{
         turretRotation2d = TurretPosition;
         return turretRotation2d;
    }
-   public Rotation2d runShooterAngle(double angle){
-        setpoint = new Rotation2d(angle);
-        return setpoint;
+   public void runShooterAngle(double angle){
+          Rotation2d goal = new Rotation2d(angle);
+          Logger.recordOutput("Shooter/AngleShooter/Setpoint", goal.getRadians());
+          io.setAngleShooter(PIDController.calculate(inputs.ShooterPosition.getRadians(), goal.getRadians()));
    }
-   public double runWithJoystick(double speed){
-        joystickValue = speed;
-        return joystickValue;
+   public void runWithJoystick(double speed){
+        io.setAngleShooter(speed * 0.1);    
    }
 
-   public boolean VisionStatus(boolean status){
-        limelight = status;
-        return limelight;
+   public void RunVisionStatus(double TY){
+        io.setAngleShooter(PIDController.calculate(inputs.ShooterPosition.getRadians(), TY));
    }
    public Rotation2d getShooterPosition(){
         return inputs.ShooterPosition;
@@ -100,14 +82,10 @@ public class Angle extends SubsystemBase{
 
    public void stop(){
         io.setAngleShooter(0);
-        setpoint = null;
-        joystickValue = null;
    }
    public void stopjoystick(){
         io.setAngleShooter(0);
-        joystickValue = null;
    }
-
 
    public void setBrakeMode(boolean enabled){
     io.setAngleBrakeMode(enabled);

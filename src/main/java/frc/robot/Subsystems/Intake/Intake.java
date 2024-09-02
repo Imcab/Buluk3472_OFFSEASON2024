@@ -14,14 +14,11 @@ public class Intake extends SubsystemBase{
     private final IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
     private final SimpleMotorFeedforward FF;
     private final PIDController FeedBackController;
-    private Double setpoint;
-
 
     public Intake(IntakeIO io){
 
          this.io = io;
-         this.setpoint = null;
-
+         
         switch (Constants.currentMode) {
 
          case REAL:
@@ -45,16 +42,15 @@ public class Intake extends SubsystemBase{
     public void periodic(){
         io.updateInputs(inputs);
         Logger.processInputs("Intake", inputs);
-
-        if(setpoint != null){
-            io.setIntake(FF.calculate(Units.rotationsPerMinuteToRadiansPerSecond(setpoint)) + FeedBackController.calculate(inputs.IntakeVelocityRadPerSec, Units.rotationsPerMinuteToRadiansPerSecond(setpoint)));
-        }
         
+    }
+
+    public void setIntake(double setpointRPM){
+        io.setIntake(FF.calculate(Units.rotationsPerMinuteToRadiansPerSecond(setpointRPM)) + FeedBackController.calculate(inputs.IntakeVelocityRadPerSec, Units.rotationsPerMinuteToRadiansPerSecond(setpointRPM)));
     }
     
     public void stop() {
         io.setIntake(0.0);
-        setpoint = null;
       }
 
      public void setBrakeMode(boolean enabled) {

@@ -11,6 +11,7 @@ public interface IndexerIO {
         public double IndexerVelocityRadPerSec = 0.0;
         public double IndexerVelocityRPM = 0.0;
         public double [] IndexerCurrentAmps = new double[] {};
+        public boolean BeamSensor = false;
 
     }
     

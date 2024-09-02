@@ -6,12 +6,14 @@ import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Subsystems.Shooter.ShooterConstants.OutakeConstants;
 
 public class IndexerIOSparkMax implements IndexerIO{
     
     private final CANSparkMax Indexer;
     private final RelativeEncoder Encoder;
+    private final DigitalInput BeamSensor;
 
     public IndexerIOSparkMax(){
         Indexer = new CANSparkMax(OutakeConstants.IndexerPort, MotorType.kBrushless);
@@ -34,6 +36,8 @@ public class IndexerIOSparkMax implements IndexerIO{
         
         Indexer.burnFlash();
 
+        BeamSensor = new DigitalInput(OutakeConstants.BEAMSENSOR_RECIEVER_DIOPIN);
+
     }
 
     @Override
@@ -42,6 +46,14 @@ public class IndexerIOSparkMax implements IndexerIO{
         inputs.IndexerVelocityRPM = Encoder.getVelocity();
         inputs.IndexerVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(inputs.IndexerVelocityRPM);
         inputs.IndexerCurrentAmps = new double[]{Indexer.getOutputCurrent()};
+
+        if (!BeamSensor.get()) {
+            inputs.BeamSensor = true; 
+        }
+        
+        inputs.BeamSensor = false;
+
+        
     }
 
     @Override

@@ -3,7 +3,6 @@ package frc.robot.commands.ShooterCommands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Vision.Vision;
@@ -51,11 +50,10 @@ public class AlignShooter extends Command{
         
         if (limelightVision != null){
             boolean targetFound = limelightVision.LimelighttargetFound();
-            shooterangle.VisionStatus(true);
             System.out.println(targetFound);
             
             if(targetFound == true){
-                shooterangle.runShooterAngle(limelightVision.getLimelightY());
+                shooterangle.RunVisionStatus(limelightVision.getLimelightY());;
 
             }else{
                 shooterangle.stop();
@@ -63,7 +61,6 @@ public class AlignShooter extends Command{
         }
 
         if(setpoint != null){
-            shooterangle.VisionStatus(false);
             shooterangle.runShooterAngle(setpoint);
         }
 
@@ -76,9 +73,7 @@ public class AlignShooter extends Command{
 
             shooterangle.runWithJoystick(joystickValue);
                             
-            }
-
-            
+            }        
         }
     
     @Override

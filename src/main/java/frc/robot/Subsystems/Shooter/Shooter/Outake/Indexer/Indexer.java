@@ -14,11 +14,9 @@ public class Indexer extends SubsystemBase{
     private final IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
     private final PIDController PIDController;
     private final SimpleMotorFeedforward FeedForwardController;
-    private Double setpoint = null;
 
     public Indexer(IndexerIO io){
         this.io = io;
-        setpoint = null;
 
         switch (Constants.currentMode) {
         case REAL:
@@ -46,23 +44,17 @@ public class Indexer extends SubsystemBase{
         Logger.processInputs("Shooter/Outake/Indexer", inputs);
         Logger.recordOutput("Shooter/Indexer/SetpointRPM", 0.0);
         Logger.recordOutput("Shooter/Indexer/SetpointRadPerSec", 0.0);
-
-        if (setpoint != null){
-            double velocitysetpoint = Units.rotationsPerMinuteToRadiansPerSecond(setpoint);
-            Logger.recordOutput("Shooter/Indexer/SetpointRPM", setpoint);
-            Logger.recordOutput("Shooter/Indexer/SetpointRadPerSec", velocitysetpoint);
-            io.setIndexer(FeedForwardController.calculate(velocitysetpoint) + PIDController.calculate(inputs.IndexerVelocityRadPerSec, velocitysetpoint));
-        }
     }
 
-    public double setGoalRPM(double RPM){
-        setpoint = RPM;
-        return setpoint;
+    public void setGoalRPM(double RPM){
+        double velocitysetpoint = Units.rotationsPerMinuteToRadiansPerSecond(RPM);
+        Logger.recordOutput("Shooter/Indexer/SetpointRPM", Units.radiansPerSecondToRotationsPerMinute(velocitysetpoint));
+        Logger.recordOutput("Shooter/Indexer/SetpointRadPerSec", velocitysetpoint);
+        io.setIndexer(FeedForwardController.calculate(velocitysetpoint) + PIDController.calculate(inputs.IndexerVelocityRadPerSec, velocitysetpoint));
     }
 
     public void stop(){
         io.setIndexer(0.0);
-        setpoint = null;
     }
     
     public void setIndexerBrakeMode(boolean enabled){

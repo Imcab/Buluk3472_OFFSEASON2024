@@ -46,7 +46,7 @@ public class Turret extends SubsystemBase{
 
    public void periodic(){
         io.updateInputs(inputs);
-
+        
         Logger.processInputs("Shooter/Turret" , inputs);
         Logger.recordOutput("Shooter/Turret/pose3d" , getPose3d());
         Logger.recordOutput("SmartTurret/TurretOmega", SmartTurret3472.getOmega());

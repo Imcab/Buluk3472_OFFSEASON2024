@@ -1,6 +1,5 @@
 package frc.robot.commands.ShooterCommands.Turret;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Shooter.Turret.Turret;

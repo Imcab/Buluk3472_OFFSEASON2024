@@ -45,7 +45,7 @@ public class SmartTurret3472 {
     public static double flip (double setpoint){
         
         boolean Redcolor  = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(Alliance.Red);
-
+        
         if (Redcolor == true){
             return HPPMathLib.coterminalradianes(-setpoint);
         }else {

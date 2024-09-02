@@ -20,7 +20,6 @@ public class ConstantsElevator {
     public static final class RollerConstants{
 
         public static final int Port = 0;
-        public static final int sensorPort = 0;
         public static final boolean MotorReversed = false;
 
     }

@@ -16,13 +16,11 @@ public class Wheels extends SubsystemBase{
     private final WheelsIOInputsAutoLogged inputs = new WheelsIOInputsAutoLogged();
     private final PIDController PIDController;
     private final SimpleMotorFeedforward FeedForwardController;
-    private Double setpoint = null;
     private Double joystickValue = null;
 
     
     public Wheels(WheelsIO io){
         this.io = io;
-        setpoint = null;
         joystickValue = null;
 
         switch (Constants.currentMode) {
@@ -56,20 +54,14 @@ public class Wheels extends SubsystemBase{
         Logger.recordOutput("Field3472/RobotX", Field3472.getRobotPoseX());
 
         SmartDashboard.putString("PriorityFieldZone", Field3472.getPriority());
-
-        if(setpoint != null){
-          double velocitysetpoint = Units.rotationsPerMinuteToRadiansPerSecond(setpoint);
-          Logger.recordOutput("Shooter/Outake/SetpointRPM", setpoint);
-          Logger.recordOutput("Shooter/Outake/SetpointRadPerSec", velocitysetpoint);
-          io.setWheels(FeedForwardController.calculate(velocitysetpoint) + PIDController.calculate(inputs.WheelsVelocityRadPerSec, velocitysetpoint));
-        }
-
         
   }
 
-  public double setGoalRPM(double RPM){
-      setpoint = RPM;
-      return setpoint;
+  public void setGoalRPM(double RPM){
+      double velocitysetpoint = Units.rotationsPerMinuteToRadiansPerSecond(RPM);
+      Logger.recordOutput("Shooter/Outake/SetpointRPM", RPM);
+      Logger.recordOutput("Shooter/Outake/SetpointRadPerSec", velocitysetpoint);
+      io.setWheels(FeedForwardController.calculate(velocitysetpoint) + PIDController.calculate(inputs.WheelsVelocityRadPerSec, velocitysetpoint));
   }
 
   public double getShooterRPM(){
@@ -78,7 +70,6 @@ public class Wheels extends SubsystemBase{
 
   public void stop(){
     io.setWheels(0.0);
-    setpoint = null;
     joystickValue = null;
   }
   public void setOutakeBrakeMode(boolean enabled){

@@ -16,12 +16,9 @@ public class Elevator extends SubsystemBase{
     private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
     private final PIDController FeedBackController;
     private final SimpleMotorFeedforward ff;
-    private Double setpoint = null;
 
     public Elevator(ElevatorIO io){
-
         this.io = io;
-        setpoint = null;
 
         switch (Constants.currentMode) {
       case REAL:
@@ -48,16 +45,12 @@ public class Elevator extends SubsystemBase{
 
         SmartDashboard.putNumber("ElevatorMeter", inputs.ElevatorMeters);
 
-        if(setpoint != null){
-            io.setElevator(ff.calculate(setpoint / 60)  +  FeedBackController.calculate(inputs.ElevatorMeters, setpoint));            
-        }
     }
     public Double getMeters(){
       return inputs.ElevatorMeters;
     }
-    public Double ReachGoal(double goal){
-        setpoint = goal;
-        return setpoint;
+    public void ReachGoal(double goal){
+        io.setElevator(ff.calculate(goal / 60)  +  FeedBackController.calculate(inputs.ElevatorMeters, goal));
     }
 
     public Pose3d getPose3d(){
@@ -65,7 +58,6 @@ public class Elevator extends SubsystemBase{
     }
     public void stop() {
         io.setElevator(0.0);
-        setpoint = null;
       }
     public void setBrakeMode(boolean enabled) {
         io.setElevatorBrakeMode(enabled);

@@ -20,6 +20,10 @@ public class Roller extends SubsystemBase {
         Logger.processInputs("Elevator/Roller", inputs);
     }
 
+    public void setRollers(double value){
+        io.setRoller(value);
+    }
+
     public void stop(){
         io.setRoller(0);
     }

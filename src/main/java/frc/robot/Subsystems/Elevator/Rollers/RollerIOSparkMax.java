@@ -4,20 +4,17 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.AnalogInput;
 import frc.robot.Subsystems.Elevator.ConstantsElevator;
 
 
 public class RollerIOSparkMax implements RollerIO {
 
     private final CANSparkMax RollerMotor; 
-    private final AnalogInput Sensor; 
     private final boolean RollerReverse;
     private final RelativeEncoder encoder;
     
     public RollerIOSparkMax(){
         RollerMotor = new CANSparkMax(ConstantsElevator.RollerConstants.Port, MotorType.kBrushless);
-        Sensor = new AnalogInput(ConstantsElevator.RollerConstants.sensorPort);
         RollerReverse = ConstantsElevator.RollerConstants.MotorReversed;
 
         RollerMotor.restoreFactoryDefaults();

@@ -41,7 +41,7 @@ public class LimitYaw3472 {
     */
     public static boolean shouldFix(){
 
-        double MAXTURRETLAPS = 1.5;
+        double MAXTURRETLAPS = 1.6;
         if (Math.abs(laps.get()) <= MAXTURRETLAPS) {
             return false;
         }
