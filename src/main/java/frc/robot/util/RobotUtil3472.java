@@ -22,13 +22,14 @@ PROYECTO DEL ÁREA DE SOFTWARE DE BULUK#3472.
 */
 package frc.robot.util;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.hal.can.CANStatus;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation.MatchType;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.Timer;
 
 /** Funciones de utilidad en enfoque general en los estados del robot, cancha e información:
@@ -142,6 +143,25 @@ public class RobotUtil3472 {
         public static CANStatus getCANStatus(){
             return RobotController.getCANStatus();
         }
+        public static double percentBusUtilization(){
+            return getCANStatus().percentBusUtilization;
+        }
+        public static int busOffCount(){
+            return getCANStatus().busOffCount;
+        }
+        public static int receiveErrorCount(){
+            return getCANStatus().receiveErrorCount;
+        }
+        public static int transmitErrorCount(){
+            return getCANStatus().transmitErrorCount;
+        }
+        public static int txFullCount(){
+            return getCANStatus().txFullCount;
+        }
+
+        public static void setCANStatus(double percentBusUtilization, int busOffCount,int txFullCount, int receiveErrorCount, int transmitErrorCount){
+            getCANStatus().setStatus(percentBusUtilization,busOffCount, txFullCount, receiveErrorCount, transmitErrorCount);
+        }
         /**
         * Obtiene el porcentaje de can utilizado
         * @return percentBusUtilization
@@ -170,8 +190,11 @@ public class RobotUtil3472 {
         *<p> Segundo dato: El voltaje del robot expresado en volt
         * @return Lista de valores, AMPS, VOLTS
         */
-        public static Double[] getRIOElectricity(){
-            return new Double[] {RobotController.getInputCurrent(), RobotController.getInputVoltage()};
+        public static double getCurrent(){
+            return RobotController.getInputCurrent();
+        }
+        public static double getVoltage(){
+            return RobotController.getInputVoltage();
         }
     }
 
@@ -179,75 +202,66 @@ public class RobotUtil3472 {
     public class REV_PDH {
 
         /**CAN ID a la cual al PDH esta conectada*/
-        private static final int PDH_CAN_ID = 1;
+        public static final int PDH_CAN_ID = 1;
         /**Declara la PDH */
-        private final PowerDistribution PDH = new PowerDistribution(PDH_CAN_ID, ModuleType.kRev);
+
+        private static Supplier<PowerDistribution> PDH = ()-> new PowerDistribution();
+        //private final PowerDistribution PDH = new PowerDistribution(PDH_CAN_ID, ModuleType.kRev);
 
          /**TIPOS DE ERRORES EN LA PDH*/
         public enum DIAGNOSTIC{
             BreakerFault, Brownout, CanWarning , HardWare,NONE
         }
+
+        public static void getPDH(Supplier<PowerDistribution> Supplier){
+            PDH = Supplier;
+        }
         /**
         * Obtiene la temperatura de la PDH
         * @return Temperatura actual en Celsius
         */
-        public double getPDH_Temp(){
-            return PDH.getTemperature();
+        public static double getPDH_Temp(){
+            return PDH.get().getTemperature();
         }
         /**
         * Obtiene la energia de la PDH en Joules
         * @return Energía que agarra la PDH
         */
-        public double getPDH_Energy(){
-            return PDH.getTotalEnergy();
+        public static double getPDH_Energy(){
+            return PDH.get().getTotalEnergy();
         }
         /**
         * Obtiene los Watts de potencia de la PDH
         * @return Watts
         */
-        public double getPDH_Watts(){
-            return PDH.getTotalPower();
+        public static double getPDH_Watts(){
+            return PDH.get().getTotalPower();
         }
         /**
         * Obtiene los Amperios de corriente que jala la PDH
         * @return AMPS
         */
-        public double getPDH_AMPS(){
-            return PDH.getTotalCurrent();
+        public static double getPDH_AMPS(){
+            return PDH.get().getTotalCurrent();
         }
 
         /**
         * Resetea la energia total a 0
         */
-        public void PDHResetEnergy(){
-            PDH.resetTotalEnergy();
+        public static void PDHResetEnergy(){
+            PDH.get().resetTotalEnergy();
         }
         /**
          * Limpia las fallas que ya no sean necesarias
          */
-        public void CrealStickyFaults(){
-            PDH.clearStickyFaults();
-        }
-         /**
-         * Diagnostica fallos en la PDH y los reconoce.
-         */
-        public DIAGNOSTIC PDH_Diagnostic(){
-            if (PDH.getFaults().Brownout) {
-                return DIAGNOSTIC.Brownout;
-            }
-            if (PDH.getFaults().CanWarning) {
-                return DIAGNOSTIC.CanWarning;
-            }
-            if (PDH.getFaults().HardwareFault) {
-                return DIAGNOSTIC.HardWare;
-            }
-            return DIAGNOSTIC.NONE;
+        public static void CrealStickyFaults(){
+            PDH.get().clearStickyFaults();
         }
         /**
          * Diagnostica fallos en el breaker con un canal especifico.
          */
-        public DIAGNOSTIC BreakerChannelDiagnostic(int channel){
-            if (PDH.getFaults().getBreakerFault(channel)) {
+        public static DIAGNOSTIC BreakerChannelDiagnostic(int channel){
+            if (PDH.get().getFaults().getBreakerFault(channel)) {
                 DRIVERSTATION.SendAlert("Breaker Fault at: " + channel, false);
                 return DIAGNOSTIC.BreakerFault;
             }
@@ -256,29 +270,29 @@ public class RobotUtil3472 {
         /**
         * @return El numero de canales de la PDH (24)
         */
-        public int getPDHChannels(){
-            return PDH.getNumChannels();
+        public static int getPDHChannels(){
+            return PDH.get().getNumChannels();
         }
         /**
          * Obtiene los Amperios de un canal en específico.
          * @param channel
          * @return La corriente que agarra el canal
          */
-        public double checkChannel(int channel){
-            return PDH.getCurrent(channel);
+        public static double checkChannel(int channel){
+            return PDH.get().getCurrent(channel);
         }
         /**
          * Obtiene el estado de el switch en la PDH (ON/OFF)
          * @return El estado de el switch de la PDH (LEDS)
          */
-        public boolean checkSwitchableChannel(){
-            return PDH.getSwitchableChannel();
+        public static boolean checkSwitchableChannel(){
+            return PDH.get().getSwitchableChannel();
         }
         /**
          * Cambia el estado del switch de la PDH(ON/OFF)
          */
-        public void ToggleSwitchableChannel(boolean status){
-            PDH.setSwitchableChannel(status);
+        public static void ToggleSwitchableChannel(boolean status){
+            PDH.get().setSwitchableChannel(status);
         }
     }
     
