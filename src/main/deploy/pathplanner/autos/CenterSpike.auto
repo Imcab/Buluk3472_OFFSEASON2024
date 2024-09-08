@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.38279390335083,
+      "y": 5.568375110626221
+    },
+    "rotation": -179.62795840494925
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3spike.1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SmartShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3spike.2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SmartShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3spike.3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SmartShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": true
+}

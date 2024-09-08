@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import com.choreo.lib.Choreo;
+import com.choreo.lib.ChoreoTrajectory;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -47,6 +50,7 @@ import frc.robot.Subsystems.Elevator.ElevatorIOSIM;
 import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.AngleIO;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 public class RobotContainer {
 
@@ -59,6 +63,11 @@ public class RobotContainer {
   //xbox para el robot
   //private final CommandXboxController controller = new CommandXboxController(0);
   //private final CommandXboxController controller2 = new CommandXboxController(1);
+
+  //Cancha
+  Field2d field = new Field2d();
+
+  ChoreoTrajectory CenterSpike;
 
   //subsistemas
   private final Drive drive;
@@ -146,6 +155,11 @@ public class RobotContainer {
     ));
 
     shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle ,()-> -controller2.getLeftY()));
+
+    PathPlannerPath path1 = PathPlannerPath.fromChoreoTrajectory("3spike.1");
+    PathPlannerPath path2 = PathPlannerPath.fromChoreoTrajectory("3spike.2");
+    PathPlannerPath path3 = PathPlannerPath.fromChoreoTrajectory("3spike.3");
+
  
     ///REGISTRAR COMANDOS POR NOMBRE (PARA AUTONOMO Y NORMAL)//////
     NamedCommands.registerCommand("ShootFromSpeaker", 
@@ -176,13 +190,16 @@ public class RobotContainer {
     NamedCommands.registerCommand("SmartShoot", new SequentialCommandGroup(new SmartAlignTurret(turret, shooterAngle), new AlignShooter(shooterAngle, Units.degreesToRadians(32.0))).andThen( new Shoot(wheels, 5000.0).andThen(NoteVisualizer.shoot())));
     //////////////////////// 
 
+
     m_chooser.addOption("6 Notes Auto (Wak)", new PathPlannerAuto("Wak"));
     m_chooser.addOption("3 Center Notes Auto (Oox)", new PathPlannerAuto("Oox"));
     m_chooser.addOption("SECRETT", new PathPlannerAuto("SECRETTT"));
-
+    m_chooser.addOption("3Spike", new PathPlannerAuto("CenterSpike"));
     SmartDashboard.putData(m_chooser);
 
     configureBindings();
+
+
   }
 
   private void configureBindings() {
