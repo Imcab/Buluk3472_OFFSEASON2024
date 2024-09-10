@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.38279390335083,
-      "y": 5.568375110626221
+      "x": 0.6406003832817078,
+      "y": 6.7789716720581055
     },
-    "rotation": 177.6169164905552
+    "rotation": -118.61048555232409
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterSpike.1"
+            "pathName": "LeftSpike.1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftSpike.2"
           }
         },
         {
@@ -32,7 +38,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterSpike.2"
+            "pathName": "LeftSpike.3"
           }
         },
         {
@@ -44,13 +50,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterSpike.3"
+            "pathName": "LeftSpike.4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftSpike.5"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "SmartShoot"
+            "name": "ShootFromSpeaker"
           }
         }
       ]

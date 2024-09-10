@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.38279390335083,
-      "y": 5.568375110626221
+      "x": 1.4434244632720947,
+      "y": 5.542596817016602
     },
-    "rotation": 177.6169164905552
+    "rotation": 178.8187991835905
   },
   "command": {
     "type": "sequential",
@@ -20,7 +20,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterSpike.1"
+            "pathName": "CenterFar.1"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterSpike.2"
+            "pathName": "CenterFar.2"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterSpike.3"
+            "pathName": "CenterFar.3"
           }
         },
         {
@@ -56,6 +56,6 @@
       ]
     }
   },
-  "folder": "CHOREOSpikeNotes2024",
+  "folder": "CHOREOFarNotes2024",
   "choreoAuto": true
 }

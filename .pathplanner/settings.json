@@ -7,7 +7,11 @@
     "OoxPaths",
     "WakPaths"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "CHOREOFarNotes2024",
+    "PATHPLANNERTest2024",
+    "CHOREOSpikeNotes2024"
+  ],
   "defaultMaxVel": 5.79,
   "defaultMaxAccel": 5.79,
   "defaultMaxAngVel": 617.72,

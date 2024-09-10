@@ -156,9 +156,9 @@ public class RobotContainer {
 
     shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle ,()-> -controller2.getLeftY()));
 
-    PathPlannerPath path1 = PathPlannerPath.fromChoreoTrajectory("3spike.1");
-    PathPlannerPath path2 = PathPlannerPath.fromChoreoTrajectory("3spike.2");
-    PathPlannerPath path3 = PathPlannerPath.fromChoreoTrajectory("3spike.3");
+    PathPlannerPath CS1 = PathPlannerPath.fromChoreoTrajectory("CenterSpike.1");
+    PathPlannerPath CS2 = PathPlannerPath.fromChoreoTrajectory("Centerspike.2");
+    PathPlannerPath CS3 = PathPlannerPath.fromChoreoTrajectory("Centerspike.3");
 
  
     ///REGISTRAR COMANDOS POR NOMBRE (PARA AUTONOMO Y NORMAL)//////
