@@ -59,6 +59,7 @@ public class TurretIOSparkMax implements TurretIO{
         inputs.TurretCurrentAmps = new double[]{Turret.getOutputCurrent()};
         inputs.CurrentSpeed = Turret.get();
     }
+    
     @Override
     public void setTurret(double voltage){
         Turret.setVoltage(voltage);
