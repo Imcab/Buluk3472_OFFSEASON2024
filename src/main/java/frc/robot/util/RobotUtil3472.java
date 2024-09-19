@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation.MatchType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 
 /** Funciones de utilidad en enfoque general en los estados del robot, cancha e información:
@@ -208,9 +209,12 @@ public class RobotUtil3472 {
         private static Supplier<PowerDistribution> PDH = ()-> new PowerDistribution();
         //private final PowerDistribution PDH = new PowerDistribution(PDH_CAN_ID, ModuleType.kRev);
 
+
+
          /**TIPOS DE ERRORES EN LA PDH*/
         public enum DIAGNOSTIC{
             BreakerFault, Brownout, CanWarning , HardWare,NONE
+            
         }
 
         public static void getPDH(Supplier<PowerDistribution> Supplier){

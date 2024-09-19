@@ -2,6 +2,7 @@ package frc.robot.Subsystems.Vision;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase{
@@ -15,6 +16,7 @@ public class Vision extends SubsystemBase{
     
         io.updateInputs(inputs);
         Logger.processInputs("Vision/VisionInputs", inputs);
+        SmartDashboard.putNumber("NUM", 0.5);
    }
    public double getLimelightY(){
      return inputs.getLimelightY;

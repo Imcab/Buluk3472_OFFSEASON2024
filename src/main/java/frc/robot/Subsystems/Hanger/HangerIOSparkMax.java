@@ -5,22 +5,14 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-
-
-
 public class HangerIOSparkMax implements HangerIO{
 
     private final CANSparkMax Hanger;
     private final RelativeEncoder enc_Hanger;
-    private final AnalogInput AbsoluteEncoder;
     private final boolean HangerReversed;
-    private final double Offset;
 
     public HangerIOSparkMax(){
         Hanger = new CANSparkMax(ConstantsHanger.HangerPort, MotorType.kBrushless);
-        AbsoluteEncoder = new AnalogInput(ConstantsHanger.EncPort);
-        Offset = ConstantsHanger.offset;
         HangerReversed = ConstantsHanger.HangerReversed;
         
         Hanger.restoreFactoryDefaults();
@@ -41,14 +33,6 @@ public class HangerIOSparkMax implements HangerIO{
         
         Hanger.burnFlash();
 
-    }
-
-    public double getHangerAngle(){
-        double encoderBits = AbsoluteEncoder.getValue();
-        double angleEncoder = (encoderBits * 360) / 4096;
-        double angle = (angleEncoder - Offset);
-
-        return angle;
     }
 
     @Override
