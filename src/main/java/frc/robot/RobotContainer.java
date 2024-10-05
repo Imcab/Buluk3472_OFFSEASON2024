@@ -4,12 +4,12 @@
 
 package frc.robot;
 
-import com.choreo.lib.Choreo;
 import com.choreo.lib.ChoreoTrajectory;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,12 +32,14 @@ import frc.robot.Subsystems.Swerve.GyroNavXIO;
 import frc.robot.Subsystems.Swerve.ModuleIO;
 import frc.robot.Subsystems.Swerve.ModuleIOSIM;
 import frc.robot.Subsystems.Swerve.ModuleIOSparkMax;
+//import frc.robot.Subsystems.Vision.PhotonvisionIOSIM;
 import frc.robot.Subsystems.Vision.Vision;
 import frc.robot.Subsystems.Vision.VisionIO;
 import frc.robot.Subsystems.Vision.VisionSystemIO;
 import frc.robot.commands.ComplexCommands.ComplexIntaking;
 import frc.robot.commands.ComplexCommands.ComplexTurret;
 import frc.robot.commands.DriveCommands.DriveCommands;
+import frc.robot.commands.DriveCommands.SwerveAutoAlign;
 import frc.robot.commands.ElevatorCommands.ElevatorCommand;
 import frc.robot.commands.ShooterCommands.AlignShooter;
 import frc.robot.commands.ShooterCommands.Shoot;
@@ -76,10 +78,13 @@ public class RobotContainer {
   private final Angle shooterAngle;
   private final Elevator elevator;
   private final Wheels wheels;
+  //private final PhotonvisionIOSIM sim;
 
   SendableChooser<Command> m_chooser = new SendableChooser<>(); //for autonomous
 
   public RobotContainer() {
+
+    
 
     switch (Constants.currentMode) {
       case REAL:
@@ -149,19 +154,14 @@ public class RobotContainer {
       
       }
 
+
+    //sim = new PhotonvisionIOSIM();
+    
     turret.setDefaultCommand(new AlignTurret(turret,
       ()-> -controller2.getLeftX(), shooterAngle
       
     ));
 
-    shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle ,()-> -controller2.getLeftY()));
-
-    PathPlannerPath CS1 = PathPlannerPath.fromChoreoTrajectory("CenterSpike.1");
-    PathPlannerPath CS2 = PathPlannerPath.fromChoreoTrajectory("Centerspike.2");
-    PathPlannerPath CS3 = PathPlannerPath.fromChoreoTrajectory("Centerspike.3");
-
- 
-    ///REGISTRAR COMANDOS POR NOMBRE (PARA AUTONOMO Y NORMAL)//////
     NamedCommands.registerCommand("ShootFromSpeaker", 
     new ComplexTurret(turret, 0.0, shooterAngle, 50.0, wheels, 5000.0));
 
@@ -183,18 +183,40 @@ public class RobotContainer {
     NamedCommands.registerCommand("Oox2pzShoot",
     new ComplexTurret(turret, 120.0, shooterAngle, 32.0, wheels, 5000.0));
 
-    NamedCommands.registerCommand("Amp", null);
+    //NamedCommands.registerCommand("Amp", null);
 
     NamedCommands.registerCommand("AutoAlignTurret", new SmartAlignTurret(turret, shooterAngle));
 
     NamedCommands.registerCommand("SmartShoot", new SequentialCommandGroup(new SmartAlignTurret(turret, shooterAngle), new AlignShooter(shooterAngle, Units.degreesToRadians(32.0))).andThen( new Shoot(wheels, 5000.0).andThen(NoteVisualizer.shoot())));
+
+    NamedCommands.registerCommand("TrapAlign", new SwerveAutoAlign(drive, new Pose2d(4.001, 5.247, new Rotation2d(Math.toRadians(-57.9999)))));
+
+    NamedCommands.registerCommand("AmpAlign", new SwerveAutoAlign(drive, new Pose2d(1.80, 7.7, new Rotation2d(Math.toRadians(86)))));
+
+    shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle ,()-> -controller2.getLeftY()));
+
+    ///REGISTRAR COMANDOS POR NOMBRE (PARA AUTONOMO Y NORMAL)//////
+    
     //////////////////////// 
+    //------AUTO_REGISTER---//
+    m_chooser.addOption("4PzCenterNotes(CENTER)", new PathPlannerAuto("CenterSpike"));
+    m_chooser.addOption("4pzCenterNotes(LEFT)", new PathPlannerAuto("LeftSpike"));
+    m_chooser.addOption("4pzCenterNotes(RIGHT)", new PathPlannerAuto("RightSpike"));
 
+    m_chooser.addOption("4pzFarNotes (RIGHT)", new PathPlannerAuto("RightFar"));
+    m_chooser.addOption("4pzFarNotes (CENTER)", new PathPlannerAuto("CenterFar"));
+    m_chooser.addOption("3pzFarNotes (LEFT)", new PathPlannerAuto("LeftFar"));
 
-    m_chooser.addOption("6 Notes Auto (Wak)", new PathPlannerAuto("Wak"));
-    m_chooser.addOption("3 Center Notes Auto (Oox)", new PathPlannerAuto("Oox"));
-    m_chooser.addOption("SECRETT", new PathPlannerAuto("SECRETTT"));
-    m_chooser.addOption("3Spike", new PathPlannerAuto("CenterSpike"));
+    m_chooser.addOption("1pzExit(RIGHT)", new PathPlannerAuto("RightLeave"));
+    m_chooser.addOption("1pzExit(LEFT)", new PathPlannerAuto("LeftLeave"));
+    m_chooser.addOption("1pzExit(CENTER)", new PathPlannerAuto("CenterLeave"));
+
+    m_chooser.addOption("1PZAMP", new PathPlannerAuto("AMP1PZ"));
+    m_chooser.addOption("2PZAMP", new PathPlannerAuto("AMP2PZ"));
+    m_chooser.addOption("1PZAMP_1PZSpeaker", new PathPlannerAuto("AMP1PZtoSpeaker"));
+    //--------------------//
+    ///////////////////////
+
     SmartDashboard.putData(m_chooser);
 
     configureBindings();
@@ -213,6 +235,9 @@ public class RobotContainer {
     controller2.cross().whileTrue(NamedCommands.getCommand("AutoAlignTurret"));
     controller2.triangle().whileTrue(NamedCommands.getCommand("ShootFromSpeaker"));
     controller2.circle().whileTrue(new AlignTurret(turret, -15.0, shooterAngle));
+
+    controller.cross().whileTrue(NamedCommands.getCommand("TrapAlign"));
+    controller.circle().whileTrue(NamedCommands.getCommand("AmpAlign"));
 
   }
 

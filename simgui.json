@@ -10,11 +10,40 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Field": "Field2d",
-      "/SmartDashboard/SendableChooser[0]": "String Chooser"
+      "/SmartDashboard/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/SendableChooser[0]": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": {
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
+    "retained": {
+      "SmartDashboard": {
+        "open": true
+      }
+    },
     "transitory": {
+      "CameraPublisher": {
+        "CameraSim-processed": {
+          "open": true
+        }
+      },
       "LiveWindow": {
         "open": true
       },
@@ -28,6 +57,21 @@
         "double[]##v_/PathPlanner/vel": {
           "open": false
         }
+      },
+      "Shuffleboard": {
+        ".metadata": {
+          "open": true
+        },
+        ".recording": {
+          "open": true
+        },
+        "open": true
+      },
+      "SmartDashboard": {
+        "VisionSystemSim-main": {
+          "open": true
+        },
+        "open": true
       }
     }
   },
@@ -38,16 +82,18 @@
       },
       "Subscribers": {
         "open": false
-      },
-      "open": false
+      }
+    },
+    "Clients": {
+      "open": true
     },
     "Server": {
-      "Publishers": {
-        "open": false
-      },
       "Subscribers": {
-        "open": false
+        "open": true
       }
+    },
+    "shuffleboard@2": {
+      "open": true
     },
     "visible": true
   }

@@ -7,22 +7,24 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Subsystems.Shooter.ShooterConstants.TurretConstants;
 
 public class TurretIOSparkMax implements TurretIO{
 
     private final CANSparkMax Turret;
     private final RelativeEncoder enc_turret;
-    private final AnalogInput AbsoluteEncoder;
+    private final DutyCycleEncoder ThroughBore;
     private final boolean TurretReversed;
     private final double Offset;
 
     public TurretIOSparkMax(){
         Turret = new CANSparkMax(TurretConstants.TurretPort, MotorType.kBrushless);
-        AbsoluteEncoder = new AnalogInput(TurretConstants.EncPort);
-        Offset = TurretConstants.offset;
+        Offset = (TurretConstants.offset/360);
         TurretReversed = TurretConstants.TurretReversed;
+        ThroughBore = new DutyCycleEncoder(TurretConstants.EncDIOPORT);
+        ThroughBore.setPositionOffset(Offset);
+
 
         Turret.restoreFactoryDefaults();
 
@@ -43,17 +45,15 @@ public class TurretIOSparkMax implements TurretIO{
         Turret.burnFlash();
     }
 
-    public Rotation2d getTurretAngle(){
-        double encoderBits = AbsoluteEncoder.getValue();
-        double angleEncoder = (encoderBits * 360) / 4096;
-
-        return Rotation2d.fromDegrees(angleEncoder - Offset);
-    }
-
     @Override
     public void updateInputs(TurretIOInputs inputs){
+
+        double Value = Units.rotationsToDegrees(ThroughBore.getAbsolutePosition());
+
+        Rotation2d angle = new Rotation2d(Value);
+
         inputs.TurretAppliedVolts = Turret.getAppliedOutput() * Turret.getBusVoltage();
-        inputs.TurretPosition = new Rotation2d(getTurretAngle().getRadians());
+        inputs.TurretPosition = new Rotation2d(angle.getRadians());
         inputs.TurretVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(enc_turret.getVelocity()) / TurretConstants.TurretReduction;
         inputs.TurretLaps = enc_turret.getPosition() / TurretConstants.TurretReduction;
         inputs.TurretCurrentAmps = new double[]{Turret.getOutputCurrent()};

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.62392258644104,
-      "y": 4.284446716308594
+      "x": 0.7113091945648193,
+      "y": 4.2910356521606445
     },
     "rotation": 120.69972255081441
   },
@@ -36,6 +36,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "LeftFar.3"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "SmartShoot"
@@ -44,7 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LeftFar.3"
+            "pathName": "LeftFar.4"
           }
         }
       ]

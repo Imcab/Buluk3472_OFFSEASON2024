@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.736832857131958,
+      "y": 4.310072422027588
+    },
+    "rotation": 121.63978093533315
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootFromSpeaker"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "LeftLeave.1"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "CHOREOexit2024",
+  "choreoAuto": true
+}

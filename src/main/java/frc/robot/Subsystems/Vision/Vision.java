@@ -16,7 +16,7 @@ public class Vision extends SubsystemBase{
         this.io = io;
         aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
    }
-
+   
    public void periodic(){
 
         io.updateInputs(inputs);

@@ -10,6 +10,7 @@ public class VisionSystemIO implements VisionIO{
 
     public VisionSystemIO(){
         ShouldFlip = DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(Alliance.Red);
+        
     }
 
     @Override

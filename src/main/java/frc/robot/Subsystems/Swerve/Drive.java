@@ -43,6 +43,9 @@ public class Drive extends SubsystemBase{
     private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
     private final Module[] modules = new Module[4]; // FL, FR, BL, BR
 
+    //for test ONLY
+    //private final PhotonvisionIOSIM PhotonCameraSim;
+
     private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(getModuleTranslations());
     private Rotation2d rawGyroRotation = new Rotation2d();
     private SwerveModulePosition[] lastModulePositions = // For delta tracking
@@ -55,6 +58,8 @@ public class Drive extends SubsystemBase{
     private SwerveDrivePoseEstimator poseEstimator =
       new SwerveDrivePoseEstimator(kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
 
+    
+
    
     public Drive(GyroIO gyroIO,ModuleIO flModuleIO,ModuleIO frModuleIO,ModuleIO blModuleIO,ModuleIO brModuleIO){
         this.gyroIO = gyroIO;
@@ -62,6 +67,9 @@ public class Drive extends SubsystemBase{
         modules[1] = new Module(frModuleIO, 1);
         modules[2] = new Module(blModuleIO, 2);
         modules[3] = new Module(brModuleIO, 3);
+
+        //FOR TEST ONLY
+        //PhotonCameraSim = new PhotonvisionIOSIM();
 
          AutoBuilder.configureHolonomic(
             this::getPose,
@@ -112,8 +120,11 @@ public class Drive extends SubsystemBase{
 
     
     public void periodic() {
-        Logger.recordOutput("Drive/MaxAngularVel", getMaxAngularSpeedRadPerSec());
 
+        /*
+              FOR TEST ONLY
+        PhotonCameraSim.periodic();
+        PhotonCameraSim.update(getPose());*/
 
         gyroIO.updateInputs(gyroInputs);
         Logger.processInputs("Drive/Gyro", gyroInputs);
@@ -211,6 +222,10 @@ public class Drive extends SubsystemBase{
 
   public Double getX() {
     return getPose().getX();
+  }
+
+  public Double getY() {
+    return getPose().getY();
   }
 
   public Rotation2d getRotation() {

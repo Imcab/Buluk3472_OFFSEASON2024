@@ -2,49 +2,37 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6987589597702026,
-      "y": 6.792496204376221
+      "x": 0.5266584753990173,
+      "y": 7.291573524475098
     },
-    "rotation": -119.92275034727712
+    "rotation": -91.16913828750343
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "ShootFromSpeaker"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "RightFar.1"
+            "pathName": "AmpPathToSpeaker.1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "SmartShoot"
+            "name": "Amp"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RightFar.2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "SmartShoot"
+            "pathName": "AmpPathToSpeaker.2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "RightFar.3"
+            "pathName": "AmpPathToSpeaker.3"
           }
         },
         {
@@ -56,6 +44,6 @@
       ]
     }
   },
-  "folder": "CHOREOFarNotes2024",
+  "folder": "CHOREOAMP2024",
   "choreoAuto": true
 }

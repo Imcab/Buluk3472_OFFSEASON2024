@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.5496401786804195,
+      "y": 7.340847492218021
+    },
+    "rotation": -90.97444258772313
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AmpPath.1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Amp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "AmpPath.2"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "CHOREOAMP2024",
+  "choreoAuto": true
+}

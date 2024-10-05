@@ -9,7 +9,8 @@ import edu.wpi.first.math.geometry.Transform3d;
 public interface VisionIO {
     @AutoLog
     public static class VisionIOInputs{
-        
+
+        //LIMELIGHT
         public double getLimelightY = 0.0;
         public double getLimelightX = 0.0;
         public boolean LimetargetFound = false;

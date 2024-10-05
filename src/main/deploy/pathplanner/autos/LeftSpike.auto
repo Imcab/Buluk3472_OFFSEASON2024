@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6406003832817078,
-      "y": 6.7789716720581055
+      "x": 0.6947144269943237,
+      "y": 6.806727409362793
     },
     "rotation": -118.61048555232409
   },
@@ -62,7 +62,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootFromSpeaker"
+            "name": "SmartShoot"
           }
         }
       ]

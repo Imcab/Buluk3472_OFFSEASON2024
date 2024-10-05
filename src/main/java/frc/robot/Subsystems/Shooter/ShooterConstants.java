@@ -13,7 +13,7 @@ public class ShooterConstants {
         public static final double KDSIM = 0.08;
 
         public static final int TurretPort = 0;
-        public static final int EncPort = 0;
+        public static final int EncDIOPORT = 0;
         public static final double offset = 0;
         public static final boolean TurretReversed = false;
 
