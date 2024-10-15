@@ -64,8 +64,7 @@
         },
         ".recording": {
           "open": true
-        },
-        "open": true
+        }
       },
       "SmartDashboard": {
         "VisionSystemSim-main": {

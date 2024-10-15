@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Subsystems.Intake.ConstantsIntake.IntakeConstants;
 
 public class Intake extends SubsystemBase{
 
@@ -23,8 +24,8 @@ public class Intake extends SubsystemBase{
 
          case REAL:
          case REPLAY:
-             FeedBackController = new PIDController(ConstantsIntake.IntakeConstants.kp, 0, 0.0);
-             FF = new SimpleMotorFeedforward(0, ConstantsIntake.IntakeConstants.kv);
+             FeedBackController = new PIDController(IntakeConstants.kp, 0, IntakeConstants.kd);
+             FF = new SimpleMotorFeedforward(IntakeConstants.ks, IntakeConstants.kv);
              break;
          case SIM:
              FeedBackController = new PIDController(0, 0, 0);

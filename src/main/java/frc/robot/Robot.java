@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -117,6 +118,13 @@ public class Robot extends LoggedRobot {
     Logger.recordOutput("RobotUtil3472/PDH/Temp", REV_PDH.getPDH_Temp());
     Logger.recordOutput("RobotUtil3472/PDH/Watts", REV_PDH.getPDH_Watts());
     
+  }
+
+  
+  public void initSendable(SendableBuilder builder){
+    builder.setSmartDashboardType("PIDController");
+    builder.addDoubleProperty("kP",null, null);
+
   }
 
   @Override
