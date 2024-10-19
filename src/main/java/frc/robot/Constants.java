@@ -4,7 +4,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-  public static final Mode currentMode = Mode.SIM;
+  public static final Mode currentMode = Mode.REAL;
   
   public static enum Mode {
     /** Running on a real robot. */

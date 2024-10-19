@@ -5,15 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.util.NoteVisualizer;
-import frc.robot.util.RobotUtil3472.DRIVERSTATION;
-import frc.robot.util.RobotUtil3472.REV_PDH;
-import frc.robot.util.RobotUtil3472.ROBOTSTATE;
-
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -75,49 +69,10 @@ public class Robot extends LoggedRobot {
     
     m_robotContainer = new RobotContainer();
   }
-
-  public PowerDistribution PDH(){
-    PowerDistribution PDH = new PowerDistribution(REV_PDH.PDH_CAN_ID, ModuleType.kRev);
-    return PDH;
-  }
-
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-    //OBTIENE LA PDH/////////
-    REV_PDH.getPDH(this::PDH);
-    /////////////////////////
-
-    //DRIVER STATION LOGGING//
-    Logger.recordOutput("RobotUtil3472/DriverStation/RemainingTime", DRIVERSTATION.getRemainingTime());
-    Logger.recordOutput("RobotUtil3472/DriverStation/MatchType", DRIVERSTATION.getMatch());
-    Logger.recordOutput("RobotUtil3472/DriverStation/Status/Auto/Auto", DRIVERSTATION.isAuto());
-    Logger.recordOutput("RobotUtil3472/DriverStation/Status/Auto/AutoEnabled", DRIVERSTATION.isAutonomousEnabled());
-    Logger.recordOutput("RobotUtil3472/DriverStation/Status/Teleop/Teleop", DRIVERSTATION.isTeleop());
-    Logger.recordOutput("RobotUtil3472/DriverStation/Status/Teleop/TeleopEnabled", DRIVERSTATION.isTeleopEnabled());
-    Logger.recordOutput("RobotUtil3472/DriverStation/Status/RobotEnabled", DRIVERSTATION.isRobotEnabled());
-    Logger.recordOutput("RobotUtil3472/DriverStation/Alliance/Blue", DRIVERSTATION.isBlue());
-    Logger.recordOutput("RobotUtil3472/DriverStation/Alliance/Red", DRIVERSTATION.isRed());
-    //ROBORIO LOGGING//
-    Logger.recordOutput("RobotUtil3472/RoboRio/Electrical/BatteryVoltage", ROBOTSTATE.getBatteryVoltage());
-    Logger.recordOutput("RobotUtil3472/RoboRio/Electrical/Current", ROBOTSTATE.getCurrent());
-    Logger.recordOutput("RobotUtil3472/RoboRio/Electrical/Voltage", ROBOTSTATE.getVoltage());
-    Logger.recordOutput("RobotUtil3472/RoboRio/Electrical/IsBrownout", ROBOTSTATE.isSystemBrownout());
-    Logger.recordOutput("RobotUtil3472/RoboRio/Temp", ROBOTSTATE.getTemperature());
-    Logger.recordOutput("RobotUtil3472/RoboRio/CAN/Utilization/CAN", ROBOTSTATE.getCANUtilization());
-    Logger.recordOutput("RobotUtil3472/RoboRio/CAN/Utilization/BUS", ROBOTSTATE.percentBusUtilization());
-    Logger.recordOutput("RobotUtil3472/RoboRio/CAN/BussOffCount", ROBOTSTATE.busOffCount());
-    Logger.recordOutput("RobotUtil3472/RoboRio/CAN/ErrorCount/recieve", ROBOTSTATE.receiveErrorCount());
-    Logger.recordOutput("RobotUtil3472/RoboRio/CAN/ErrorCount/transmit", ROBOTSTATE.transmitErrorCount());
-    Logger.recordOutput("RobotUtil3472/RoboRio/CAN/txFullCount", ROBOTSTATE.txFullCount());
-    //PDH LOGGING//
-    Logger.recordOutput("RobotUtil3472/PDH/Channels", REV_PDH.getPDHChannels());
-    Logger.recordOutput("RobotUtil3472/PDH/Current", REV_PDH.getPDH_AMPS());
-    Logger.recordOutput("RobotUtil3472/PDH/Energy", REV_PDH.getPDH_Energy());
-    Logger.recordOutput("RobotUtil3472/PDH/Temp", REV_PDH.getPDH_Temp());
-    Logger.recordOutput("RobotUtil3472/PDH/Watts", REV_PDH.getPDH_Watts());
-    
   }
 
   

@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Shooter.Turret.Turret;
-import frc.robot.commands.ShooterCommands.AlignShooter;
+import frc.robot.commands.ShooterCommands.Angle.AlignShooter;
 import frc.robot.commands.ShooterCommands.Turret.AlignTurret;
 
 public class ComplexIntaking extends SequentialCommandGroup{

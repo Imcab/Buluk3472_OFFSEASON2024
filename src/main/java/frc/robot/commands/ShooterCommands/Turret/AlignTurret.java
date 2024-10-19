@@ -1,7 +1,5 @@
 package frc.robot.commands.ShooterCommands.Turret;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
@@ -14,7 +12,6 @@ public class AlignTurret extends Command{
     private final Turret turret;
     private final Angle shooterangle;
     private final Double setpoint;
-    private final DoubleSupplier joystickSupplier;
     boolean isFinished;
 
 
@@ -24,39 +21,16 @@ public class AlignTurret extends Command{
         this.turret = turret;
         this.shooterangle = shooterangle;
         this.setpoint = setpoint;
-        this.joystickSupplier = null;
         addRequirements(turret);
     }
-    //con joystick
-    public AlignTurret(Turret turret, DoubleSupplier joystickSupplier, Angle shooterangle){
-
-        this.turret = turret;
-        this.shooterangle = shooterangle;
-        this.setpoint = null;
-        this.joystickSupplier = joystickSupplier;
-        addRequirements(turret);
-    }
+ 
     @Override
     public void initialize(){}
     @Override
     public void execute(){
-
         shooterangle.UpdateTurretZ(turret.getTurretPosition());
-
-        if(setpoint != null){
-
-            turret.runTurret(SmartTurret3472.flip(setpoint));            
-        }
-
-        if(joystickSupplier != null){
-            double joystickValue = joystickSupplier.getAsDouble();
-            
-            if (Math.abs(joystickValue) < 0.05){
-                joystickValue = 0;
-            }
-                turret.runWithJoystick(joystickValue);
-            }
-        }
+        turret.runTurret(SmartTurret3472.flip(setpoint));            
+    }
     
     @Override
     public void end(boolean interrupted) {

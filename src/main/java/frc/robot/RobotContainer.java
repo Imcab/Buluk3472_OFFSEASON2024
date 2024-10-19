@@ -11,7 +11,6 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,9 +41,11 @@ import frc.robot.commands.ComplexCommands.ComplexTurret;
 import frc.robot.commands.DriveCommands.DriveCommands;
 import frc.robot.commands.DriveCommands.SwerveAutoAlign;
 import frc.robot.commands.ElevatorCommands.ElevatorCommand;
-import frc.robot.commands.ShooterCommands.AlignShooter;
 import frc.robot.commands.ShooterCommands.Shoot;
+import frc.robot.commands.ShooterCommands.Angle.AlignJoystick;
+import frc.robot.commands.ShooterCommands.Angle.AlignShooter;
 import frc.robot.commands.ShooterCommands.Turret.AlignTurret;
+import frc.robot.commands.ShooterCommands.Turret.JoystickTurret;
 import frc.robot.commands.ShooterCommands.Turret.SmartAlignTurret;
 import frc.robot.util.NoteVisualizer;
 import frc.robot.Subsystems.Elevator.Elevator;
@@ -57,15 +58,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 public class RobotContainer {
 
-  //controles
-  //ps5 para pruebas en mi casa jajaj
-  private final CommandPS5Controller controller = new CommandPS5Controller(0);
-  private final CommandPS5Controller controller2 = new CommandPS5Controller(1);
-
-
-  //xbox para el robot
-  //private final CommandXboxController controller = new CommandXboxController(0);
-  //private final CommandXboxController controller2 = new CommandXboxController(1);
+  private final CommandXboxController controller = new CommandXboxController(0);
+  private final CommandXboxController controller2 = new CommandXboxController(1);
 
   //Cancha
   Field2d field = new Field2d();
@@ -79,7 +73,6 @@ public class RobotContainer {
   private final Angle shooterAngle;
   private final Elevator elevator;
   private final Wheels wheels;
-  //private final PhotonvisionIOSIM sim;
 
   SendableChooser<Command> m_chooser = new SendableChooser<>(); //for autonomous
 
@@ -155,12 +148,8 @@ public class RobotContainer {
       
       }
 
-
-    //sim = new PhotonvisionIOSIM();
-    
-    turret.setDefaultCommand(new AlignTurret(turret,
-      ()-> -controller2.getLeftX(), shooterAngle
-      
+    turret.setDefaultCommand(new JoystickTurret(turret,
+      ()-> -controller2.getLeftX()
     ));
 
     NamedCommands.registerCommand("ShootFromSpeaker", 
@@ -194,7 +183,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("AmpAlign", new SwerveAutoAlign(drive, new Pose2d(1.80, 7.7, new Rotation2d(Math.toRadians(86)))));
 
-    shooterAngle.setDefaultCommand(new AlignShooter(shooterAngle ,()-> -controller2.getLeftY()));
+    shooterAngle.setDefaultCommand(new AlignJoystick(shooterAngle ,()-> -controller2.getLeftY()));
 
     ///REGISTRAR COMANDOS POR NOMBRE (PARA AUTONOMO Y NORMAL)//////
     
@@ -235,12 +224,12 @@ public class RobotContainer {
 
     //controller2.L1().whileTrue(NamedCommands.getCommand("Amp"));
 
-    controller2.cross().whileTrue(NamedCommands.getCommand("AutoAlignTurret"));
-    controller2.triangle().whileTrue(NamedCommands.getCommand("ShootFromSpeaker"));
-    controller2.circle().whileTrue(new AlignTurret(turret, -15.0, shooterAngle));
+    //controller2.cross().whileTrue(NamedCommands.getCommand("AutoAlignTurret"));
+    //controller2.triangle().whileTrue(NamedCommands.getCommand("ShootFromSpeaker"));
+    //controller2.circle().whileTrue(new AlignTurret(turret, -15.0, shooterAngle));
 
-    controller.cross().whileTrue(NamedCommands.getCommand("TrapAlign"));
-    controller.circle().whileTrue(NamedCommands.getCommand("AmpAlign"));
+    //controller.cross().whileTrue(NamedCommands.getCommand("TrapAlign"));
+    //controller.circle().whileTrue(NamedCommands.getCommand("AmpAlign"));
 
   }
 

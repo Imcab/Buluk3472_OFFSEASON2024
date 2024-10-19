@@ -8,8 +8,8 @@ import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
 import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.Wheels;
 import frc.robot.Subsystems.Shooter.Turret.Turret;
 import frc.robot.Subsystems.Vision.Vision;
-import frc.robot.commands.ShooterCommands.AlignShooter;
 import frc.robot.commands.ShooterCommands.Shoot;
+import frc.robot.commands.ShooterCommands.Angle.AlignShooter;
 import frc.robot.commands.ShooterCommands.Turret.AlignTurret;
 import frc.robot.util.NoteVisualizer;
 

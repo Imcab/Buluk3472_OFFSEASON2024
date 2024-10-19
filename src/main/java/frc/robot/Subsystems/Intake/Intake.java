@@ -47,7 +47,7 @@ public class Intake extends SubsystemBase{
     }
 
     public void setIntake(double setpointRPM){
-        io.setIntake(FF.calculate(Units.rotationsPerMinuteToRadiansPerSecond(setpointRPM)) + FeedBackController.calculate(inputs.IntakeVelocityRadPerSec, Units.rotationsPerMinuteToRadiansPerSecond(setpointRPM)));
+        io.setIntake(FF.calculate(Units.rotationsPerMinuteToRadiansPerSecond(setpointRPM)) + FeedBackController.calculate(Units.rotationsPerMinuteToRadiansPerSecond(inputs.IntakeRpm), Units.rotationsPerMinuteToRadiansPerSecond(setpointRPM)));
     }
     
     public void stop() {

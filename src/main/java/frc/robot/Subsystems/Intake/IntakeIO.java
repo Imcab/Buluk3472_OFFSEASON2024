@@ -9,6 +9,7 @@ public interface IntakeIO{
 
       public double IntakeAppliedVolts = 0.0;
       public double IntakeVelocityRadPerSec = 0.0;
+      public double IntakeRpm = 0.0;
       public double [] IntakeCurrentAmps = new double[] {};
 
     }

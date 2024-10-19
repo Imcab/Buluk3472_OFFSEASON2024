@@ -6,10 +6,15 @@ public interface WheelsIO {
     @AutoLog
     public static class WheelsIOInputs{
 
-      public double WheelsAppliedVolts = 0.0;
-      public double WheelsVelocityRadPerSec = 0;
-      public double WheelsVelocityRPM = 0;
-      public double [] WheelsCurrentAmps = new double[] {};
+      public double LWheelsAppliedVolts = 0.0;
+      public double LWheelsVelocityRadPerSec = 0;
+      public double LWheelsVelocityRPM = 0;
+      public double [] LWheelsCurrentAmps = new double[] {};
+
+      public double RWheelsAppliedVolts = 0.0;
+      public double RWheelsVelocityRadPerSec = 0;
+      public double RWheelsVelocityRPM = 0;
+      public double [] RWheelsCurrentAmps = new double[] {};
 
   }
 

@@ -61,11 +61,11 @@ public class Wheels extends SubsystemBase{
       double velocitysetpoint = Units.rotationsPerMinuteToRadiansPerSecond(RPM);
       Logger.recordOutput("Shooter/Outake/SetpointRPM", RPM);
       Logger.recordOutput("Shooter/Outake/SetpointRadPerSec", velocitysetpoint);
-      io.setWheels(FeedForwardController.calculate(velocitysetpoint) + PIDController.calculate(inputs.WheelsVelocityRadPerSec, velocitysetpoint));
+      io.setWheels(FeedForwardController.calculate(velocitysetpoint) + PIDController.calculate(inputs.RWheelsVelocityRadPerSec, velocitysetpoint));
   }
 
   public double getShooterRPM(){
-      return Units.radiansPerSecondToRotationsPerMinute(inputs.WheelsVelocityRadPerSec);
+      return Units.radiansPerSecondToRotationsPerMinute(inputs.RWheelsVelocityRadPerSec);
   }
 
   public void stop(){

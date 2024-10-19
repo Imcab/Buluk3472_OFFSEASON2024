@@ -16,10 +16,10 @@ public class WheelsIOSim implements WheelsIO{
     public void updateInputs(WheelsIOInputs inputs){
         Wheels.update(LOOP_PERIOD_SECS);
 
-        inputs.WheelsAppliedVolts = WheelAppliedVolts;
-        inputs.WheelsVelocityRadPerSec = Wheels.getAngularVelocityRadPerSec();
-        inputs.WheelsVelocityRPM = Wheels.getAngularVelocityRPM();
-        inputs.WheelsCurrentAmps = new double[]{Math.abs(Wheels.getCurrentDrawAmps())};
+        inputs.RWheelsAppliedVolts = WheelAppliedVolts;
+        inputs.RWheelsVelocityRadPerSec = Wheels.getAngularVelocityRadPerSec();
+        inputs.RWheelsVelocityRPM = Wheels.getAngularVelocityRPM();
+        inputs.RWheelsCurrentAmps = new double[]{Math.abs(Wheels.getCurrentDrawAmps())};
     }
 
     @Override

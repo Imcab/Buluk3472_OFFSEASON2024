@@ -47,7 +47,7 @@ public class TurretIOSparkMax implements TurretIO{
 
     @Override
     public void updateInputs(TurretIOInputs inputs){
-
+        
         double Value = Units.rotationsToDegrees(ThroughBore.getAbsolutePosition());
 
         Rotation2d angle = new Rotation2d(Value);

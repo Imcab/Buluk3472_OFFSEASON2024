@@ -40,6 +40,7 @@ public class IntakeIOSparkMax implements IntakeIO{
         inputs.IntakeAppliedVolts = Intake.getAppliedOutput() * Intake.getBusVoltage();
         inputs.IntakeVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(enc_intake.getVelocity()/IntakeConstants.ratio);
         inputs.IntakeCurrentAmps = new double[]{Intake.getOutputCurrent()};
+        inputs.IntakeRpm = enc_intake.getVelocity()/IntakeConstants.ratio;
     }
 
     @Override
