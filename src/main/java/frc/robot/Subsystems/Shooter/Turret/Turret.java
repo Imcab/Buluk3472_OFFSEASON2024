@@ -7,11 +7,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.LimitYaw3472;
 import frc.robot.Constants;
 import frc.robot.Subsystems.Shooter.ShooterConstants.TurretConstants;
-import frc.robot.util.HPPMathLib;
 import frc.robot.util.NoteVisualizer;
 import frc.robot.util.SmartTurret3472;
 
@@ -19,28 +20,30 @@ public class Turret extends SubsystemBase{
 
    private final TurretIO io;
    private final TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
-   private final PIDController PIDController;
-   private Rotation2d setpoint = null;
-   private Double joystickValue = null;
+   private final PIDController PIDController, lim;
 
    public Turret(TurretIO io){
         this.io = io;
-        joystickValue = null;
-
+  
         switch (Constants.currentMode) {
       case REAL:
       case REPLAY:
-        PIDController = new PIDController(TurretConstants.kP, 0, TurretConstants.KD);
+        PIDController = new PIDController(TurretConstants.turretConfig.getP(), TurretConstants.turretConfig.getI(), TurretConstants.turretConfig.getD());
+        lim = new PIDController(TurretConstants.limeConfig.getP(), TurretConstants.limeConfig.getI(), TurretConstants.limeConfig.getD());
         break;
       case SIM:
-        PIDController = new PIDController(TurretConstants.kPSIM, 0, TurretConstants.KDSIM);
+        PIDController = new PIDController(TurretConstants.simTurretConfig.getP(), TurretConstants.simTurretConfig.getI(), TurretConstants.simTurretConfig.getD());
+        lim = new PIDController(TurretConstants.limeConfig.getP(), TurretConstants.limeConfig.getI(), TurretConstants.limeConfig.getD());
         break;
       default:
         PIDController = new PIDController(0, 0, 0);
+        lim = new PIDController(TurretConstants.limeConfig.getP(), TurretConstants.limeConfig.getI(), TurretConstants.limeConfig.getD());
         break;
     }
-    PIDController.enableContinuousInput(-Math.PI, Math.PI);
+    PIDController.enableContinuousInput(-180, 180);
     
+    //PIDController.setTolerance(4);
+
     setBrakeMode(true);
    }
 
@@ -54,12 +57,8 @@ public class Turret extends SubsystemBase{
         Logger.recordOutput("SmartTurret/Vectors/TurretValue", getYaw());
         Logger.recordOutput("Shooter/Turret/PIDVALUE", new Rotation2d().getRadians());
         Logger.recordOutput("Shooter/Turret/TURRETLAPS", getLaps());
-        Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "");
         Logger.recordOutput("SmartTurret/Vectors/SpeakerVector", SmartTurret3472.ToSpeaker());
 
-        if (setpoint == null) {
-          Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "NO_SETPOINT");
-        }
         //SetupNoteVisualizer
         NoteVisualizer.setturretyawPoseSupplier(this::getYaw);
         //SetupSmartTurret
@@ -67,42 +66,47 @@ public class Turret extends SubsystemBase{
         //SetupLimiYaw
         LimitYaw3472.setLaps(this::getLaps);
         /////////////////////
-        
+
+        SmartDashboard.putNumber("Encoder Torreta", getDegrees());  
    }
    public Pose3d getPose3d(){
-      Pose2d turretpose = new Pose2d(new Translation2d(), new Rotation2d(inputs.TurretPosition.getRadians()));
+      Pose2d turretpose = new Pose2d(new Translation2d(), new Rotation2d(inputs.TurretPosition));
       return new Pose3d(turretpose);
    }
    public Rotation2d getYaw(){
-      return new Rotation2d(HPPMathLib.coterminalradianes(inputs.TurretPosition.getRadians()));
+      return new Rotation2d((getRadians()));
    }
+   public double getDegrees(){
+      return inputs.TurretPosition;
+   }
+   public double getRadians(){
+      return Units.degreesToRadians(inputs.TurretPosition);
+   }
+
    public double getLaps(){
       return inputs.TurretLaps;
    }
 
    public void runTurret(double angle){
-      setpoint = new Rotation2d(angle);
-      io.setTurret(PIDController.calculate(getYaw().getRadians(), setpoint.getRadians()));
-      Logger.recordOutput("Shooter/Turret/PIDVALUE", setpoint.getRadians());
+      
+      io.setTurret(-PIDController.calculate(getDegrees(), angle));
+      Logger.recordOutput("Shooter/Turret/PIDVALUE", angle);
       Logger.recordOutput("Shooter/Turret/SETPOINTSFINDED", "FIND_SETPOINT");
    }
+
    public void runSmart(){
-      io.setTurret(PIDController.calculate(SmartTurret3472.getOmega(), 0));
+      io.setTurret(-PIDController.calculate(SmartTurret3472.getOmega(), 0));
+      SmartDashboard.putNumber("PID", -PIDController.calculate(SmartTurret3472.getOmega(), 0));
    }
+
    public void runWithJoystick(double speed){
-      joystickValue = speed;
-      io.setTurret(joystickValue);
+      io.setTurret(speed);
    }
    public void runVision(double TX){
-      io.setTurret(-(PIDController.calculate(TX, 0)));   
-   }
-   public Rotation2d getTurretPosition(){
-      return inputs.TurretPosition;
+      io.setTurret(-(lim.calculate(TX, 0)));   
    }
    public void stop() {
     io.setTurret(0.0);
-    setpoint = null;
-    joystickValue = null; 
   }
    public void setBrakeMode(boolean enabled) {
     io.setTurretBrakeMode(enabled);

@@ -4,6 +4,8 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase{
@@ -18,9 +20,9 @@ public class Vision extends SubsystemBase{
    }
    
    public void periodic(){
-
-        io.updateInputs(inputs);
-        Logger.processInputs("Vision/VisionInputs", inputs);
+         SmartDashboard.putBoolean("Target", LimelighttargetFound());
+         io.updateInputs(inputs);
+         Logger.processInputs("Vision/VisionInputs", inputs);
    }
    public AprilTagFieldLayout gFieldLayout(){
       return aprilTagFieldLayout;
@@ -35,4 +37,7 @@ public class Vision extends SubsystemBase{
      return inputs.LimetargetFound;
    }
    
+   public void blink(){
+      io.limelightBlink();
+   }
 } 

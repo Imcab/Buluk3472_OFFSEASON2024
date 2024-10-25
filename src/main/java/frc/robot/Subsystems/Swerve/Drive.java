@@ -253,5 +253,9 @@ public class Drive extends SubsystemBase{
   public double getMaxAngularSpeedRadPerSec() {
     return MAX_ANGULAR_SPEED;
   }
+  
+  public void resetHeading(){
+    gyroIO.reset();
+  }
 
 }
