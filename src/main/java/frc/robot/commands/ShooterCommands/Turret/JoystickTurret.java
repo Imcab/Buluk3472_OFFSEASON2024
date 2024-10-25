@@ -30,12 +30,14 @@ public class JoystickTurret extends Command{
                 joystickValue = 0;
             }
             
-            if (LimitYaw3472.shouldFix()) {
+            /*if (LimitYaw3472.shouldFix()) {
                 turret.runWithJoystick(0);
             }
             else{
-                turret.runWithJoystick(joystickValue);
-            }
+                
+            }*/
+
+            turret.runWithJoystick(joystickValue);
             
     }
     @Override

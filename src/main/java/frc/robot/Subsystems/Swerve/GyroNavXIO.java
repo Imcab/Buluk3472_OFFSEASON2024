@@ -27,5 +27,10 @@ public class GyroNavXIO implements GyroIO{
         inputs.Gyroangle = Math.IEEEremainder(navX.getAngle(), 360);
         inputs.Gyrorotation2d = Rotation2d.fromDegrees(-inputs.Gyroangle);
     }
+
+    @Override
+    public void reset(){
+        navX.reset();
+    }
     
 }

@@ -6,13 +6,7 @@ import org.littletonrobotics.junction.AutoLog;
 public interface IndexerIO {
     @AutoLog
     public class IndexerIOInputs{
-
-        public double IndexerAppliedVolts = 0.0;
-        public double IndexerVelocityRadPerSec = 0.0;
-        public double IndexerVelocityRPM = 0.0;
-        public double [] IndexerCurrentAmps = new double[] {};
         public boolean BeamSensor = false;
-
     }
     
     /** Updates the set of loggable inputs. */

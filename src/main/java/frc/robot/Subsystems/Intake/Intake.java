@@ -24,7 +24,7 @@ public class Intake extends SubsystemBase{
 
          case REAL:
          case REPLAY:
-             FeedBackController = new PIDController(IntakeConstants.kp, 0, IntakeConstants.kd);
+             FeedBackController = new PIDController(ConstantsIntake.IntakeConstants.kp, 0, IntakeConstants.kd);
              FF = new SimpleMotorFeedforward(IntakeConstants.ks, IntakeConstants.kv);
              break;
          case SIM:
@@ -37,7 +37,7 @@ public class Intake extends SubsystemBase{
            break;
 
         }
-         setBrakeMode(true);
+         setBrakeMode(false);
     }
 
     public void periodic(){
@@ -47,7 +47,7 @@ public class Intake extends SubsystemBase{
     }
 
     public void setIntake(double setpointRPM){
-        io.setIntake(FF.calculate(Units.rotationsPerMinuteToRadiansPerSecond(setpointRPM)) + FeedBackController.calculate(Units.rotationsPerMinuteToRadiansPerSecond(inputs.IntakeRpm), Units.rotationsPerMinuteToRadiansPerSecond(setpointRPM)));
+        io.setIntake(FF.calculate(Units.rotationsPerMinuteToRadiansPerSecond(setpointRPM)) + FeedBackController.calculate(Units.rotationsPerMinuteToRadiansPerSecond(inputs.IntakeVelocityRadPerSec), Units.rotationsPerMinuteToRadiansPerSecond(setpointRPM)));
     }
     
     public void stop() {

@@ -27,7 +27,7 @@ public class AlignJoystick extends Command{
                 joystickValue = 0;
             }
 
-            shooterAngle.runWithJoystick(joystickValue);
+            shooterAngle.runSpeed(joystickValue);
         
     }
     

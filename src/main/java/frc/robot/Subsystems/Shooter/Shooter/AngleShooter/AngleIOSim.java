@@ -33,9 +33,9 @@ public class AngleIOSim implements AngleIO{
         shootersim.update(LOOP_PERIOD_SECS);
         
         inputs.AngleAppliedVolts = shooterAngleAppliedVolts;
-        inputs.ShooterPosition = new Rotation2d(shootersim.getAngleRads());
+        inputs.ShooterPosition = shootersim.getAngleRads();
         inputs.AngleVelocityRadPerSec = shootersim.getVelocityRadPerSec();
-        inputs.AngleCurrentAmps = new double[]{Math.abs(shootersim.getCurrentDrawAmps())};
+        //inputs.AngleCurrentAmps = new double[]{Math.abs(shootersim.getCurrentDrawAmps())};
     }
 
     @Override

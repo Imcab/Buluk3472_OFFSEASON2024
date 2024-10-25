@@ -18,15 +18,17 @@ public class WheelsIOSim implements WheelsIO{
 
         inputs.RWheelsAppliedVolts = WheelAppliedVolts;
         inputs.RWheelsVelocityRadPerSec = Wheels.getAngularVelocityRadPerSec();
-        inputs.RWheelsVelocityRPM = Wheels.getAngularVelocityRPM();
-        inputs.RWheelsCurrentAmps = new double[]{Math.abs(Wheels.getCurrentDrawAmps())};
+        inputs.RWheelsVelocityRPS = Wheels.getAngularVelocityRPM();
+        inputs.RWheelsCurrentAmps = Wheels.getCurrentDrawAmps();
     }
 
     @Override
-    public void setWheels(double voltage){
+    public void setWheels(double voltage, double ff){
         WheelAppliedVolts = MathUtil.clamp(voltage, -12.0, 12.0);
         Wheels.setInputVoltage(voltage);
     }
+
+    
 }
 
 
