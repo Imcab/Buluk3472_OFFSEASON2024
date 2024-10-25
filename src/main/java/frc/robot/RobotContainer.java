@@ -4,56 +4,65 @@
 
 package frc.robot;
 
-import com.choreo.lib.ChoreoTrajectory;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
+import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.AngleIO;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.AngleIOKraken;
 import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.AngleIOSim;
-import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.Wheels;
-import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.WheelsIO;
-import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.WheelsIOSim;
-import frc.robot.Subsystems.Shooter.Turret.Turret;
-import frc.robot.Subsystems.Shooter.Turret.TurretIO;
-import frc.robot.Subsystems.Shooter.Turret.TurretIOSim;
-import frc.robot.Subsystems.Shooter.Turret.TurretIOSparkMax;
+import frc.robot.Subsystems.Shooter.Shooter.Outake.Indexer.Indexer;
+import frc.robot.Subsystems.Shooter.Shooter.Outake.Indexer.IndexerIO;
+import frc.robot.Subsystems.Shooter.Shooter.Outake.Indexer.IndexerIOSparkMax;
+import frc.robot.Subsystems.Hanger.Hanger;
+import frc.robot.Subsystems.Hanger.HangerIO;
+import frc.robot.Subsystems.Hanger.HangerIOSparkMax;
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Intake.IntakeIO;
+import frc.robot.Subsystems.Intake.IntakeIOSparkMax;
 import frc.robot.Subsystems.Swerve.Drive;
 import frc.robot.Subsystems.Swerve.GyroIO;
 import frc.robot.Subsystems.Swerve.GyroNavXIO;
 import frc.robot.Subsystems.Swerve.ModuleIO;
 import frc.robot.Subsystems.Swerve.ModuleIOSIM;
 import frc.robot.Subsystems.Swerve.ModuleIOSparkMax;
-//import frc.robot.Subsystems.Vision.PhotonvisionIOSIM;
 import frc.robot.Subsystems.Vision.Vision;
-import frc.robot.Subsystems.Vision.VisionIO;
 import frc.robot.Subsystems.Vision.VisionSystemIO;
-import frc.robot.commands.ComplexCommands.ComplexIntaking;
-import frc.robot.commands.ComplexCommands.ComplexTurret;
-import frc.robot.commands.DriveCommands.DriveCommands;
-import frc.robot.commands.DriveCommands.SwerveAutoAlign;
-import frc.robot.commands.ElevatorCommands.ElevatorCommand;
+import frc.robot.Subsystems.Shooter.Turret.Turret;
+import frc.robot.Subsystems.Shooter.Turret.TurretIO;
+import frc.robot.Subsystems.Shooter.Turret.TurretIOSim;
+import frc.robot.Subsystems.Shooter.Turret.TurretIOSparkMax;
+import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.Wheels;
+import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.WheelsIO;
+import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.WheelsIOKraken;
+import frc.robot.Subsystems.Shooter.Shooter.Outake.Wheels.WheelsIOSim;
+import frc.robot.commands.ShooterCommands.IntakeCommand;
+import frc.robot.commands.ShooterCommands.IntakeFromShooter;
 import frc.robot.commands.ShooterCommands.Shoot;
 import frc.robot.commands.ShooterCommands.Angle.AlignJoystick;
 import frc.robot.commands.ShooterCommands.Angle.AlignShooter;
+import frc.robot.commands.ShooterCommands.Angle.AlignVision;
 import frc.robot.commands.ShooterCommands.Turret.AlignTurret;
 import frc.robot.commands.ShooterCommands.Turret.JoystickTurret;
 import frc.robot.commands.ShooterCommands.Turret.SmartAlignTurret;
+import frc.robot.commands.ShooterCommands.Turret.VisionTurret;
+import frc.robot.commands.Stop;
+//import frc.robot.Subsystems.Vision.PhotonvisionIOSIM;
+import frc.robot.commands.DriveCommands.DriveCommands;
+import frc.robot.commands.DriveCommands.ResetHeading;
+import frc.robot.commands.DriveCommands.SwerveAutoAlign;
+import frc.robot.commands.Hanger.HangerManual;
 import frc.robot.util.NoteVisualizer;
-import frc.robot.Subsystems.Elevator.Elevator;
-import frc.robot.Subsystems.Elevator.ElevatorIO;
-import frc.robot.Subsystems.Elevator.ElevatorIOSIM;
-import frc.robot.Subsystems.Elevator.ElevatorIOSparkMax;
-import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.Angle;
-import frc.robot.Subsystems.Shooter.Shooter.AngleShooter.AngleIO;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 public class RobotContainer {
@@ -61,18 +70,15 @@ public class RobotContainer {
   private final CommandXboxController controller = new CommandXboxController(0);
   private final CommandXboxController controller2 = new CommandXboxController(1);
 
-  //Cancha
-  Field2d field = new Field2d();
-
-  ChoreoTrajectory CenterSpike;
-
   //subsistemas
   private final Drive drive;
+  private final Intake intake;
   private final Turret turret;
-  private final Vision vision;
-  private final Angle shooterAngle;
-  private final Elevator elevator;
   private final Wheels wheels;
+  private final Indexer index;
+  private final Angle angle;
+  private final Hanger hanger;
+  private final Vision vision;
 
   SendableChooser<Command> m_chooser = new SendableChooser<>(); //for autonomous
 
@@ -85,21 +91,25 @@ public class RobotContainer {
         // Real robot, instantiate hardware IO implementations
         drive =
             new Drive(
-                new GyroNavXIO(),
+                new GyroNavXIO() {},
                 new ModuleIOSparkMax(0),
                 new ModuleIOSparkMax(1),
                 new ModuleIOSparkMax(2),
                 new ModuleIOSparkMax(3));
 
+        intake = new Intake(new IntakeIOSparkMax());
+
         turret = new Turret(new TurretIOSparkMax());
 
+        wheels = new Wheels(new WheelsIOKraken());
+
+        index = new Indexer(new IndexerIOSparkMax());
+
+        angle = new Angle(new AngleIOKraken());
+
+        hanger = new Hanger(new HangerIOSparkMax());
+
         vision = new Vision(new VisionSystemIO());
-
-        shooterAngle = new Angle(new AngleIOKraken());
-
-        elevator = new Elevator(new ElevatorIOSparkMax());
-
-        wheels = new Wheels(new WheelsIO() {});
 
         break;
 
@@ -111,16 +121,19 @@ public class RobotContainer {
                 new ModuleIOSIM(),
                 new ModuleIOSIM(),
                 new ModuleIOSIM());
-
+        intake = new Intake(new IntakeIO() {});
+        
         turret = new Turret(new TurretIOSim());
 
-        vision = new Vision(new VisionIO(){});
-
-        shooterAngle = new Angle(new AngleIOSim());
-
-        elevator = new Elevator(new ElevatorIOSIM());
-
         wheels = new Wheels(new WheelsIOSim());
+
+        index = new Indexer(new IndexerIO() {});
+
+        angle = new Angle(new AngleIOSim());
+
+        hanger = new Hanger(new HangerIO() {});
+
+        vision = new Vision(new VisionSystemIO());
 
         break;
 
@@ -134,102 +147,75 @@ public class RobotContainer {
                 new ModuleIO() {},
                 new ModuleIO() {});
 
+        intake = new Intake(new IntakeIO() {});
+
         turret = new Turret(new TurretIO() {});
-
-        vision = new Vision(new VisionIO() {});
-
-        shooterAngle = new Angle(new AngleIO() {});
-
-        elevator = new Elevator(new ElevatorIO() {});
 
         wheels = new Wheels(new WheelsIO() {});
 
+        index = new Indexer(new IndexerIO() {});
+
+        angle = new Angle(new AngleIO() {});
+
+        hanger = new Hanger(new HangerIO() {});
+
+        vision = new Vision(new VisionSystemIO());
+
         break;
       
-      }
-
-    turret.setDefaultCommand(new JoystickTurret(turret,
-      ()-> -controller2.getLeftX()
-    ));
-
-    NamedCommands.registerCommand("ShootFromSpeaker", 
-    new ComplexTurret(turret, 0.0, shooterAngle, 50.0, wheels, 5000.0));
-
-    NamedCommands.registerCommand("Intaking", 
-    new ComplexIntaking(turret, 0.0, shooterAngle, 35.0));
-
-    NamedCommands.registerCommand("Shoot",
-    new ComplexTurret(turret, 110.0, shooterAngle, 32.0, wheels, 5000.0));
-    
-    NamedCommands.registerCommand("ShootFromLine", 
-    new ComplexTurret(turret, 91.0,  shooterAngle,  32.0, wheels, 5000.0));
-
-    NamedCommands.registerCommand("ShootFromFar",
-    new ComplexTurret(turret, 110.0, shooterAngle, 18.0, wheels, 5000.0));
-
-     NamedCommands.registerCommand("ShootFromFar90",
-    new ComplexTurret(turret, 114.0, shooterAngle, 18.0, wheels, 5000.0));
-
-    NamedCommands.registerCommand("Oox2pzShoot",
-    new ComplexTurret(turret, 120.0, shooterAngle, 32.0, wheels, 5000.0));
-
-    //NamedCommands.registerCommand("Amp", null);
-
-    NamedCommands.registerCommand("AutoAlignTurret", new SmartAlignTurret(turret, shooterAngle));
-
-    NamedCommands.registerCommand("SmartShoot", new SequentialCommandGroup(new SmartAlignTurret(turret, shooterAngle), new AlignShooter(shooterAngle, Units.degreesToRadians(32.0))).andThen( new Shoot(wheels, 5000.0).andThen(NoteVisualizer.shoot())));
-
-    NamedCommands.registerCommand("TrapAlign", new SwerveAutoAlign(drive, new Pose2d(4.001, 5.247, new Rotation2d(Math.toRadians(-57.9999)))));
-
-    NamedCommands.registerCommand("AmpAlign", new SwerveAutoAlign(drive, new Pose2d(1.80, 7.7, new Rotation2d(Math.toRadians(86)))));
-
-    shooterAngle.setDefaultCommand(new AlignJoystick(shooterAngle ,()-> -controller2.getLeftY()));
+    }
 
     ///REGISTRAR COMANDOS POR NOMBRE (PARA AUTONOMO Y NORMAL)//////
     
     //////////////////////// 
     //------AUTO_REGISTER---//
-    m_chooser.addOption("4PzCenterNotes(CENTER)", new PathPlannerAuto("CenterSpike"));
-    m_chooser.addOption("4pzCenterNotes(LEFT)", new PathPlannerAuto("LeftSpike"));
-    m_chooser.addOption("4pzCenterNotes(RIGHT)", new PathPlannerAuto("RightSpike"));
-
-    m_chooser.addOption("4pzFarNotes (RIGHT)", new PathPlannerAuto("RightFar"));
-    m_chooser.addOption("4pzFarNotes (CENTER)", new PathPlannerAuto("CenterFar"));
-    m_chooser.addOption("3pzFarNotes (LEFT)", new PathPlannerAuto("LeftFar"));
-
-    m_chooser.addOption("1pzExit(RIGHT)", new PathPlannerAuto("RightLeave"));
-    m_chooser.addOption("1pzExit(LEFT)", new PathPlannerAuto("LeftLeave"));
-    m_chooser.addOption("1pzExit(CENTER)", new PathPlannerAuto("CenterLeave"));
-
-    m_chooser.addOption("1PZAMP", new PathPlannerAuto("AMP1PZ"));
-    m_chooser.addOption("2PZAMP", new PathPlannerAuto("AMP2PZ"));
-    m_chooser.addOption("1PZAMP_1PZSpeaker", new PathPlannerAuto("AMP1PZtoSpeaker"));
     //--------------------//
     ///////////////////////
 
-    SmartDashboard.putData(m_chooser);
-
     configureBindings();
-
 
   }
 
-
-
   private void configureBindings() {
 
-    //Drive
+    ////-----------------Main Driver Triggers-------------------------
+
+    //Drive the chassis
     drive.setDefaultCommand(DriveCommands.joystickDrive(drive, ()-> -controller.getLeftY(),  ()-> -controller.getLeftX(),  ()-> -controller.getRightX()));
     //////
 
-    //controller2.L1().whileTrue(NamedCommands.getCommand("Amp"));
+    //Resetea la pose del robot despues de presionar 1.5 segundos el boton de options
+    controller.start().debounce(0.15).whileTrue(new ResetHeading(drive));
 
-    //controller2.cross().whileTrue(NamedCommands.getCommand("AutoAlignTurret"));
-    //controller2.triangle().whileTrue(NamedCommands.getCommand("ShootFromSpeaker"));
-    //controller2.circle().whileTrue(new AlignTurret(turret, -15.0, shooterAngle));
+    //Intake
+    controller.a().whileTrue(new IntakeCommand(intake, index,turret,442, 0.2,false));
+    controller.b().whileTrue(new IntakeCommand(intake,index,turret, -442, -0.2,true));
 
-    //controller.cross().whileTrue(NamedCommands.getCommand("TrapAlign"));
-    //controller.circle().whileTrue(NamedCommands.getCommand("AmpAlign"));
+    //Hanger
+    controller.rightBumper().whileTrue(new HangerManual(hanger, 0.9));
+    controller.leftBumper().whileTrue(new HangerManual(hanger, -0.9));
+
+    wheels.setDefaultCommand(new IntakeFromShooter(wheels, index, ()-> controller.getLeftTriggerAxis()));
+    //-----------------Mechanism Driver Triggers-------------------------
+
+    //Shoot
+    controller2.rightBumper().whileTrue(new Shoot(wheels, index, 90.0));
+
+    controller2.a().toggleOnTrue(new AlignShooter(angle, 25.0));
+
+    //controller2.b().whileTrue(new AlignTurret(turret, 80.0));
+
+    turret.setDefaultCommand(new JoystickTurret(turret,()-> -controller2.getRightX() * 0.05));
+
+    angle.setDefaultCommand(new AlignJoystick(angle, ()-> -controller2.getLeftY() * 0.6));
+  
+    controller2.povLeft().whileTrue(new Stop(angle, turret));
+
+    controller2.y().whileTrue(new AlignVision(vision, angle));
+
+    controller2.x().whileTrue(new SmartAlignTurret(turret));
+
+    controller2.b().whileTrue(new VisionTurret(turret, vision));
 
   }
 

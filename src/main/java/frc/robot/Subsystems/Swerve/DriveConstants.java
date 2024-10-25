@@ -4,7 +4,7 @@ import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
 
-    public static final double kP = 7.0; 
+    public static final double kP = 6.8; 
 
     public static final double kPSIM = 10.0;
 
@@ -49,7 +49,7 @@ public class DriveConstants {
         public static final int EncPort = 0; 
         public static final double offset = 0;
  
-        public static final boolean DrivemotorReversed = false;
+        public static final boolean DrivemotorReversed = true;
         public static final boolean TurnmotorReversed = true; 
 
     }

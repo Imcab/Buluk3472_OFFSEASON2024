@@ -3,11 +3,10 @@ package frc.robot.Subsystems.Intake;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 
-import edu.wpi.first.math.util.Units;
-import frc.robot.Subsystems.Intake.ConstantsIntake.IntakeConstants;
-
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import frc.robot.Subsystems.Intake.ConstantsIntake.IntakeConstants;
 
 public class IntakeIOSparkMax implements IntakeIO{
 
@@ -38,7 +37,7 @@ public class IntakeIOSparkMax implements IntakeIO{
      @Override
     public void updateInputs(IntakeIOInputs inputs){
         inputs.IntakeAppliedVolts = Intake.getAppliedOutput() * Intake.getBusVoltage();
-        inputs.IntakeVelocityRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(enc_intake.getVelocity()/IntakeConstants.ratio);
+        inputs.IntakeVelocityRadPerSec = enc_intake.getVelocity()/12;
         inputs.IntakeCurrentAmps = new double[]{Intake.getOutputCurrent()};
         inputs.IntakeRpm = enc_intake.getVelocity()/IntakeConstants.ratio;
     }

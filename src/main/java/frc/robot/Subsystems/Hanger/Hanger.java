@@ -22,8 +22,8 @@ public class Hanger extends SubsystemBase {
         switch (Constants.currentMode) {
             case REAL:
             case REPLAY:
-                PIDController = new PIDController(ConstantsHanger.kP, 0, ConstantsHanger.KD);
-                FeedForwardController = new SimpleMotorFeedforward(ConstantsHanger.kS , ConstantsHanger.kV);
+                PIDController = new PIDController(ConstantsHanger.hangerConfig.getP(), ConstantsHanger.hangerConfig.getI(), ConstantsHanger.hangerConfig.getD());
+                FeedForwardController = new SimpleMotorFeedforward(ConstantsHanger.hangerConfig.getS() , ConstantsHanger.hangerConfig.getV());
                 break;
             case SIM:
                 PIDController = new PIDController(0, 0, 0);
@@ -53,6 +53,11 @@ public class Hanger extends SubsystemBase {
     public void moveHanger(double realAngle, double desireAngle){
         io.setHanger(PIDController.calculate(HPPMathLib.MinAngleDeg(realAngle, desireAngle)));
     }
+
+    public void manualControl(double speed){
+        io.setHanger(speed);
+    }
+
     public void stop(){
         io.setHanger(0.0);
     }

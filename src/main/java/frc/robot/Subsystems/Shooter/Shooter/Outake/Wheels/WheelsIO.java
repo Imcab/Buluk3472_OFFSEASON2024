@@ -8,13 +8,13 @@ public interface WheelsIO {
 
       public double LWheelsAppliedVolts = 0.0;
       public double LWheelsVelocityRadPerSec = 0;
-      public double LWheelsVelocityRPM = 0;
-      public double [] LWheelsCurrentAmps = new double[] {};
+      public double LWheelsVelocityRPS = 0;
+      public double LWheelsCurrentAmps = 0.0;
 
       public double RWheelsAppliedVolts = 0.0;
       public double RWheelsVelocityRadPerSec = 0;
-      public double RWheelsVelocityRPM = 0;
-      public double [] RWheelsCurrentAmps = new double[] {};
+      public double RWheelsVelocityRPS = 0;
+      public double RWheelsCurrentAmps = 0.0;
 
   }
 
@@ -22,8 +22,12 @@ public interface WheelsIO {
   public default void updateInputs(WheelsIOInputs inputs) {}
 
   /** Run the motor at the specified voltage. */
-  public default void setWheels(double voltage) {}
+  public default void setWheels(double voltage, double ff) {}
 
   public default void setWheelsBrakeMode(boolean enable) {}
+
+  public default void runSpeed(double speed){}
+  
+  public default void stop(){}
 
 }

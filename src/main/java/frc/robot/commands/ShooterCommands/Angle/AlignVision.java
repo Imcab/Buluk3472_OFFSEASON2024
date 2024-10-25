@@ -12,28 +12,33 @@ public class AlignVision extends Command{
         this.limelightVision = limelightVision;
         this.shooterangle = shooterangle;
 
-        addRequirements(shooterangle,limelightVision);
+        addRequirements(limelightVision, shooterangle);
     }
 
     @Override
-    public void initialize(){}
+    public void initialize(){
+        limelightVision.blink();
+    }
     @Override
     public void execute(){
 
         boolean targetFound = limelightVision.LimelighttargetFound();
 
-        if(targetFound == true){
+        if(targetFound){
+            
             shooterangle.RunVisionStatus(limelightVision.getLimelightY());
 
-        }else{
-            shooterangle.stop();
-        }
-        
+        }     
     }
     
     @Override
     public void end(boolean interrupted) {
-            shooterangle.stop();  
+        if (shooterangle.getDegrees() <= 7 && shooterangle.getDegrees() > 2){
+            shooterangle.runSpeed(-0.1);
+        }else{
+            shooterangle.stop();
+        }
+              
     }
     
     @Override

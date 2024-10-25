@@ -8,23 +8,18 @@ import frc.robot.Subsystems.Vision.Vision;
 public class VisionTurret extends Command{
 
     private final Turret turret;
-    private final Angle shooterangle;
     private final Vision limelightVision;
  
-    public VisionTurret(Turret turret, Vision limelightVision,  Angle shooterangle){
+    public VisionTurret(Turret turret, Vision limelightVision){
 
         this.turret = turret;
         this.limelightVision = limelightVision;
-        this.shooterangle = shooterangle;
-
         addRequirements(turret);
     }    
     @Override
     public void initialize(){}
     @Override
     public void execute(){
-
-        shooterangle.UpdateTurretZ(turret.getTurretPosition());
 
         if (limelightVision.LimelighttargetFound() == true) {
             turret.runVision(limelightVision.getLimelightX());
